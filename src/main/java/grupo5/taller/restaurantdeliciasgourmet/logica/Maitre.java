@@ -1,10 +1,21 @@
 
 package grupo5.taller.restaurantdeliciasgourmet.logica;
-import java.util.ArrayList;
 
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "maitre")
 public class Maitre extends Empleado {
-    
-    private ArrayList<Cliente> clientes;
+
+    @ManyToMany
+    @JoinTable(
+        name = "maitre_cliente",
+        joinColumns = @JoinColumn(name = "maitre_id"),
+        inverseJoinColumns = @JoinColumn(name = "cliente_id")
+    )
+    private List<Cliente> clientes = new ArrayList<>();
 
     public Maitre() {
     }
@@ -23,17 +34,17 @@ public class Maitre extends Empleado {
         this.clientes = clientes;
     }
 
-    public ArrayList<Cliente> getClientes() {
+    public List<Cliente> getClientes() {
         return clientes;
     }
 
-    public void setClientes(ArrayList<Cliente> clientes) {
+    public void setClientes(List<Cliente> clientes) {
         this.clientes = clientes;
     }
 
     @Override
     public String toString() {
-        return "Maitre{" + "clientes=" + clientes + '}';
+        return "Maitre{" +"clientes=" + clientes +"} " + super.toString();
     }
      
     

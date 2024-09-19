@@ -1,20 +1,50 @@
-
 package grupo5.taller.restaurantdeliciasgourmet.logica;
-import java.util.ArrayList;
 
-public class Cliente { 
-    
+import java.util.ArrayList;
+import java.util.List;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "cliente")
+public class Cliente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cliente_id")
     private int clienteId;
+
+    @Column(nullable = false)
     private String telefono;
+
+    @Column(nullable = false)
     private String nombre;
+
+    @Column(nullable = false)
     private String contraseña;
+
+    @Column(nullable = false, unique = true)
     private String correoElectronico;
-    private ArrayList<Reserva> reservas;
-    private ArrayList<Maitre> maitres;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reserva> reservas = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "clientes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Maitre> maitres = new ArrayList<>();
     
     
     public Cliente() {
     }
+
+    public Cliente(String telefono, String nombre, String contraseña, String correoElectronico) {
+        this.telefono = telefono;
+        this.nombre = nombre;
+        this.contraseña = contraseña;
+        this.correoElectronico = correoElectronico;
+        this.maitres = new ArrayList<>();
+        this.reservas = new ArrayList<>();
+    }
+    
+    
 
     public Cliente(int clienteId, String telefono, String nombre, String contraseña, String correoElectronico, ArrayList<Reserva> reservas, ArrayList<Maitre> maitres) {
         this.clienteId = clienteId;
@@ -66,7 +96,7 @@ public class Cliente {
         this.correoElectronico = correoElectronico;
     }
 
-    public ArrayList<Reserva> getReservas() {
+    public List<Reserva> getReservas() {
         return reservas;
     }
 
@@ -74,7 +104,7 @@ public class Cliente {
         this.reservas = reservas;
     }
 
-    public ArrayList<Maitre> getMaitres() {
+    public List<Maitre> getMaitres() {
         return maitres;
     }
 

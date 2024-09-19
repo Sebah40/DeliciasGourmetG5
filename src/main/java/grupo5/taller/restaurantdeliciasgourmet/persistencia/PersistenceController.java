@@ -15,7 +15,6 @@ import java.util.ArrayList;
  * @author sebas
  */
 public class PersistenceController {
-    EmpleadoJpaController empleadoJpaController = new EmpleadoJpaController();
 
     
     /*----------------Metodos CRUD--------------------------------*/

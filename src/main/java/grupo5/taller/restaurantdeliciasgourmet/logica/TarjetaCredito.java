@@ -3,17 +3,37 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package grupo5.taller.restaurantdeliciasgourmet.logica;
+
+import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author guard
  */
+@Entity
+@Table(name = "tarjeta_credito")
 public class TarjetaCredito {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_tarjeta")
+    private Long id;
+
+    @Column(name = "nombre_titular", nullable = false)
     private String nombreTitular;
+
+    @Column(name = "emisor", nullable = false)
     private String emisor;
+
+    @Column(name = "numero_tarjeta", nullable = false, unique = true)
     private String numeroTarjeta;
+
+    @Column(name = "codigo_verificacion", nullable = false)
     private String codigoVerificacion;
-    private ArrayList<Reserva> reservas;
+
+    @OneToMany(mappedBy = "tarjeta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reserva> reservas = new ArrayList<>();
 
     public TarjetaCredito() {
     }
@@ -58,7 +78,7 @@ public class TarjetaCredito {
         this.codigoVerificacion = codigoVerificacion;
     }
 
-    public ArrayList<Reserva> getLista_reserva() {
+    public List<Reserva> getLista_reserva() {
         return reservas;
     }
 

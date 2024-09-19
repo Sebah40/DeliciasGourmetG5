@@ -1,24 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
 package grupo5.taller.restaurantdeliciasgourmet;
 
-import grupo5.taller.restaurantdeliciasgourmet.logica.Rol;
-import grupo5.taller.restaurantdeliciasgourmet.persistencia.PersistenceController;
-import grupo5.taller.restaurantdeliciasgourmet.swing.windows.EmpleadosList;
-import java.util.ArrayList;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
-/**
- *
- * @author grupo5
- */
+@SpringBootApplication
 public class RestaurantDeliciasGourmet {
     public static void main(String[] args) {
-        PersistenceController persistenceController = new PersistenceController();
-        EmpleadosList pantalla=new EmpleadosList();
-        pantalla.setVisible(true);
-        pantalla.setLocationRelativeTo(null);
-        
+        SpringApplication.run(RestaurantDeliciasGourmet.class, args);
     }
 }

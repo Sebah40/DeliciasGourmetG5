@@ -3,13 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package grupo5.taller.restaurantdeliciasgourmet.logica;
+import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author Usuario
  */
-public class Recepcionista extends Empleado{
-    private ArrayList<Reserva> reservas;
+@Entity
+@Table(name = "recepcionista")
+public class Recepcionista extends Empleado {
+
+    @OneToMany(mappedBy = "recepcionistas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reserva> reservas = new ArrayList<>();
 
 
     public Recepcionista(){
@@ -21,7 +27,7 @@ public class Recepcionista extends Empleado{
     
    
     
-    public ArrayList<Reserva> getReservas() {
+    public List<Reserva> getReservas() {
         return reservas;
     }
 

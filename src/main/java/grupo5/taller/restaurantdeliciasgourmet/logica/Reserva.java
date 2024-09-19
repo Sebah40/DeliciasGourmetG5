@@ -1,25 +1,63 @@
 package grupo5.taller.restaurantdeliciasgourmet.logica;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author guard
  */
+@Entity
+@Table(name = "reserva")
 public class Reserva {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_reserva")
     private int idReserva;
+
+    @Column(nullable = false)
     private LocalDate fechaReserva;
+
+    @Column(nullable = false)
     private LocalTime horaInicio;
+
+    @Column(nullable = false)
     private LocalTime horaFin;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EstadoReserva estadoReserva;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tarjeta_id", nullable = false)
     private TarjetaCredito tarjeta;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mesa_id", nullable = false)
     private Mesa mesa;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
-    private ArrayList<Recepcionista> recepcionistas;
-    private ArrayList<String> intolerancias;
-    private ArrayList<Administrador> administradores;
+
+    @ManyToMany
+    @JoinTable(
+        name = "reserva_recepcionista",
+        joinColumns = @JoinColumn(name = "reserva_id"),
+        inverseJoinColumns = @JoinColumn(name = "recepcionista_id")
+    )
+    private List<Recepcionista> recepcionistas = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "intolerancias", joinColumns = @JoinColumn(name = "reserva_id"))
+    @Column(name = "intolerancia")
+    private List<String> intolerancias = new ArrayList<>();
+
+    @Column(nullable = false)
     private int multa;
     
     public Reserva() {
@@ -36,7 +74,7 @@ public class Reserva {
         this.cliente = cliente;
         this.recepcionistas = recepcionistas;
         this.intolerancias = intolerancias;
-        this.administradores = administradores;
+        //this.administradores = administradores;
         this.multa = multa;
     }
 
@@ -50,7 +88,7 @@ public class Reserva {
         this.cliente = cliente;
         this.recepcionistas = recepcionistas;
         this.intolerancias = intolerancias;
-        this.administradores = administradores;
+        //this.administradores = administradores;
         this.multa = multa;
     }
 
@@ -120,7 +158,7 @@ public class Reserva {
         this.cliente = cliente;
     }
 
-    public ArrayList<Recepcionista> getRecepcionistas() {
+    public List<Recepcionista> getRecepcionistas() {
         return recepcionistas;
     }
 
@@ -128,7 +166,7 @@ public class Reserva {
         this.recepcionistas = recepcionistas;
     }
 
-    public ArrayList<String> getIntolerancias() {
+    public List<String> getIntolerancias() {
         return intolerancias;
     }
 
@@ -136,16 +174,16 @@ public class Reserva {
         this.intolerancias = intolerancias;
     }
 
-    public ArrayList<Administrador> getAdministradores() {
-        return administradores;
-    }
+    //public ArrayList<Administrador> getAdministradores() {
+        //return administradores;
+    //}
 
     public void setAdministradores(ArrayList<Administrador> administradores) {
-        this.administradores = administradores;
+        //this.administradores = administradores;
     }
 
     @Override
     public String toString() {
-        return "Reserva{" + "idReserva=" + idReserva + ", fechaReserva=" + fechaReserva + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", estadoReserva=" + estadoReserva + ", tarjeta=" + tarjeta + ", mesa=" + mesa + ", cliente=" + cliente + ", recepcionistas=" + recepcionistas + ", intolerancias=" + intolerancias + ", administradores=" + administradores + ", multa=" + multa + '}';
+        return "Reserva{" + "idReserva=" + idReserva + ", fechaReserva=" + fechaReserva + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", estadoReserva=" + estadoReserva + ", tarjeta=" + tarjeta + ", mesa=" + mesa + ", cliente=" + cliente + ", recepcionistas=" + recepcionistas + ", intolerancias=" + intolerancias + ", administradores=" + /**administradores**/  ", multa=" + multa + '}';
     }
 }

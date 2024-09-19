@@ -1,43 +1,30 @@
 package grupo5.taller.restaurantdeliciasgourmet.logica;
 
-import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
-import java.util.ArrayList;
+import java.util.List;
+import jakarta.persistence.*;
 
+@Entity
 public class Rol {
 
-    private static ArrayList<Rol> roles = new ArrayList<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
     private String nombreRol;
-    private ArrayList<Empleado> empleados;
 
-    public Rol() {
-    }
+    @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Empleado> empleados;
 
-    public Rol crearRol(String nombreRol, ArrayList<Empleado> empleados) {
-        Rol r = new Rol(nombreRol, empleados);
-        Rol.getRoles().add(r);
-        return r;
-    }
+    public Rol() {}
 
-    public Rol(String nombreRol, ArrayList<Empleado> empleados) {
+    public Rol(String nombreRol, List<Empleado> empleados) {
         this.nombreRol = nombreRol;
         this.empleados = empleados;
-        getRoles().add(this);
     }
 
-    public static ArrayList<Rol> getRoles() {
-        return roles;
-    }
-
-    public static void setRoles(ArrayList<Rol> roles) {
-        Rol.roles = roles;
-    }
-
-    public ArrayList<Empleado> getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(ArrayList<Empleado> empleados) {
-        this.empleados = empleados;
+    public Long getId() {
+        return id;
     }
 
     public String getNombreRol() {
@@ -48,11 +35,11 @@ public class Rol {
         this.nombreRol = nombreRol;
     }
 
-    public ArrayList<Empleado> getEmpleado() {
+    public List<Empleado> getEmpleados() {
         return empleados;
     }
 
-    public void setEmpleado(ArrayList<Empleado> empleados) {
+    public void setEmpleados(List<Empleado> empleados) {
         this.empleados = empleados;
     }
 
@@ -60,9 +47,4 @@ public class Rol {
     public String toString() {
         return this.nombreRol;
     }
-
-    public void asignarRol() {
-
-    }
-
 }

@@ -1,30 +1,36 @@
 package grupo5.taller.restaurantdeliciasgourmet.logica;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class Empleado {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idEmpleado;
-    private Rol nombre_rol;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rol_id", nullable = false)
+    private Rol rol;
+
+    @Column(nullable = false, unique = true)
     private String correoElectronico;
+
+    @Column(nullable = false)
     private String contraseña;
-    
 
     public Empleado() {
     }
 
     public Empleado(Integer idEmpleado, Rol rol, String correoElectronico, String contraseña) {
         this.idEmpleado = idEmpleado;
-        this.nombre_rol = rol;
+        this.rol = rol;
         this.correoElectronico = correoElectronico;
         this.contraseña = contraseña;
     }
 
     public Empleado(Rol rol, String correoElectronico, String contraseña) {
-        this.nombre_rol = rol;
+        this.rol = rol;
         this.correoElectronico = correoElectronico;
         this.contraseña = contraseña;
     }
@@ -38,11 +44,11 @@ public class Empleado {
     }
 
     public Rol getRol() {
-        return nombre_rol;
+        return rol;
     }
 
     public void setRol(Rol rol) {
-        this.nombre_rol = rol;
+        this.rol = rol;
     }
 
     public String getCorreoElectronico() {
@@ -63,7 +69,7 @@ public class Empleado {
 
     @Override
     public String toString() {
-        return "Empleado{" + "idEmpleado=" + idEmpleado + ", rol=" + nombre_rol + ", correoElectronico=" + correoElectronico + ", contrase\u00f1a=" + contraseña + '}';
+        return "Empleado{" + "idEmpleado=" + idEmpleado + ", rol=" + rol.getNombreRol() + ", correoElectronico=" + correoElectronico + ", contrase\u00f1a=" + contraseña + '}';
     }
 
     public Object getNombre() {
