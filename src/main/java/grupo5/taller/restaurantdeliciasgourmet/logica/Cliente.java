@@ -7,21 +7,22 @@ public class Cliente {
     private int clienteId;
     private String telefono;
     private String nombre;
-    private String contraseña;
-    private String correoElectronico;
+    private String contrasenia;
+    private String email;
     private ArrayList<Reserva> reservas;
     private ArrayList<Maitre> maitres;
-    
-    
+
     public Cliente() {
+        this.reservas = new ArrayList <>();
+        this.maitres = new ArrayList <>();
     }
 
-    public Cliente(int clienteId, String telefono, String nombre, String contraseña, String correoElectronico, ArrayList<Reserva> reservas, ArrayList<Maitre> maitres) {
+    public Cliente(int clienteId, String telefono, String nombre, String contrasenia, String email, ArrayList<Reserva> reservas, ArrayList<Maitre> maitres) {
         this.clienteId = clienteId;
         this.telefono = telefono;
         this.nombre = nombre;
-        this.contraseña = contraseña;
-        this.correoElectronico = correoElectronico;
+        this.contrasenia = contrasenia;
+        this.email = email;
         this.reservas = reservas;
         this.maitres = maitres;
     }
@@ -50,20 +51,20 @@ public class Cliente {
         this.nombre = nombre;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasenia() {
+        return contrasenia;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 
-    public String getCorreoElectronico() {
-        return correoElectronico;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public ArrayList<Reserva> getReservas() {
@@ -81,12 +82,24 @@ public class Cliente {
     public void setMaitres(ArrayList<Maitre> maitres) {
         this.maitres = maitres;
     }
-
-    @Override
-    public String toString() {
-        return "Cliente{" + "clienteId=" + clienteId + ", telefono=" + telefono + ", nombre=" + nombre + ", contrase\u00f1a=" + contraseña + ", correoElectronico=" + correoElectronico + ", reservas=" + reservas + ", maitres=" + maitres + '}';
+    
+    public void agregarReserva(Reserva reserva){ 
+        this.reservas.add(reserva);
+    
     }
     
- 
+    public void iniciarSesion(String email, String contrasenia){
+    //metodo a desarrollar
+    }
     
+    public void cancelarReserva(Reserva reserva){
+    //metodo a desarrolar
+    }
+    
+    public String realizarQueja(String queja){
+    //metodo a desarrollar
+    return null;
+    }
+    
+
 }
