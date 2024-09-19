@@ -30,6 +30,10 @@ public class PersistenceController {
     public void eliminarEmpleado(int id) {
 
     }
+    
+    public void eliminarEmpleado(Empleado empleado) {
+
+    }
 
     public void editarEmpleado(Empleado emp) {
 
@@ -120,6 +124,8 @@ public class PersistenceController {
     public ArrayList<Mesa> ListaMesa() {
         return null;
     }
+
+    
 
    
 

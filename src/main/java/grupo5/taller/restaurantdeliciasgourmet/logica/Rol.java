@@ -1,6 +1,5 @@
 package grupo5.taller.restaurantdeliciasgourmet.logica;
 
-import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import java.util.ArrayList;
 
 public class Rol {

@@ -16,17 +16,17 @@ public class Empleado {
     public Empleado() {
     }
 
-    public Empleado(Integer idEmpleado, Rol rol, String correoElectronico, String contraseña) {
+    public Empleado(Integer idEmpleado, Rol rol, String correoElectronico, String contrasenia) {
         this.idEmpleado = idEmpleado;
         this.nombre_rol = rol;
         this.correoElectronico = correoElectronico;
-        this.contrasenia = contraseña;
+        this.contrasenia = contrasenia;
     }
 
-    public Empleado(Rol rol, String correoElectronico, String contraseña) {
+    public Empleado(Rol rol, String correoElectronico, String contrasenia) {
         this.nombre_rol = rol;
         this.correoElectronico = correoElectronico;
-        this.contrasenia = contraseña;
+        this.contrasenia = contrasenia;
     }
 
     public Integer getIdEmpleado() {
@@ -57,8 +57,8 @@ public class Empleado {
         return contrasenia;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contrasenia = contraseña;
+    public void setContraseña(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 
     @Override
