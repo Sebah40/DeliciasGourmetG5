@@ -2,14 +2,10 @@
 package grupo5.taller.restaurantdeliciasgourmet.logica;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
 
-/**
- *
- * @author Usuario
- */
+
+
 public class Administrador extends Empleado{
     private ArrayList<Reserva> reservas;
     private ArrayList<Reporte> reportes;
@@ -17,6 +13,10 @@ public class Administrador extends Empleado{
     private ArrayList<Mesa> mesas;
 
     public Administrador() {
+        this.reservas = new ArrayList<>();
+        this.reportes = new ArrayList<>();
+        this.mesas = new ArrayList<>();
+        this.horarios = new ArrayList<>();
     }
 
     public Administrador(ArrayList<Reserva> reservas, ArrayList<Reporte> reportes, ArrayList<Horario> horarios, ArrayList<Mesa> mesas) {
@@ -75,21 +75,28 @@ public class Administrador extends Empleado{
         this.mesas = mesas;
     }
     
-    public void crearEmpleado(String nombre,Rol rol,String correoElectronico, String contrasenia, String permiso){
+    public void crearEmpleado(Rol rol, String correoElectronico, String contrasenia){
+        Empleado empleado = new Empleado(rol,correoElectronico,contrasenia);
+        LogicaController logControl = new LogicaController();
         
+        logControl.crearEmpleado(empleado);
     }
     
     public void asignarRolEmpleado(Empleado empleado, Rol rol){
-        
+        empleado.setRol(rol);
     }
     
     public void eliminarEmpleado(Empleado empleado){
+        LogicaController logControl = new LogicaController();
         
+        logControl.eliminarEmpleado(empleado);
     }
     
-   /* public List<Reporte> generarReporteReservas(LocalDate fechaInicio, LocalDate fechaFin){
-        return;
-    } */
+    public ArrayList<Reporte> generarReporteReservas(LocalDate fechaInicio, LocalDate fechaFin){
+        
+        return null;
+        
+    } 
     
     public void configurarHorarioEspecial(LocalDate fecha, LocalDate horaApertura, LocalDate horaCierre){
         

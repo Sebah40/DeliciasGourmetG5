@@ -24,6 +24,10 @@ public class LogicaController {
     public void eliminarEmpleado(int id) {
         control.eliminarEmpleado(id);
     }
+    
+    void eliminarEmpleado(Empleado empleado) {
+        control.eliminarEmpleado(empleado);
+    }
 
     public void editarEmpleado(Empleado emp) {
         control.editarEmpleado(emp);
@@ -99,6 +103,8 @@ public class LogicaController {
     public ArrayList<Mesa> ListaMesa() {
         return control.ListaMesa();
     }
+
+    
     
     
 }

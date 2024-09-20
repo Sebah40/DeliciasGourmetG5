@@ -17,22 +17,24 @@ public class Empleado {
     private String correoElectronico;
 
     @Column(nullable = false)
-    private String contraseña;
+    private String contrasenia;
+
+    
 
     public Empleado() {
     }
 
-    public Empleado(Integer idEmpleado, Rol rol, String correoElectronico, String contraseña) {
+    public Empleado(Integer idEmpleado, Rol rol, String correoElectronico, String contrasenia) {
         this.idEmpleado = idEmpleado;
         this.rol = rol;
         this.correoElectronico = correoElectronico;
-        this.contraseña = contraseña;
+        this.contrasenia = contrasenia;
     }
 
-    public Empleado(Rol rol, String correoElectronico, String contraseña) {
+    public Empleado(Rol rol, String correoElectronico, String contrasenia) {
         this.rol = rol;
         this.correoElectronico = correoElectronico;
-        this.contraseña = contraseña;
+        this.contrasenia = contrasenia;
     }
 
     public Integer getIdEmpleado() {
@@ -60,20 +62,20 @@ public class Empleado {
     }
 
     public String getContraseña() {
-        return contraseña;
+        return contrasenia;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContraseña(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 
     @Override
     public String toString() {
-        return "Empleado{" + "idEmpleado=" + idEmpleado + ", rol=" + rol.getNombreRol() + ", correoElectronico=" + correoElectronico + ", contrase\u00f1a=" + contraseña + '}';
+        return "Empleado{" + "idEmpleado=" + idEmpleado + ", rol=" + rol + ", correoElectronico=" + correoElectronico + ", contrase\u00f1a=" + contrasenia + '}';
     }
 
     public Object getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
    
     
