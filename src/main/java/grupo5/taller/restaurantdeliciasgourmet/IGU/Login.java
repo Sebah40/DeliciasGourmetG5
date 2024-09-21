@@ -15,14 +15,11 @@ import org.springframework.stereotype.Component;
  *
  * @author sebas
  */
-
 @Component
 public class Login extends javax.swing.JFrame {
-    
+
     @Autowired
     ClienteService clienteService;
-    
-    
 
     public Login(ClienteService clienteService) {
         this.clienteService = clienteService;
@@ -194,6 +191,9 @@ public class Login extends javax.swing.JFrame {
             if (clienteOpt.isPresent()) {
                 Cliente cliente = clienteOpt.get();
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(cliente);
+                pantallaPrincipal.setVisible(true);
+                this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Correo o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -209,7 +209,6 @@ public class Login extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;
@@ -226,6 +225,5 @@ public class Login extends javax.swing.JFrame {
     public void setClienteService(ClienteService clienteService) {
         this.clienteService = clienteService;
     }
-
 
 }
