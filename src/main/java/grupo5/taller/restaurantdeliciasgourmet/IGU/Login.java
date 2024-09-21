@@ -4,19 +4,28 @@
  */
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
+import java.util.Optional;
 import javax.swing.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author sebas
  */
-public class Login extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Login
-     */
-    public Login() {
+@Component
+public class Login extends javax.swing.JFrame {
+    
+    @Autowired
+    ClienteService clienteService;
+    
+    
+
+    public Login(ClienteService clienteService) {
+        this.clienteService = clienteService;
         initComponents();
     }
 
@@ -174,62 +183,33 @@ public class Login extends javax.swing.JFrame {
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         // TODO add your handling code here:
 
-        String correo = jTextCorreo.getText();
+        String email = jTextCorreo.getText();
         String contrasenia = jTextContrasenia.getText();
 
-        if (correo.isEmpty() || contrasenia.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Todos los campos deben ser llenados.", "Error", JOptionPane.ERROR_MESSAGE);
-    } else {
-        JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        if (email.isEmpty() || contrasenia.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos los campos deben ser llenados.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            Optional<Cliente> clienteOpt = clienteService.login(email, contrasenia);
+
+            if (clienteOpt.isPresent()) {
+                Cliente cliente = clienteOpt.get();
+                JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Correo o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
         // TODO add your handling code here:
-        new RegistrarCliente().setVisible(true);
+        new RegistrarCliente(clienteService).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;
@@ -242,4 +222,10 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField jTextContrasenia;
     private javax.swing.JTextField jTextCorreo;
     // End of variables declaration//GEN-END:variables
+
+    public void setClienteService(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
+
+
 }

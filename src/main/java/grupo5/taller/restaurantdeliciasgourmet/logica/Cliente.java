@@ -38,10 +38,10 @@ public class Cliente {
         this.maitres = new ArrayList <>();
     }
 
-    public Cliente(String telefono, String nombre, String contraseña, String correoElectronico) {
+    public Cliente(String telefono, String nombre, String contrasenia, String correoElectronico) {
         this.telefono = telefono;
         this.nombre = nombre;
-        this.contrasenia = contraseña;
+        this.contrasenia = contrasenia;
         this.email = correoElectronico;
         this.maitres = new ArrayList<>();
         this.reservas = new ArrayList<>();
