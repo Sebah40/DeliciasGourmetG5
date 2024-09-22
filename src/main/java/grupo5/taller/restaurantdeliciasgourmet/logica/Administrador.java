@@ -122,8 +122,34 @@ public class Administrador extends Empleado{
         
     }
     
-    public void gestionarReserva(int idReserva){
+    public void gestionarReserva(int idReserva) {
+        LogicaController logicaController = new LogicaController();
+        Reserva reserva = logicaController.traerReserva(idReserva);
+
+        if (reserva != null) {
+            // Procesa la reserva si existe
+             System.out.println("Procesando la reserva: " + reserva);
         
+            // Verificar si la reserva está en estado "CONFIRMADA"
+            if (reserva.getEstadoReserva() == EstadoReserva.CONFIRMADA) {
+                 System.out.println("La reserva está confirmada.");
+                    // Procesar una reserva confirmada
+                    System.out.println("La reserva está confirmada.");
+                    System.out.println("Detalles de la reserva:");
+                    System.out.println("Fecha: " + reserva.getFechaReserva());
+                    System.out.println("Hora de inicio: " + reserva.getHoraInicio());
+                    System.out.println("Mesa asignada: " + reserva.getMesa());
+                    System.out.println("Cliente: " + reserva.getCliente().getNombre());
+            }   else {
+                    System.out.println("La reserva no está confirmada.");
+                    // Acciones para reservas no confirmadas
+                }
+
+        } else {
+            // Manejo del caso cuando la reserva no existe
+            System.out.println("No se encontró la reserva con el ID: " + idReserva);
+        }
     }
+
     
 }
