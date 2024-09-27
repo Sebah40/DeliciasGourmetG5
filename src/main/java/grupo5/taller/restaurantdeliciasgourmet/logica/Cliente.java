@@ -124,9 +124,17 @@ public class Cliente {
     //metodo a desarrollar
     }
     
-    public void cancelarReserva(Reserva reserva){
+   // public Reserva solicitarReserva(Mesa mesa, TarjetaCredito tarjeta,LocalDate reserva){}
+    
+    public void recuperarContrasenia(Cliente cliente){}
+    
+    //public Reserva confirmarReserva(Reserva reserva){}
+    
+    //public Reserva cancelarReserva(Reserva reserva){
     //metodo a desarrolar
-    }
+    //}
+    
+    //public ArrayList <Reserva> getHistorialReservas(LocalDate fechaInicio, LocalDate fechaFin){}
     
     public String realizarQueja(String queja){
     //metodo a desarrollar
