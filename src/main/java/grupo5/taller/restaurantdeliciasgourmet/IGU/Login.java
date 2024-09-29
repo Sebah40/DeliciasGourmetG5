@@ -4,7 +4,9 @@
  */
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
+import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import java.util.Optional;
 import javax.swing.*;
@@ -177,6 +179,8 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextCorreoActionPerformed
 
+    
+    
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         // TODO add your handling code here:
 
@@ -190,9 +194,10 @@ public class Login extends javax.swing.JFrame {
 
             if (clienteOpt.isPresent()) {
                 Cliente cliente = clienteOpt.get();
+                SessionManager.getInstance().setCurrentCliente(cliente);
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                PantallaPrincipal pantallaPrincipal = new PantallaPrincipal(cliente);
-                pantallaPrincipal.setVisible(true);
+                PantallaPrincipal pantallaPrincipalWindow = new PantallaPrincipal();
+                pantallaPrincipalWindow.setVisible(true);
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Correo o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
