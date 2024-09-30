@@ -63,7 +63,6 @@ public class ReservaService {
         reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
         reserva.setTarjeta(tarjeta);
 
-        // Guardar la reserva
         reservaRepository.save(reserva);
     }
 
