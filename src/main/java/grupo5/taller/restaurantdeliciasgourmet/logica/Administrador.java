@@ -130,6 +130,7 @@ public class Administrador extends Empleado {
 
     }
 
+
     public void ajustarHorarioMesa(int numeroMesa, LocalDate horaInicio, LocalDate horaFin, boolean disponible) {
 
     }
@@ -145,5 +146,54 @@ public class Administrador extends Empleado {
     public void gestionarReserva(int idReserva) {
 
     }
+
+
+    
+    public void quitarReservaLista(Reserva reserva){
+        if (reserva != null && reservas.remove(reserva)) {
+            System.out.println("Reserva quitada: " + reserva);
+        } else {
+            System.out.println("La reserva no se encontr� en la lista.");
+        }
+    }
+    
+    public void agregarReservaLista(Reserva reserva){
+        if (reserva != null) {
+            reservas.add(reserva);
+            System.out.println("Reserva agregada: " + reserva);
+        } else {
+        System.out.println("La reserva no puede ser nula.");
+        }
+    }
+    
+    public void gestionarReserva(int idReserva) {
+        LogicaController logicaController = new LogicaController();
+        Reserva reserva = logicaController.traerReserva(idReserva);
+
+        if (reserva != null) {
+            // Procesa la reserva si existe
+             System.out.println("Procesando la reserva: " + reserva);
+        
+            // Verificar si la reserva está en estado "CONFIRMADA"
+            if (reserva.getEstadoReserva() == EstadoReserva.CONFIRMADA) {
+                 System.out.println("La reserva está confirmada.");
+                    // Procesar una reserva confirmada
+                    System.out.println("La reserva está confirmada.");
+                    System.out.println("Detalles de la reserva:");
+                    System.out.println("Fecha: " + reserva.getFechaReserva());
+                    System.out.println("Hora de inicio: " + reserva.getHoraInicio());
+                    System.out.println("Mesa asignada: " + reserva.getMesa());
+                    System.out.println("Cliente: " + reserva.getCliente().getNombre());
+            }   else {
+                    System.out.println("La reserva no está confirmada.");
+                    // Acciones para reservas no confirmadas
+                }
+
+        } else {
+            // Manejo del caso cuando la reserva no existe
+            System.out.println("No se encontró la reserva con el ID: " + idReserva);
+        }
+    }
+
 
 }

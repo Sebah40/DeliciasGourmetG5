@@ -5,6 +5,7 @@
 package grupo5.taller.restaurantdeliciasgourmet.logica;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -31,8 +32,11 @@ public class TarjetaCredito {
 
     @Column(name = "codigo_verificacion", nullable = false)
     private String codigoVerificacion;
+    
+    @Column(name = "fecha_expiracion", nullable = false)
+    private LocalDate fechaExpiracion;
 
-    @OneToMany(mappedBy = "tarjeta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "tarjeta", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Reserva> reservas = new ArrayList<>();
 
     public TarjetaCredito() {
@@ -45,6 +49,35 @@ public class TarjetaCredito {
         this.codigoVerificacion = codigoVerificacion;
         this.reservas = reservas;
     }
+    
+     public TarjetaCredito(String nombreTitular, String emisor, String numeroTarjeta, String codigoVerificacion, LocalDate fechaExpiracion) {
+        this.nombreTitular = nombreTitular;
+        this.emisor = emisor;
+        this.numeroTarjeta = numeroTarjeta;
+        this.codigoVerificacion = codigoVerificacion;
+        this.fechaExpiracion = fechaExpiracion;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDate getFechaExpiracion() {
+        return fechaExpiracion;
+    }
+
+    public void setFechaExpiracion(LocalDate fechaExpiracion) {
+        this.fechaExpiracion = fechaExpiracion;
+    }
+
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<Reserva> reservas) {
+        this.reservas = reservas;
+    }
+     
 
     public String getNombreTitular() {
         return nombreTitular;
@@ -88,7 +121,7 @@ public class TarjetaCredito {
 
     @Override
     public String toString() {
-        return "TarjetaCredito{" + "nombreTitular=" + nombreTitular + ", emisor=" + emisor + ", numeroTarjeta=" + numeroTarjeta + ", codigoVerificacion=" + codigoVerificacion + ", reservas=" + reservas + '}';
+        return "TarjetaCredito{" + "nombreTitular=" + nombreTitular + ", emisor=" + emisor + ", numeroTarjeta=" + numeroTarjeta + ", codigoVerificacion=" + codigoVerificacion + '}';
     }
     
     

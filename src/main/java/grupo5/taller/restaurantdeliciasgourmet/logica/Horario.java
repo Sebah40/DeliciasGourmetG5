@@ -1,15 +1,7 @@
 
 package grupo5.taller.restaurantdeliciasgourmet.logica;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -22,10 +14,15 @@ public class Horario {
     private LocalDate horarioApertura;
     private LocalDate horarioCierre;
 
+
+
+    private String evento;
+
     private ArrayList<Administrador> administradores;
 
     public Horario() {
     }
+
 
     public Horario(int id_horario, LocalDate fecha, LocalDate horarioApertura, LocalDate horarioCierre, ArrayList<Administrador> administradores) {
         this.id_horario = id_horario;
@@ -35,12 +32,22 @@ public class Horario {
         this.administradores = administradores;
     }
     
-    public Horario(LocalDate fecha, LocalDate horaDesde, LocalDate horaHasta, LocalDate horarioApertura, LocalDate horarioCierre, ArrayList<Reserva> reservas, ArrayList<Mesa> mesas, ArrayList<Administrador> administradores) {
+    public Horario(LocalDate fecha, LocalDate horarioApertura, LocalDate horarioCierre, String evento, ArrayList<Administrador> administradores) {
         this.fecha = fecha;
         this.horarioApertura = horarioApertura;
         this.horarioCierre = horarioCierre;
+        this.evento = evento;
         this.administradores = administradores;
     }
+
+    public String getEvento() {
+        return evento;
+    }
+
+    public void setEvento(String evento) {
+        this.evento = evento;
+    }
+
 
     public LocalDate getFecha() {
         return fecha;
@@ -87,6 +94,29 @@ public class Horario {
     public String toString() {
         return "Horario{" + "fecha=" + fecha + ", horarioApertura=" + horarioApertura + ", horarioCierre=" + horarioCierre + ", administradores=" + administradores + '}';
     }
+    
+    //si un administrador desea gestionar o estar asignado a un horario
+    public void agregarAdministrador(Administrador administrador) {
+        if (!administradores.contains(administrador)) {
+            administradores.add(administrador);
+        }
+    }
+    //verifica si un horario tiene un evento
+    public boolean tieneEvento() {
+        return evento != null && !evento.isEmpty();
+    }
+    //ajustar horario por algun evento en particular
+    public void ajustarHorarioParaEvento(String evento, LocalDate aperturaEspecial, LocalDate cierreEspecial) {
+        this.evento = evento;
+        this.horarioApertura = aperturaEspecial;
+        this.horarioCierre = cierreEspecial;
+    }
+    //si ese horario en ese dia esta disponible
+    public boolean estaDisponible(LocalDate fecha) {
+        return this.fecha.equals(fecha);
+    }
+
+    
 
 
     

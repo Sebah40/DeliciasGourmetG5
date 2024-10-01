@@ -17,20 +17,27 @@ public class Mesa {
     private int capacidad;
 
     @Column(nullable = false)
-    private String ubicacion;
+    private Ubicacion ubicacion;
 
     @Column(nullable = false)
     private boolean disponibilidad;
 
-    @OneToMany(mappedBy = "mesa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "mesa", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Reserva> reservas = new ArrayList<>();
 
     
 //private ArrayList<Administrador> administradores; NO IMPLEMENTAR TODAVIA
     public Mesa() {
     }
+    public Mesa(int capacidad, Ubicacion ubicacion) {
+        this.capacidad = capacidad;
+        this.ubicacion = ubicacion;
+        this.disponibilidad = true;
+        this.reservas = new ArrayList<>();
+        //this.administradores = administradores;
+    }
 
-    public Mesa(int numeroMesa, int capacidad, String ubicacion, boolean disponibilidad, ArrayList<Reserva> reservas, ArrayList<Horario> horarios, ArrayList<Administrador> administradores) {
+    public Mesa(int numeroMesa, int capacidad, Ubicacion ubicacion, boolean disponibilidad, ArrayList<Reserva> reservas, ArrayList<Horario> horarios, ArrayList<Administrador> administradores) {
         this.numeroMesa = numeroMesa;
         this.capacidad = capacidad;
         this.ubicacion = ubicacion;
@@ -57,12 +64,12 @@ public class Mesa {
     public void setCapacidad(int capacidad) {
         this.capacidad = capacidad;
     }
-
-    public String getUbicacion() {
+    
+    public Ubicacion getUbicacion() {
         return ubicacion;
     }
 
-    public void setUbicacion(String ubicacion) {
+    public void setUbicacion(Ubicacion ubicacion) {
         this.ubicacion = ubicacion;
     }
 
@@ -90,7 +97,7 @@ public class Mesa {
 //    }
     @Override
     public String toString() {
-        return "Mesa{" + "numeroMesa=" + numeroMesa + ", capacidad=" + capacidad + ", ubicacion=" + ubicacion + ", disponibilidad=" + disponibilidad + ", reservas=" + reservas + ", administradores=" + /*administradores*/ +'}';
+        return "Mesa{" + "numeroMesa=" + numeroMesa + ", capacidad=" + capacidad + ", ubicacion=" + ubicacion + ", disponibilidad=" + disponibilidad + ", administradores="/*administradores*/ +'}';
     }
 
     public void bloquearMesa() {
@@ -112,4 +119,12 @@ public class Mesa {
 //    public void mostrarDisponibilidad(LocalTime fecha) {
 //
 //    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mesa mesa = (Mesa) o;
+        return numeroMesa == mesa.numeroMesa;
+    }
 }
