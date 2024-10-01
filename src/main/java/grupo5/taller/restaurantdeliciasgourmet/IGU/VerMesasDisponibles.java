@@ -32,7 +32,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class VerMesasDisponibles extends javax.swing.JFrame {
-
     @Autowired
     ClienteService clienteService;
 
@@ -42,7 +41,16 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
 
     public VerMesasDisponibles() {
         initComponents();
+        jDateChooser.setDate(java.sql.Date.valueOf(LocalDate.now()));
+        jDateChooser.getDateEditor().addPropertyChangeListener("date", e -> {
+                actualizarMesas(null);
+            });
+            timeSpinner.addChangeListener(e -> {
+                actualizarMesas(null);
+            });
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,7 +71,6 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
-        btnVerMesas = new javax.swing.JButton();
         timeSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -121,17 +128,6 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jList1);
 
-        btnVerMesas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnVerMesas.setText("Ver mesas");
-        btnVerMesas.setMaximumSize(new java.awt.Dimension(145, 39));
-        btnVerMesas.setMinimumSize(new java.awt.Dimension(145, 39));
-        btnVerMesas.setPreferredSize(new java.awt.Dimension(145, 39));
-        btnVerMesas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVerMesasActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -146,18 +142,13 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCrearReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnVerMesas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                                    .addComponent(timeSpinner))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                            .addComponent(timeSpinner))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addGap(45, 45, 45)))
@@ -180,9 +171,7 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(jLabel2)
                     .addComponent(timeSpinner))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnVerMesas, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,6 +199,31 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void actualizarMesas(java.awt.event.ActionEvent evt) {                                            
+        // TODO add your handling code here:
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        jList1.setModel(listModel);
+
+        if (jDateChooser.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.");
+            return;
+        }
+        LocalDate selectedDate = getSelectedDate();
+        LocalTime selectedTime = getSelectedTime();
+        try {
+            List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(selectedDate, selectedTime);
+            for (Mesa mesa : mesasDisponibles) {
+                listModel.addElement("Mesa " + mesa.getNumeroMesa() + "         Capacidad: " + mesa.getCapacidad() + "         Ubicacion: " + mesa.getUbicacion().name().toLowerCase());
+            }
+
+            if (mesasDisponibles.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No hay mesas disponibles para la fecha y hora seleccionadas.");
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al obtener mesas: " + ex.getMessage());
+        }
+    }
 
     private void btnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearReservaActionPerformed
         // TODO add your handling code here:
@@ -226,6 +240,7 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
         selectedReserva.setFechaReserva(selectedDate);
         selectedReserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
         selectedReserva.setHoraInicio(selectedTime);
+        selectedReserva.setMesa(selectedMesa);
         IngresarTarjeta ingresarTarjetaWindow = RestaurantDeliciasGourmet.getContext().getBean(IngresarTarjeta.class);
         ingresarTarjetaWindow.setReservationDetails(selectedMesa, selectedDate, selectedTime, selectedReserva);
         ingresarTarjetaWindow.setVisible(true);
@@ -258,39 +273,12 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
 }
 
 
-    private void btnVerMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMesasActionPerformed
-        // TODO add your handling code here:
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        jList1.setModel(listModel);
-
-        if (jDateChooser.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.");
-            return;
-        }
-        LocalDate selectedDate = getSelectedDate();
-        LocalTime selectedTime = getSelectedTime();
-        try {
-            List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(selectedDate, selectedTime);
-            for (Mesa mesa : mesasDisponibles) {
-                listModel.addElement("Mesa " + mesa.getNumeroMesa() + "         Capacidad: " + mesa.getCapacidad() + "         Ubicacion: " + mesa.getUbicacion().name().toLowerCase());
-            }
-
-            if (mesasDisponibles.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No hay mesas disponibles para la fecha y hora seleccionadas.");
-            }
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al obtener mesas: " + ex.getMessage());
-        }
-    }//GEN-LAST:event_btnVerMesasActionPerformed
-
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearReserva;
-    private javax.swing.JButton btnVerMesas;
     private javax.swing.JButton btnVerMisReservas;
     private com.toedter.calendar.JDateChooser jDateChooser;
     private javax.swing.JLabel jLabel2;

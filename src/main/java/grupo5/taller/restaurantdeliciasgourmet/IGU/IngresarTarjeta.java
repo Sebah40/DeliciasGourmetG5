@@ -6,7 +6,8 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ReservaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
-import grupo5.taller.restaurantdeliciasgourmet.Servicios.TarjetaCreditoService;
+import grupo5.taller.restaurantdeliciasgourmet.controladores.ReservaController;
+import grupo5.taller.restaurantdeliciasgourmet.controladores.TarjetaCreditoController;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Mesa;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
@@ -29,10 +30,10 @@ import org.springframework.stereotype.Component;
 public class IngresarTarjeta extends javax.swing.JFrame {
 
     @Autowired
-    private ReservaService reservaService;
+    private ReservaController reservaController;
     
     @Autowired
-    private TarjetaCreditoService tarjetaCreditoService;
+    private TarjetaCreditoController tarjetaCreditoController;
 
     private Mesa selectedMesa;
     private LocalDate selectedDate;
@@ -236,35 +237,17 @@ public class IngresarTarjeta extends javax.swing.JFrame {
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
         // TODO add your handling code here:
+        try {
         String nombreTitular = jTextNombreTitular.getText();
-    String numeroTarjeta = jTextNumeroTarjeta.getText();
-    String cvv = jTextCVV.getText();
-    Date selectedDate = jDateExpiracion.getDate();
-
-    if (nombreTitular.isEmpty() || numeroTarjeta.isEmpty() || selectedDate == null || cvv.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Todos los campos de la tarjeta deben ser llenados.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    LocalDate fechaExpiracion = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-    if (cvv.length() < 3 || cvv.length() > 4) {
-        JOptionPane.showMessageDialog(this, "El CVV debe tener entre 3 y 4 dígitos.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    TarjetaCredito tarjetaCredito = new TarjetaCredito();
-    tarjetaCredito.setNombreTitular(nombreTitular);
-    tarjetaCredito.setNumeroTarjeta(numeroTarjeta);
-    tarjetaCredito.setFechaExpiracion(fechaExpiracion);
-    tarjetaCredito.setCodigoVerificacion(cvv);
-    tarjetaCredito.setEmisor("Visa");
-    tarjetaCreditoService.saveTarjetaCredito(tarjetaCredito);
-    try {
-        selectedReserva.setMesa(selectedMesa);
+        String numeroTarjeta = jTextNumeroTarjeta.getText();
+        String cvv = jTextCVV.getText();
+        Date selectedDate = jDateExpiracion.getDate();
+        LocalDate fechaExpiracion = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        TarjetaCredito tarjetaCredito = tarjetaCreditoController.createAndSaveTarjetaCredito(nombreTitular, numeroTarjeta, fechaExpiracion, cvv);
+        
         selectedReserva.setCliente(selectedCliente);
         selectedReserva.setTarjeta(tarjetaCredito);
-        reservaService.hacerReserva(selectedReserva);
+        reservaController.hacerReserva(selectedReserva);
         JOptionPane.showMessageDialog(this, "Reserva realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     } catch (Exception ex) {
         System.out.println(selectedReserva.getFechaReserva());

@@ -16,4 +16,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TarjetaCreditoRepository extends JpaRepository<TarjetaCredito, Long> {    
     List<TarjetaCredito> findByEmisor(String emisor);
+    TarjetaCredito findByNumeroTarjeta(String numeroTarjeta);
 }

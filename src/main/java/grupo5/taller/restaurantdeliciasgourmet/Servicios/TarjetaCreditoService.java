@@ -37,4 +37,8 @@ public class TarjetaCreditoService {
     public void deleteById(Long id) {
         tarjetaCreditoRepository.deleteById(id);
     }
+
+    public TarjetaCredito findByNumeroTarjeta(String numeroTarjeta) {
+        return tarjetaCreditoRepository.findByNumeroTarjeta(numeroTarjeta);
+    }
 }
