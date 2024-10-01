@@ -115,11 +115,20 @@ public class Administrador extends Empleado{
     }
     
     public void quitarReservaLista(Reserva reserva){
-        
+        if (reserva != null && reservas.remove(reserva)) {
+            System.out.println("Reserva quitada: " + reserva);
+        } else {
+            System.out.println("La reserva no se encontró en la lista.");
+        }
     }
     
     public void agregarReservaLista(Reserva reserva){
-        
+        if (reserva != null) {
+            reservas.add(reserva);
+            System.out.println("Reserva agregada: " + reserva);
+        } else {
+        System.out.println("La reserva no puede ser nula.");
+        }
     }
     
     public void gestionarReserva(int idReserva) {
