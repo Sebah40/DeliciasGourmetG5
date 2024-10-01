@@ -1,15 +1,13 @@
 package grupo5.taller.restaurantdeliciasgourmet.logica;
 
-
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 
 public class Administrador extends Empleado {
 
     private int admin_id;
-    
-   
+
     private ArrayList<Reserva> reservas;
 
     private ArrayList<Reporte> reportes;
@@ -98,9 +96,9 @@ public class Administrador extends Empleado {
 
     public void crearEmpleado(Rol rol, String correoElectronico, String contrasenia) {
         Empleado empleado = new Empleado(rol, correoElectronico, contrasenia);
-        LogicaController logControl = new LogicaController();
-
-        logControl.crearEmpleado(empleado);
+        EmpleadoService empleService = new EmpleadoService();
+        
+        empleService.saveEmpleado(empleado);
     }
 
     public void asignarRolEmpleado(Empleado empleado, Rol rol) {
@@ -108,9 +106,9 @@ public class Administrador extends Empleado {
     }
 
     public void eliminarEmpleado(Empleado empleado) {
-        LogicaController logControl = new LogicaController();
-
-        logControl.eliminarEmpleado(empleado);
+        EmpleadoService empleService = new EmpleadoService();
+        
+        empleService.deleteEmpleado(empleado);
     }
 
     public ArrayList<Reporte> generarReporteReservas(LocalDate fechaInicio, LocalDate fechaFin) {
@@ -130,41 +128,36 @@ public class Administrador extends Empleado {
 
     }
 
-
     public void ajustarHorarioMesa(int numeroMesa, LocalDate horaInicio, LocalDate horaFin, boolean disponible) {
 
     }
 
     public void quitarReservaLista(Reserva reserva) {
 
+        for (Reserva r : reservas) {
+            if (reservas != null && reserva.equals(r)) {
+                reservas.remove(r);
+            } else {
+                System.out.println("La reserva no se encontro en la lista.");
+            }
+
+        }
     }
 
     public void agregarReservaLista(Reserva reserva) {
-
-    }
-
-    public void gestionarReserva(int idReserva) {
-
-    }
-
-
-    
-    public void quitarReservaLista(Reserva reserva){
-        if (reserva != null && reservas.remove(reserva)) {
-            System.out.println("Reserva quitada: " + reserva);
-        } else {
-            System.out.println("La reserva no se encontr� en la lista.");
+        boolean estado=true;
+         for (Reserva r : reservas) {
+            if (reservas != null && reserva.equals(r)) {
+                estado=false;
+            } 
         }
-    }
-    
-    public void agregarReservaLista(Reserva reserva){
-        if (reserva != null) {
+        if(estado==true){
             reservas.add(reserva);
-            System.out.println("Reserva agregada: " + reserva);
-        } else {
-        System.out.println("La reserva no puede ser nula.");
-        }
+        } 
     }
+
+    /* falta crear la controladora de reserva
+    
     
     public void gestionarReserva(int idReserva) {
         LogicaController logicaController = new LogicaController();
@@ -172,28 +165,28 @@ public class Administrador extends Empleado {
 
         if (reserva != null) {
             // Procesa la reserva si existe
-             System.out.println("Procesando la reserva: " + reserva);
-        
+            System.out.println("Procesando la reserva: " + reserva);
+
             // Verificar si la reserva está en estado "CONFIRMADA"
             if (reserva.getEstadoReserva() == EstadoReserva.CONFIRMADA) {
-                 System.out.println("La reserva está confirmada.");
-                    // Procesar una reserva confirmada
-                    System.out.println("La reserva está confirmada.");
-                    System.out.println("Detalles de la reserva:");
-                    System.out.println("Fecha: " + reserva.getFechaReserva());
-                    System.out.println("Hora de inicio: " + reserva.getHoraInicio());
-                    System.out.println("Mesa asignada: " + reserva.getMesa());
-                    System.out.println("Cliente: " + reserva.getCliente().getNombre());
-            }   else {
-                    System.out.println("La reserva no está confirmada.");
-                    // Acciones para reservas no confirmadas
-                }
+                System.out.println("La reserva está confirmada.");
+                // Procesar una reserva confirmada
+                System.out.println("La reserva está confirmada.");
+                System.out.println("Detalles de la reserva:");
+                System.out.println("Fecha: " + reserva.getFechaReserva());
+                System.out.println("Hora de inicio: " + reserva.getHoraInicio());
+                System.out.println("Mesa asignada: " + reserva.getMesa());
+                System.out.println("Cliente: " + reserva.getCliente().getNombre());
+            } else {
+                System.out.println("La reserva no está confirmada.");
+                // Acciones para reservas no confirmadas
+            }
 
         } else {
             // Manejo del caso cuando la reserva no existe
             System.out.println("No se encontró la reserva con el ID: " + idReserva);
         }
     }
-
+*/
 
 }
