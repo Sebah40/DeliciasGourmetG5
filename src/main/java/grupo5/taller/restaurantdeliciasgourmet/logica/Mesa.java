@@ -25,6 +25,7 @@ public class Mesa {
     @OneToMany(mappedBy = "mesa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reserva> reservas = new ArrayList<>();
 
+    
 //private ArrayList<Administrador> administradores; NO IMPLEMENTAR TODAVIA
     public Mesa() {
     }
@@ -37,6 +38,9 @@ public class Mesa {
         this.reservas = reservas;
         //this.administradores = administradores;
     }
+
+    
+    
 
     public int getNumeroMesa() {
         return numeroMesa;

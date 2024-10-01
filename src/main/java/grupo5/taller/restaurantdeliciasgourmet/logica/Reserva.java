@@ -56,6 +56,7 @@ public class Reserva {
     @CollectionTable(name = "intolerancias", joinColumns = @JoinColumn(name = "reserva_id"))
     @Column(name = "intolerancia")
     private List<String> intolerancias = new ArrayList<>();
+    
 
     @Column(nullable = false)
     private int multa;
@@ -74,7 +75,7 @@ public class Reserva {
         this.cliente = cliente;
         this.recepcionistas = recepcionistas;
         this.intolerancias = intolerancias;
-        //this.administradores = administradores;
+       // this.administradores = administradores;
         this.multa = multa;
     }
 
@@ -173,13 +174,11 @@ public class Reserva {
     public void setIntolerancias(ArrayList<String> intolerancias) {
         this.intolerancias = intolerancias;
     }
+    
 
-    //public ArrayList<Administrador> getAdministradores() {
-        //return administradores;
-    //}
 
     public void setAdministradores(ArrayList<Administrador> administradores) {
-        //this.administradores = administradores;
+       // this.administradores = administradores;
     }
 
     @Override
