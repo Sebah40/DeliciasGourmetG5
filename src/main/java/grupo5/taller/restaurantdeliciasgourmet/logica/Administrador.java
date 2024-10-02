@@ -3,6 +3,7 @@ package grupo5.taller.restaurantdeliciasgourmet.logica;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Administrador extends Empleado {
 
@@ -15,12 +16,19 @@ public class Administrador extends Empleado {
     private ArrayList<Horario> horarios;
 
     private ArrayList<Mesa> mesas;
+    
+    private final EmpleadoService empleadoService;
+
+    public Administrador(EmpleadoService empleadoService) {
+        this.empleadoService = empleadoService;
+    }
 
     public Administrador() {
         this.reservas = new ArrayList<>();
         this.reportes = new ArrayList<>();
         this.mesas = new ArrayList<>();
         this.horarios = new ArrayList<>();
+        this.empleadoService = null;
     }
 
     public Administrador(int admin_id, ArrayList<Reserva> reservas, ArrayList<Reporte> reportes, ArrayList<Horario> horarios, ArrayList<Mesa> mesas) {
@@ -29,6 +37,7 @@ public class Administrador extends Empleado {
         this.reportes = reportes;
         this.horarios = horarios;
         this.mesas = mesas;
+        this.empleadoService = null;
     }
 
     public Administrador(ArrayList<Reserva> reservas, ArrayList<Reporte> reportes, ArrayList<Horario> horarios, ArrayList<Mesa> mesas) {
@@ -36,6 +45,7 @@ public class Administrador extends Empleado {
         this.reportes = reportes;
         this.horarios = horarios;
         this.mesas = mesas;
+        this.empleadoService = null;
     }
 
     public Administrador(ArrayList<Reserva> reservas, ArrayList<Reporte> reportes, ArrayList<Horario> horarios, ArrayList<Mesa> mesas, Integer idEmpleado, Rol rol, String correoElectronico, String contraseña) {
@@ -44,6 +54,7 @@ public class Administrador extends Empleado {
         this.reportes = reportes;
         this.horarios = horarios;
         this.mesas = mesas;
+        this.empleadoService = null;
     }
 
     public Administrador(ArrayList<Reserva> reservas, ArrayList<Reporte> reportes, ArrayList<Horario> horarios, ArrayList<Mesa> mesas, Rol rol, String correoElectronico, String contraseña) {
@@ -52,6 +63,7 @@ public class Administrador extends Empleado {
         this.reportes = reportes;
         this.horarios = horarios;
         this.mesas = mesas;
+        this.empleadoService = null;
     }
 
     public ArrayList<Reserva> getReservas() {
@@ -96,9 +108,8 @@ public class Administrador extends Empleado {
 
     public void crearEmpleado(Rol rol, String correoElectronico, String contrasenia) {
         Empleado empleado = new Empleado(rol, correoElectronico, contrasenia);
-        EmpleadoService empleService = new EmpleadoService();
-        
-        empleService.saveEmpleado(empleado);
+
+        empleadoService.saveEmpleado(empleado);
     }
 
     public void asignarRolEmpleado(Empleado empleado, Rol rol) {
@@ -106,9 +117,7 @@ public class Administrador extends Empleado {
     }
 
     public void eliminarEmpleado(Empleado empleado) {
-        EmpleadoService empleService = new EmpleadoService();
-        
-        empleService.deleteEmpleado(empleado);
+        empleadoService.deleteEmpleado(empleado);
     }
 
     public ArrayList<Reporte> generarReporteReservas(LocalDate fechaInicio, LocalDate fechaFin) {
@@ -133,27 +142,28 @@ public class Administrador extends Empleado {
     }
 
     public void quitarReservaLista(Reserva reserva) {
-
-        for (Reserva r : reservas) {
-            if (reservas != null && reserva.equals(r)) {
-                reservas.remove(r);
-            } else {
-                System.out.println("La reserva no se encontro en la lista.");
-            }
-
+    Iterator<Reserva> iterator = reservas.iterator();
+    boolean encontrada = false;
+    
+    while (iterator.hasNext()) {
+        Reserva r = iterator.next();
+        if (reserva.equals(r)) {
+            iterator.remove(); 
+            encontrada = true;
+            break; 
         }
+    }
+    
+    if (!encontrada) {
+        System.out.println("La reserva no se encontró en la lista.");
+    }
+    
     }
 
     public void agregarReservaLista(Reserva reserva) {
-        boolean estado=true;
-         for (Reserva r : reservas) {
-            if (reservas != null && reserva.equals(r)) {
-                estado=false;
-            } 
-        }
-        if(estado==true){
+        if (reserva != null && !reservas.contains(reserva)) {
             reservas.add(reserva);
-        } 
+        }
     }
 
     /* falta crear la controladora de reserva
@@ -187,6 +197,5 @@ public class Administrador extends Empleado {
             System.out.println("No se encontró la reserva con el ID: " + idReserva);
         }
     }
-*/
-
+     */
 }

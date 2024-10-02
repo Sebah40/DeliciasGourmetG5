@@ -8,14 +8,18 @@ import grupo5.taller.restaurantdeliciasgourmet.Repositorios.ClienteRepository;
 import grupo5.taller.restaurantdeliciasgourmet.Repositorios.EmpleadoRepository;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Empleado;
+import jakarta.persistence.Entity;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Usuario
  */
+@Service
 public class EmpleadoService {
     @Autowired
     private EmpleadoRepository empleadoRepository;
