@@ -28,7 +28,7 @@ public class RestaurantDeliciasGourmet {
         Login loginWindow = context.getBean(Login.class);
         loginWindow.setVisible(true);
 
-        MesaService mesaService = context.getBean(MesaService.class);
+        MesaService mesaService = context.getBean(MesaService.class); // TEMPORAL HASTA QUE ADMINISTRADOR EXISTA
         if (mesaService.getMesasDisponibles().isEmpty()) {
             mesaService.crearMesa(new Mesa(4, Ubicacion.INTERIOR));
             mesaService.crearMesa(new Mesa(3, Ubicacion.INTERIOR));
