@@ -25,7 +25,7 @@ public class RestaurantDeliciasGourmet {
     public static void main(String[] args) {
         System.setProperty("java.awt.headless", "false");
         context = SpringApplication.run(RestaurantDeliciasGourmet.class, args);
-        Login loginWindow = context.getBean(Login.class);
+        Login loginWindow = context.getBean(Login.class);   
         loginWindow.setVisible(true);
 
         MesaService mesaService = context.getBean(MesaService.class); // TEMPORAL HASTA QUE ADMINISTRADOR EXISTA
