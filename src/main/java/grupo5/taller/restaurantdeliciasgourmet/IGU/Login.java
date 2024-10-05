@@ -105,6 +105,12 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        jTextContrasenia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextContraseniaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -211,6 +217,10 @@ public class Login extends javax.swing.JFrame {
         new RegistrarCliente(clienteService).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegistrarseActionPerformed
+
+    private void jTextContraseniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextContraseniaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextContraseniaActionPerformed
 
     /**
      * @param args the command line arguments

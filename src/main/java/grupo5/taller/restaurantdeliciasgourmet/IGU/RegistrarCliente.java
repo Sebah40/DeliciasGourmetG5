@@ -42,11 +42,11 @@ public class RegistrarCliente extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextCorreo = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextContrasenia = new javax.swing.JTextField();
+        jTextNombre = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnVolver = new javax.swing.JButton();
-        jTextNombre = new javax.swing.JPasswordField();
+        jTextContrasenia = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFocusTraversalPolicyProvider(true);
@@ -103,10 +103,10 @@ public class RegistrarCliente extends javax.swing.JFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel6.setText("Nombre");
 
-        jTextContrasenia.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jTextContrasenia.addActionListener(new java.awt.event.ActionListener() {
+        jTextNombre.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jTextNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextContraseniaActionPerformed(evt);
+                jTextNombreActionPerformed(evt);
             }
         });
 
@@ -146,14 +146,14 @@ public class RegistrarCliente extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 1, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(jTextCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(48, 48, 48))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jTextTelefono, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextNombre))
+                                    .addComponent(jTextContrasenia))
                                 .addGap(48, 48, 48))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -175,11 +175,11 @@ public class RegistrarCliente extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(jTextContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel7)
-                    .addComponent(jTextNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                    .addComponent(jTextContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
@@ -208,9 +208,9 @@ public class RegistrarCliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextContraseniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextContraseniaActionPerformed
+    private void jTextNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextNombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextContraseniaActionPerformed
+    }//GEN-LAST:event_jTextNombreActionPerformed
 
     private void jTextCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextCorreoActionPerformed
         // TODO add your handling code here:
@@ -254,7 +254,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
-     * @param args the command line arguments
+     * @param args the command line argumentsjTextNombre
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -267,9 +267,9 @@ public class RegistrarCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextContrasenia;
+    private javax.swing.JPasswordField jTextContrasenia;
     private javax.swing.JTextField jTextCorreo;
-    private javax.swing.JPasswordField jTextNombre;
+    private javax.swing.JTextField jTextNombre;
     private javax.swing.JTextField jTextTelefono;
     // End of variables declaration//GEN-END:variables
 }
