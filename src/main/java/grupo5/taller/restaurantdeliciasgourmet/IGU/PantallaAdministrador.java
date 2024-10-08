@@ -13,16 +13,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class PantallaAdministrador extends javax.swing.JFrame {
     
- @Autowired
-    EmpleadoService empleadoService;
-   @Autowired
-    RolService rolService;
-
+ private final EmpleadoService empleadoService;
+    private final RolService rolService;
+    private final ClienteService clienteService;
  
-    public PantallaAdministrador(EmpleadoService empleadoService,RolService rolService) {
-        this.empleadoService = empleadoService;
+    @Autowired
+    public PantallaAdministrador(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
+        this.clienteService = clienteService;
+        this.empleadoService=empleadoService;
         this.rolService=rolService;
         initComponents();
+
     }
  
     @SuppressWarnings("unchecked")
@@ -179,22 +180,22 @@ public class PantallaAdministrador extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        LoginEmpleado login = new LoginEmpleado(empleadoService,rolService);
+        LoginEmpleado login = new LoginEmpleado(clienteService,empleadoService, rolService);
         login.setVisible(true);
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void jButtonEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpleadosActionPerformed
-        GestionEmpleado empleadosWindow = new GestionEmpleado(empleadoService,rolService);
+        GestionEmpleado empleadosWindow = new GestionEmpleado(clienteService,empleadoService, rolService);
         empleadosWindow.setVisible(true);
     }//GEN-LAST:event_jButtonEmpleadosActionPerformed
 
     private void jButtonReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReservasActionPerformed
-        GestionReservas reservasWindow = new GestionReservas(empleadoService,rolService);
+        GestionReservas reservasWindow = new GestionReservas(clienteService,empleadoService, rolService);
         reservasWindow.setVisible(true);
     }//GEN-LAST:event_jButtonReservasActionPerformed
 
     private void jButtonHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHorariosActionPerformed
-        GestionHorario horarioWindow = new GestionHorario(empleadoService,rolService);
+        GestionHorario horarioWindow = new GestionHorario(clienteService,empleadoService, rolService);
         horarioWindow.setVisible(true);
     }//GEN-LAST:event_jButtonHorariosActionPerformed
 

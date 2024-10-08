@@ -24,15 +24,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class CrearEmpleado extends javax.swing.JFrame {
 
+    private final EmpleadoService empleadoService;
+    private final RolService rolService;
+    private final ClienteService clienteService;
+ 
     @Autowired
-    EmpleadoService empleadoService;
-    @Autowired
-    RolService rolService;
-
-    public CrearEmpleado(EmpleadoService empleadoService,RolService rolService) {
-        this.empleadoService = empleadoService;
+    public CrearEmpleado(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
+        this.clienteService = clienteService;
+        this.empleadoService=empleadoService;
         this.rolService=rolService;
         initComponents();
+
     }
 
     /**
@@ -51,7 +53,7 @@ public class CrearEmpleado extends javax.swing.JFrame {
         txt_correo = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        btnRegistrarse = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
         txt_contrasenia = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
         txt_Rol = new javax.swing.JTextField();
@@ -105,11 +107,11 @@ public class CrearEmpleado extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Logo.jpg"))); // NOI18N
 
-        btnRegistrarse.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnRegistrarse.setText("Volver");
-        btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
+        btnVolver.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrarseActionPerformed(evt);
+                btnVolverActionPerformed(evt);
             }
         });
 
@@ -140,7 +142,7 @@ public class CrearEmpleado extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnRegistrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCrearEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -186,7 +188,7 @@ public class CrearEmpleado extends javax.swing.JFrame {
                 .addGap(71, 71, 71)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCrearEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRegistrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -229,24 +231,26 @@ public class CrearEmpleado extends javax.swing.JFrame {
             return;
         }
 
-        Rol rol = new Rol();
-        rol.setNombreRol(rolName);
-
+        Rol rol = rolService.findByName(rolName);
         try {
-            rolService.saveRol(rol);
+            if (rol == null) {
+                rol = new Rol();
+                rol.setNombreRol(rolName);
+                rolService.saveRol(rol); // Guardar nuevo rol en la base de datos
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al guardar el rol: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return; // Detener la ejecución si hay un error al guardar el rol
         }
-
         Empleado empleado = new Empleado(rol, correo, contrasenia);
 
         try {
             empleadoService.saveEmpleado(empleado);
-            JOptionPane.showMessageDialog(this, "Empleado guardado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Empleado '" + correo + "' guardado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al guardar el empleado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        this.dispose();
     }//GEN-LAST:event_btnCrearEmpleadoActionPerformed
 
     private boolean isValidEmail(String email) {
@@ -254,9 +258,10 @@ public class CrearEmpleado extends javax.swing.JFrame {
         return email.matches(emailRegex);
     }
 
-    private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-
-    }//GEN-LAST:event_btnRegistrarseActionPerformed
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+          GestionEmpleado gestionEmpleadoWindow = new GestionEmpleado(clienteService,empleadoService, rolService);
+          gestionEmpleadoWindow.setVisible(true);
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     private void txt_contraseniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_contraseniaActionPerformed
         // TODO add your handling code here:
@@ -272,7 +277,7 @@ public class CrearEmpleado extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearEmpleado;
-    private javax.swing.JButton btnRegistrarse;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;

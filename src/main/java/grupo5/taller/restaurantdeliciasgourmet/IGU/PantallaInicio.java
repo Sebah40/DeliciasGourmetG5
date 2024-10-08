@@ -166,7 +166,7 @@ public class PantallaInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpleadosActionPerformed
-        LoginEmpleado loginEmpleadoWindow = new LoginEmpleado(empleadoService,rolService);
+        LoginEmpleado loginEmpleadoWindow = new LoginEmpleado(clienteService,empleadoService, rolService);
         loginEmpleadoWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnEmpleadosActionPerformed

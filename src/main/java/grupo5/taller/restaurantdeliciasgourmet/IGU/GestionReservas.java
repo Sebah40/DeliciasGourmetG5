@@ -15,15 +15,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class GestionReservas extends javax.swing.JFrame {
 
- @Autowired
-    EmpleadoService empleadoService;
+    private final EmpleadoService empleadoService;
+    private final RolService rolService;
+    private final ClienteService clienteService;
+ 
     @Autowired
-    RolService rolService;
-
-   public GestionReservas(EmpleadoService empleadoService,RolService rolService) {
-        this.empleadoService = empleadoService;
+    public GestionReservas(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
+        this.clienteService = clienteService;
+        this.empleadoService=empleadoService;
         this.rolService=rolService;
         initComponents();
+
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -178,7 +180,7 @@ public class GestionReservas extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        PantallaAdministrador administrador = new PantallaAdministrador(empleadoService,rolService);
+        PantallaAdministrador administrador = new PantallaAdministrador(clienteService,empleadoService, rolService);
         administrador.setVisible(true);
     }//GEN-LAST:event_btnVolverActionPerformed
 

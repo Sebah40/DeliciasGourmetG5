@@ -25,16 +25,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginEmpleado extends javax.swing.JFrame {
 
+    private final EmpleadoService empleadoService;
+    private final RolService rolService;
+    private final ClienteService clienteService;
+ 
     @Autowired
-    EmpleadoService empleadoService;
-    @Autowired
-    RolService rolService;
-
-
-     public LoginEmpleado(EmpleadoService empleadoService,RolService rolService) {
-        this.empleadoService = empleadoService;
+    public LoginEmpleado(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
+        this.clienteService = clienteService;
+        this.empleadoService=empleadoService;
         this.rolService=rolService;
         initComponents();
+
     }
 
     /**
@@ -216,7 +217,7 @@ public class LoginEmpleado extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Bienvenido, Administrador.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
                     // Abre la ventana del administrador
-                    PantallaAdministrador adminWindow = new PantallaAdministrador(empleadoService,rolService);
+                    PantallaAdministrador adminWindow = new PantallaAdministrador(clienteService,empleadoService, rolService);
                     adminWindow.setVisible(true);
                 } else {
                     /*
@@ -239,7 +240,8 @@ public class LoginEmpleado extends javax.swing.JFrame {
     }
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-
+        PantallaInicio inicioWindow = new PantallaInicio(clienteService,empleadoService,rolService);
+        inicioWindow.setVisible(true);
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void jTextContraseniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextContraseniaActionPerformed

@@ -15,15 +15,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class GestionEmpleado extends javax.swing.JFrame {
 
-   @Autowired
-    EmpleadoService empleadoService;
-   @Autowired
-    RolService rolService;
-
-    public GestionEmpleado(EmpleadoService empleadoService,RolService rolService) {
-        this.empleadoService = empleadoService;
+   private final EmpleadoService empleadoService;
+    private final RolService rolService;
+    private final ClienteService clienteService;
+ 
+    @Autowired
+    public GestionEmpleado(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
+        this.clienteService = clienteService;
+        this.empleadoService=empleadoService;
         this.rolService=rolService;
         initComponents();
+
     }
 
    
@@ -183,12 +185,12 @@ public class GestionEmpleado extends javax.swing.JFrame {
     }
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        PantallaAdministrador administrador = new PantallaAdministrador(empleadoService,rolService);
+        PantallaAdministrador administrador = new PantallaAdministrador(clienteService,empleadoService, rolService);
         administrador.setVisible(true);
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void jButtonEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpleadosActionPerformed
-            CrearEmpleado empleadoWindow = new CrearEmpleado(empleadoService,rolService);
+            CrearEmpleado empleadoWindow = new CrearEmpleado(clienteService,empleadoService, rolService);
             empleadoWindow.setVisible(true);
             this.dispose();
     }//GEN-LAST:event_jButtonEmpleadosActionPerformed
