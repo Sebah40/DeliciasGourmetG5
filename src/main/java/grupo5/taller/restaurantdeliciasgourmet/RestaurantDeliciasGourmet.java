@@ -1,6 +1,7 @@
 package grupo5.taller.restaurantdeliciasgourmet;
 
-import grupo5.taller.restaurantdeliciasgourmet.IGU.Login;
+import grupo5.taller.restaurantdeliciasgourmet.IGU.LoginCliente;
+import grupo5.taller.restaurantdeliciasgourmet.IGU.PantallaInicio;
 import grupo5.taller.restaurantdeliciasgourmet.IGU.VerMesasDisponibles;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.TarjetaCreditoService;
@@ -25,8 +26,8 @@ public class RestaurantDeliciasGourmet {
     public static void main(String[] args) {
         System.setProperty("java.awt.headless", "false");
         context = SpringApplication.run(RestaurantDeliciasGourmet.class, args);
-        Login loginWindow = context.getBean(Login.class);   
-        loginWindow.setVisible(true);
+        PantallaInicio inicioWindow = context.getBean(PantallaInicio.class);   
+        inicioWindow.setVisible(true);
 
         MesaService mesaService = context.getBean(MesaService.class); // TEMPORAL HASTA QUE ADMINISTRADOR EXISTA
         if (mesaService.getMesasDisponibles().isEmpty()) {

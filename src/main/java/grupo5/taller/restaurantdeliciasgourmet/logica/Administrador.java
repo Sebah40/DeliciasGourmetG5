@@ -22,6 +22,8 @@ public class Administrador extends Empleado {
     public Administrador(EmpleadoService empleadoService) {
         this.empleadoService = empleadoService;
     }
+    
+    
 
     public Administrador() {
         this.reservas = new ArrayList<>();
@@ -48,8 +50,8 @@ public class Administrador extends Empleado {
         this.empleadoService = null;
     }
 
-    public Administrador(ArrayList<Reserva> reservas, ArrayList<Reporte> reportes, ArrayList<Horario> horarios, ArrayList<Mesa> mesas, Integer idEmpleado, Rol rol, String correoElectronico, String contraseña) {
-        super(idEmpleado, rol, correoElectronico, contraseña);
+    public Administrador(ArrayList<Reserva> reservas, ArrayList<Reporte> reportes, ArrayList<Horario> horarios, ArrayList<Mesa> mesas, Integer idEmpleado, Rol rol, String correoElectronico, String contrasenia) {
+        super(idEmpleado, rol, correoElectronico, contrasenia);
         this.reservas = reservas;
         this.reportes = reportes;
         this.horarios = horarios;
@@ -57,12 +59,17 @@ public class Administrador extends Empleado {
         this.empleadoService = null;
     }
 
-    public Administrador(ArrayList<Reserva> reservas, ArrayList<Reporte> reportes, ArrayList<Horario> horarios, ArrayList<Mesa> mesas, Rol rol, String correoElectronico, String contraseña) {
-        super(rol, correoElectronico, contraseña);
+    public Administrador(ArrayList<Reserva> reservas, ArrayList<Reporte> reportes, ArrayList<Horario> horarios, ArrayList<Mesa> mesas, Rol rol, String correoElectronico, String contrasenia) {
+        super(rol, correoElectronico, contrasenia);
         this.reservas = reservas;
         this.reportes = reportes;
         this.horarios = horarios;
         this.mesas = mesas;
+        this.empleadoService = null;
+    }
+    
+    public Administrador(Rol rol, String correoElectronico, String contrasenia){
+        super(rol,correoElectronico,contrasenia);
         this.empleadoService = null;
     }
 

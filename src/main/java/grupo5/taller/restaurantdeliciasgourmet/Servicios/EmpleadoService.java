@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EmpleadoService {
+
+    
     @Autowired
     private EmpleadoRepository empleadoRepository;
 
@@ -42,6 +44,10 @@ public class EmpleadoService {
     
     public void deleteEmpleado(Empleado empleado) {
         empleadoRepository.delete(empleado);
+    }
+    
+    public Optional<Empleado> login(String correoElectronico, String contrasenia) {
+        return empleadoRepository.findByCorreoElectronicoAndContrasenia(correoElectronico, contrasenia);
     }
     
 }

@@ -4,6 +4,7 @@
  */
 package grupo5.taller.restaurantdeliciasgourmet.Servicios;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
+import grupo5.taller.restaurantdeliciasgourmet.logica.Empleado;
 
 /**
  *
@@ -12,6 +13,7 @@ import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 public class SessionManager {
     private static SessionManager instance;
     private Cliente currentCliente;
+    private Empleado currentEmpleado;
 
     private SessionManager() {}
 
@@ -29,4 +31,14 @@ public class SessionManager {
     public void setCurrentCliente(Cliente cliente) {
         this.currentCliente = cliente;
     }
+
+    public void setCurrentEmpleado(Empleado empleado) {
+        this.currentEmpleado=empleado;
+    }
+
+    public Empleado getCurrentEmpleado() {
+        return currentEmpleado;
+    }
+    
+    
 }

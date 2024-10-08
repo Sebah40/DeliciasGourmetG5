@@ -249,7 +249,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
 
         this.dispose();
 
-        Login loginWindow = new Login(clienteService);
+        LoginCliente loginWindow = new LoginCliente(clienteService);
         loginWindow.setVisible(true);
     }//GEN-LAST:event_btnVolverActionPerformed
 
