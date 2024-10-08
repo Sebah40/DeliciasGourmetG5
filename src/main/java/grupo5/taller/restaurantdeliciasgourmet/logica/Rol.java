@@ -18,6 +18,10 @@ public class Rol {
 
     public Rol() {}
 
+    public Rol(String nombreRol) {
+        this.nombreRol = nombreRol;
+    }
+
     public Rol(String nombreRol, List<Empleado> empleados) {
         this.nombreRol = nombreRol;
         this.empleados = empleados;

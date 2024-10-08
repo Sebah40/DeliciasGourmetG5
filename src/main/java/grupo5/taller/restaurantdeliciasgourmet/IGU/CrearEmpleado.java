@@ -6,8 +6,12 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
+import grupo5.taller.restaurantdeliciasgourmet.logica.Empleado;
+import grupo5.taller.restaurantdeliciasgourmet.logica.Rol;
 import java.util.Optional;
 import javax.swing.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +25,14 @@ import org.springframework.stereotype.Component;
 public class CrearEmpleado extends javax.swing.JFrame {
 
     @Autowired
-    ClienteService clienteService;
+    EmpleadoService empleadoService;
+    @Autowired
+    RolService rolService;
 
-    public CrearEmpleado(ClienteService clienteService) {
-        this.clienteService = clienteService;
+    public CrearEmpleado(EmpleadoService empleadoService,RolService rolService) {
+        this.empleadoService = empleadoService;
+        this.rolService=rolService;
         initComponents();
-
     }
 
     /**
@@ -202,31 +208,44 @@ public class CrearEmpleado extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_correoActionPerformed
 
-    
-    
+
     private void btnCrearEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearEmpleadoActionPerformed
-        // TODO add your handling code here:
+        String rolName = txt_Rol.getText().trim();
+        String correo = txt_correo.getText().trim();
+        String contrasenia = txt_contrasenia.getText().trim();
 
-        String email = txt_correo.getText();
-        String contrasenia = txt_contrasenia.getText();
+        if (rolName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre del rol no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        if (email.isEmpty() || contrasenia.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos deben ser llenados.", "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (!isValidEmail(email)) {
-            JOptionPane.showMessageDialog(this, "El correo electrónico no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            Optional<Cliente> clienteOpt = clienteService.login(email, contrasenia);
+        if (correo.isEmpty() || !isValidEmail(correo)) {
+            JOptionPane.showMessageDialog(this, "Correo no valido o vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-            if (clienteOpt.isPresent()) {
-                Cliente cliente = clienteOpt.get();
-                SessionManager.getInstance().setCurrentCliente(cliente);
-                JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                PantallaPrincipal pantallaPrincipalWindow = new PantallaPrincipal();
-                pantallaPrincipalWindow.setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Correo o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+        if (contrasenia.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La contraseña no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Rol rol = new Rol();
+        rol.setNombreRol(rolName);
+
+        try {
+            rolService.saveRol(rol);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar el rol: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Empleado empleado = new Empleado(rol, correo, contrasenia);
+
+        try {
+            empleadoService.saveEmpleado(empleado);
+            JOptionPane.showMessageDialog(this, "Empleado guardado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar el empleado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCrearEmpleadoActionPerformed
 
@@ -236,9 +255,7 @@ public class CrearEmpleado extends javax.swing.JFrame {
     }
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        // TODO add your handling code here:
-        new RegistrarCliente(clienteService).setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void txt_contraseniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_contraseniaActionPerformed
@@ -266,9 +283,5 @@ public class CrearEmpleado extends javax.swing.JFrame {
     private javax.swing.JPasswordField txt_contrasenia;
     private javax.swing.JTextField txt_correo;
     // End of variables declaration//GEN-END:variables
-
-    public void setClienteService(ClienteService clienteService) {
-        this.clienteService = clienteService;
-    }
 
 }

@@ -6,6 +6,8 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import java.util.Optional;
@@ -20,7 +22,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class GestionHorario extends javax.swing.JFrame {
 
+ @Autowired
+    EmpleadoService empleadoService;
+    @Autowired
+    RolService rolService;
 
+   public GestionHorario(EmpleadoService empleadoService,RolService rolService) {
+        this.empleadoService = empleadoService;
+        this.rolService=rolService;
+        initComponents();
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -157,7 +168,8 @@ public class GestionHorario extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-
+        PantallaAdministrador administrador = new PantallaAdministrador(empleadoService,rolService);
+        administrador.setVisible(true);
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void jButtonEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpleadosActionPerformed

@@ -4,9 +4,11 @@
  */
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
+import grupo5.taller.restaurantdeliciasgourmet.Repositorios.RolRepository;
 import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Empleado;
@@ -25,11 +27,14 @@ public class LoginEmpleado extends javax.swing.JFrame {
 
     @Autowired
     EmpleadoService empleadoService;
+    @Autowired
+    RolService rolService;
 
-    public LoginEmpleado(EmpleadoService empleadoService) {
+
+     public LoginEmpleado(EmpleadoService empleadoService,RolService rolService) {
         this.empleadoService = empleadoService;
+        this.rolService=rolService;
         initComponents();
-
     }
 
     /**
@@ -201,20 +206,25 @@ public class LoginEmpleado extends javax.swing.JFrame {
 
             if (empleadoOpt.isPresent()) {
                 Empleado empleado = empleadoOpt.get();
-                Rol rol = empleado.getRol();
 
-                if ("Administrador".equalsIgnoreCase(rol.getNombreRol())) {
+                String nombreRol = empleadoService.obtenerNombreRolPorEmpleado(empleado);
+
+                // Verifica el rol del empleado
+                if ("Administrador".equalsIgnoreCase(nombreRol)) {
+                    // Guarda el empleado en la sesión
                     SessionManager.getInstance().setCurrentEmpleado(empleado);
                     JOptionPane.showMessageDialog(this, "Bienvenido, Administrador.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    Administrador AdminWindow = new Administrador();
-                    AdminWindow.setVisible(true);
+
+                    // Abre la ventana del administrador
+                    PantallaAdministrador adminWindow = new PantallaAdministrador(empleadoService,rolService);
+                    adminWindow.setVisible(true);
                 } else {
                     /*
                     SessionManager.getInstance().setCurrentEmpleado(empleado);
                     JOptionPane.showMessageDialog(this, "Bienvenido, Empleado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     PantallaEmpleado pantallaEmpleadoWindow = new PantallaEmpleado();
                     pantallaEmpleadoWindow.setVisible(true);
-                    */
+                     */
                 }
                 this.dispose();
             } else {
@@ -251,8 +261,5 @@ public class LoginEmpleado extends javax.swing.JFrame {
     private javax.swing.JPasswordField jTextContrasenia;
     private javax.swing.JTextField jTextCorreo;
     // End of variables declaration//GEN-END:variables
-
-
-    
 
 }

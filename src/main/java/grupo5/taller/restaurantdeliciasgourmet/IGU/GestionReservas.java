@@ -2,6 +2,8 @@
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,7 +15,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class GestionReservas extends javax.swing.JFrame {
 
-  
+ @Autowired
+    EmpleadoService empleadoService;
+    @Autowired
+    RolService rolService;
+
+   public GestionReservas(EmpleadoService empleadoService,RolService rolService) {
+        this.empleadoService = empleadoService;
+        this.rolService=rolService;
+        initComponents();
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -167,7 +178,8 @@ public class GestionReservas extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-
+        PantallaAdministrador administrador = new PantallaAdministrador(empleadoService,rolService);
+        administrador.setVisible(true);
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearReservaActionPerformed
