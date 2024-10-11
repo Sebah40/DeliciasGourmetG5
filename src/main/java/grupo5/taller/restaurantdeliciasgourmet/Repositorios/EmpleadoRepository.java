@@ -12,5 +12,7 @@ public interface EmpleadoRepository extends JpaRepository<Empleado, Integer> {
 
     public Optional<Empleado> findByCorreoElectronicoAndContrasenia(String correoElectronico, String contrasenia);
 
+    public Object findByCorreoElectronico(String correo);
+
     
 }

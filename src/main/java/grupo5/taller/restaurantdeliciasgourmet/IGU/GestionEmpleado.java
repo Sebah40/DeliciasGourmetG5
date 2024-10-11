@@ -178,7 +178,9 @@ public class GestionEmpleado extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonEmpleadosActionPerformed
 
     private void jButtonReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReservasActionPerformed
-
+        CambiarRolEmpleado rolWindow = new CambiarRolEmpleado(clienteService, empleadoService, rolService);
+        rolWindow.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonReservasActionPerformed
 
     private void jButtonHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHorariosActionPerformed

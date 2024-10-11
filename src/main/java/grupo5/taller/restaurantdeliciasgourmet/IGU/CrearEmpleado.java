@@ -4,15 +4,13 @@
  */
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
-import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
-import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
-import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
+
 import grupo5.taller.restaurantdeliciasgourmet.logica.Empleado;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Rol;
-import java.util.Optional;
+
 import javax.swing.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,12 +25,12 @@ public class CrearEmpleado extends javax.swing.JFrame {
     private final EmpleadoService empleadoService;
     private final RolService rolService;
     private final ClienteService clienteService;
- 
+
     @Autowired
-    public CrearEmpleado(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
+    public CrearEmpleado(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService) {
         this.clienteService = clienteService;
-        this.empleadoService=empleadoService;
-        this.rolService=rolService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
         initComponents();
 
     }
@@ -226,6 +224,11 @@ public class CrearEmpleado extends javax.swing.JFrame {
             return;
         }
 
+        if (empleadoService.existsByCorreoElectronico(correo)) {
+            JOptionPane.showMessageDialog(this, "El correo electrónico ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if (contrasenia.isEmpty()) {
             JOptionPane.showMessageDialog(this, "La contraseña no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -259,8 +262,8 @@ public class CrearEmpleado extends javax.swing.JFrame {
     }
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-          GestionEmpleado gestionEmpleadoWindow = new GestionEmpleado(clienteService,empleadoService, rolService);
-          gestionEmpleadoWindow.setVisible(true);
+        GestionEmpleado gestionEmpleadoWindow = new GestionEmpleado(clienteService, empleadoService, rolService);
+        gestionEmpleadoWindow.setVisible(true);
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void txt_contraseniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_contraseniaActionPerformed

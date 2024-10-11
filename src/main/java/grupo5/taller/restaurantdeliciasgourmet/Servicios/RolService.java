@@ -7,6 +7,7 @@ package grupo5.taller.restaurantdeliciasgourmet.Servicios;
 import grupo5.taller.restaurantdeliciasgourmet.Repositorios.RolRepository;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Rol;
 import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,10 @@ public class RolService {
         }
 
         return null;
+    }
+
+    public List<Rol> getAllRol() {
+        return rolRepository.findAll();
     }
 
 }

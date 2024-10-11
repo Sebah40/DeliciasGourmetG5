@@ -10,8 +10,11 @@ public class Empleado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idEmpleado;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    
+    @Column(name = "dtype", nullable = false)
+    private String dtype = "Empleado";
+    
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
 

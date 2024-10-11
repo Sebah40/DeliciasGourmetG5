@@ -11,6 +11,7 @@ import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Empleado;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Rol;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +52,15 @@ public class EmpleadoService {
         empleadoRepository.delete(empleado);
     }
 
+    public Empleado editarEmpleado(Empleado empleado) {
+    // Verifica si el empleado existe antes de intentar actualizarlo
+    if (empleadoRepository.existsById(empleado.getIdEmpleado())) {
+        return empleadoRepository.save(empleado);
+    } else {
+        throw new EntityNotFoundException("Empleado no encontrado con id: " + empleado.getIdEmpleado());
+    }
+}
+    
     
     public Optional<Empleado> login(String correoElectronico, String contrasenia) {
         return empleadoRepository.findByCorreoElectronicoAndContrasenia(correoElectronico, contrasenia);
@@ -60,6 +70,10 @@ public class EmpleadoService {
         return rolRepository.findById(empleado.getRol().getId())
             .map(Rol::getNombreRol)
             .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
+    }
+
+    public boolean existsByCorreoElectronico(String correo) {
+        return empleadoRepository.findByCorreoElectronico(correo) != null;
     }
 
 }
