@@ -11,7 +11,6 @@ import java.util.List;
  * @author Usuario
  */
 @Entity
-@Table(name = "recepcionista")
 public class Recepcionista extends Empleado {
 
     @OneToMany(mappedBy = "recepcionistas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

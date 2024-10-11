@@ -5,6 +5,8 @@
 package grupo5.taller.restaurantdeliciasgourmet.Servicios;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Empleado;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 /**
  *
@@ -40,5 +42,5 @@ public class SessionManager {
         return currentEmpleado;
     }
     
-    
+ 
 }

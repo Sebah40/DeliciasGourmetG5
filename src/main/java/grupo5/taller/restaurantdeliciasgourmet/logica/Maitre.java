@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "maitre")
 public class Maitre extends Empleado {
 
     @ManyToMany

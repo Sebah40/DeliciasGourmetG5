@@ -3,6 +3,8 @@ package grupo5.taller.restaurantdeliciasgourmet.logica;
 import jakarta.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_empleado")
 public class Empleado {
 
     @Id
