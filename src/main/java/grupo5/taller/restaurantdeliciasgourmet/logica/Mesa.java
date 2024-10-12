@@ -100,19 +100,25 @@ public class Mesa {
         return "Mesa{" + "numeroMesa=" + numeroMesa + ", capacidad=" + capacidad + ", ubicacion=" + ubicacion + ", disponibilidad=" + disponibilidad + ", administradores="/*administradores*/ +'}';
     }
 
-    public void bloquearMesa() {
-
+    public void bloquearMesa(int numeroMesa) {
+       
+        actualizarEstado(numeroMesa, false);
     }
 
     public void desbloquearMesa() {
-
+        actualizarEstado(numeroMesa, true);
     }
 
-    public void configurarMesa(int numeroMesa, int capacidad, boolean disponibilidad, String ubicacion) {
-
+    public void configurarMesa(int numeroMesa, int capacidad, boolean disponibilidad, Ubicacion ubicacion) {
+        Mesa mesa = new Mesa();
+        mesa.setCapacidad(capacidad);
+        mesa.setDisponibilidad(disponibilidad);
+        mesa.setUbicacion(ubicacion);
     }
 
-    public void actualizarEstado(boolean disponibilidad) {
+    public void actualizarEstado(int numeroMesa, boolean disponibilidad) {
+        Mesa mesa = new Mesa();
+        mesa.setDisponibilidad(disponibilidad);
 
     }
 
