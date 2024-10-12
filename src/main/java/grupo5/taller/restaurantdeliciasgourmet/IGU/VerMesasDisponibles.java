@@ -10,20 +10,15 @@ import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
-import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
-import grupo5.taller.restaurantdeliciasgourmet.Servicios.TarjetaCreditoService;
-import grupo5.taller.restaurantdeliciasgourmet.controladores.ReservaController;
-import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import grupo5.taller.restaurantdeliciasgourmet.logica.EstadoReserva;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Mesa;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
-import grupo5.taller.restaurantdeliciasgourmet.logica.TarjetaCredito;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -209,35 +204,8 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-    private void actualizarMesas(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        jList1.setModel(listModel);
 
-        if (jDateChooser.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.");
-            return;
-        }
-        LocalDate selectedDate = getSelectedDate();
-        LocalTime selectedTime = getSelectedTime();
-        try {
-            List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(selectedDate, selectedTime);
-            for (Mesa mesa : mesasDisponibles) {
-                listModel.addElement("Mesa " + mesa.getNumeroMesa() + "         Capacidad: " + mesa.getCapacidad() + "         Ubicacion: " + mesa.getUbicacion().name().toLowerCase());
-            }
-
-            if (mesasDisponibles.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No hay mesas disponibles para la fecha y hora seleccionadas.");
-            }
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al obtener mesas: " + ex.getMessage());
-        }
-    }
-*/
-    
-    private void actualizarMesas(java.awt.event.ActionEvent evt) {                                             
+    private void actualizarMesas(java.awt.event.ActionEvent evt) {
     DefaultListModel<String> listModel = new DefaultListModel<>();
     jList1.setModel(listModel);
 
@@ -247,18 +215,18 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
     }
 
     LocalDate selectedDate = getSelectedDate();
-    LocalTime selectedTime = getSelectedTime();
+    LocalDateTime startDateTime = getSelectedTime();
+    
+    LocalDateTime endDateTime = startDateTime.plusHours(2);
 
     try {
-        List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(selectedDate, selectedTime);
+        List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(startDateTime, endDateTime);
 
-        // Verificar si hay mesas disponibles
         if (mesasDisponibles.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No hay mesas disponibles para la fecha y hora seleccionadas.");
             return;
         }
 
-        // Añadir mesas disponibles a la lista
         for (Mesa mesa : mesasDisponibles) {
             String mesaInfo = String.format("Mesa %d - Capacidad: %d - Ubicación: %s",
                                              mesa.getNumeroMesa(),
@@ -275,23 +243,32 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
     private void btnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearReservaActionPerformed
         // TODO add your handling code here:
         LocalDate selectedDate = getSelectedDate();
-        LocalTime selectedTime = getSelectedTime();
+    LocalDateTime selectedTime = getSelectedTime();
 
-        int selectedIndex = jList1.getSelectedIndex();
-        if (selectedIndex == -1) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una mesa.");
-            return;
-        }
-        Mesa selectedMesa = mesaService.getMesasDisponibles(selectedDate, selectedTime).get(selectedIndex);
-        Reserva selectedReserva = new Reserva();
-        selectedReserva.setFechaReserva(selectedDate);
-        selectedReserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
-        selectedReserva.setHoraInicio(selectedTime);
-        selectedReserva.setMesa(selectedMesa);
-        IngresarTarjeta ingresarTarjetaWindow = RestaurantDeliciasGourmet.getContext().getBean(IngresarTarjeta.class);
-        ingresarTarjetaWindow.setReservationDetails(selectedMesa, selectedDate, selectedTime, selectedReserva);
-        ingresarTarjetaWindow.setVisible(true);
-        this.dispose();
+    int selectedIndex = jList1.getSelectedIndex();
+    if (selectedIndex == -1) {
+        JOptionPane.showMessageDialog(this, "Por favor, seleccione una mesa.");
+        return;
+    }
+
+    List<Mesa> availableMesas = mesaService.getMesasDisponibles(selectedTime, selectedTime.plusHours(2));
+    if (availableMesas.isEmpty() || selectedIndex >= availableMesas.size()) {
+        JOptionPane.showMessageDialog(this, "La mesa seleccionada no está disponible.");
+        return;
+    }
+
+    Mesa selectedMesa = availableMesas.get(selectedIndex);
+
+    Reserva selectedReserva = new Reserva();
+    selectedReserva.setFechaReserva(selectedDate);
+    selectedReserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
+    selectedReserva.setFechaHoraInicio(selectedTime);
+    selectedReserva.setMesa(selectedMesa);
+
+    IngresarTarjeta ingresarTarjetaWindow = RestaurantDeliciasGourmet.getContext().getBean(IngresarTarjeta.class);
+    ingresarTarjetaWindow.setReservationDetails(selectedMesa, selectedDate, selectedTime, selectedReserva);
+    ingresarTarjetaWindow.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_btnCrearReservaActionPerformed
 
     private void btnVerMisReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMisReservasActionPerformed
@@ -314,9 +291,11 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
         return null;
     }
 
-        private LocalTime getSelectedTime() {
+        private LocalDateTime getSelectedTime() {
     Date selectedTime = (Date) timeSpinner.getValue();
-    return selectedTime.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+    LocalTime localTime = selectedTime.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+    LocalDate selectedDate = getSelectedDate();
+    return LocalDateTime.of(selectedDate, localTime);
 }
 
 

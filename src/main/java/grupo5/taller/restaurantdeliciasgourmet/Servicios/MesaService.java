@@ -10,8 +10,7 @@ import grupo5.taller.restaurantdeliciasgourmet.logica.Ubicacion;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -122,8 +121,7 @@ public class MesaService {
         .orElseThrow(() -> new EntityNotFoundException("Mesa con el id no existe: " + mesaId));
     }
     
-    public List<Mesa> getMesasDisponibles(LocalDate fechaReserva, LocalTime horaInicio) {
-        LocalTime horaFin = horaInicio.plusHours(2);
-        return mesaRepository.findMesasDisponibles(fechaReserva, horaInicio, horaFin);
-    }
+    public List<Mesa> getMesasDisponibles(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) {
+    return mesaRepository.findMesasDisponibles(fechaHoraInicio, fechaHoraFin);
+}
 }

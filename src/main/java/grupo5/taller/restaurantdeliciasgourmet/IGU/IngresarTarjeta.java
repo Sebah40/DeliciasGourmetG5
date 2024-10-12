@@ -11,6 +11,7 @@ import grupo5.taller.restaurantdeliciasgourmet.logica.Mesa;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
 import grupo5.taller.restaurantdeliciasgourmet.logica.TarjetaCredito;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -32,7 +33,7 @@ public class IngresarTarjeta extends javax.swing.JFrame {
 
     private Mesa selectedMesa;
     private LocalDate selectedDate;
-    private LocalTime selectedTime;
+    private LocalDateTime selectedTime;
     private Cliente selectedCliente;
     private Reserva selectedReserva;
 
@@ -298,7 +299,7 @@ public class IngresarTarjeta extends javax.swing.JFrame {
     private javax.swing.JTextField jTextNumeroTarjeta;
     // End of variables declaration//GEN-END:variables
 
-    void setReservationDetails(Mesa selectedMesa, LocalDate selectedDate, LocalTime selectedTime, Reserva reserva) {
+    void setReservationDetails(Mesa selectedMesa, LocalDate selectedDate, LocalDateTime selectedTime, Reserva reserva) {
         this.selectedMesa = selectedMesa;
         this.selectedDate = selectedDate;
         this.selectedTime = selectedTime;

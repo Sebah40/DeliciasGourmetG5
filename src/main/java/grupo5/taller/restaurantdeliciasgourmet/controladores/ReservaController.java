@@ -8,6 +8,7 @@ import grupo5.taller.restaurantdeliciasgourmet.Servicios.ReservaService;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
 import grupo5.taller.restaurantdeliciasgourmet.logica.TarjetaCredito;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,9 @@ public class ReservaController {
     @Autowired
     private ReservaService reservaService;
 
-    public String crearReserva(int mesaId, int clienteId, TarjetaCredito tarjeta, LocalDate fechaReserva, LocalTime horaInicio) {
+    public String crearReserva(int mesaId, int clienteId, TarjetaCredito tarjeta, LocalDate fechaReserva, LocalDateTime fechaHoraInicio) {
         try {
-            reservaService.hacerReserva(mesaId, clienteId, tarjeta, fechaReserva, horaInicio);
+            reservaService.hacerReserva(mesaId, clienteId, tarjeta, fechaReserva, fechaHoraInicio);
             return "Reserva creada con éxito";
         } catch (Exception e) {
             return "Error: " + e.getMessage();

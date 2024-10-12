@@ -2,6 +2,7 @@ package grupo5.taller.restaurantdeliciasgourmet.logica;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +24,10 @@ public class Reserva {
     private LocalDate fechaReserva;
 
     @Column(nullable = false)
-    private LocalTime horaInicio;
+    private LocalDateTime fechaHoraInicio;
 
     @Column(nullable = false)
-    private LocalTime horaFin;
+    private LocalDateTime fechaHoraFin;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -64,11 +65,11 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva(int idReserva, LocalDate fechaReserva, LocalTime horaInicio, LocalTime horaFin, EstadoReserva estadoReserva, TarjetaCredito tarjeta, Mesa mesa, Cliente cliente, ArrayList<Recepcionista> recepcionistas, ArrayList<String> intolerancias, ArrayList<Administrador> administradores, int multa) {
+    public Reserva(int idReserva, LocalDate fechaReserva, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, EstadoReserva estadoReserva, TarjetaCredito tarjeta, Mesa mesa, Cliente cliente, ArrayList<Recepcionista> recepcionistas, ArrayList<String> intolerancias, ArrayList<Administrador> administradores, int multa) {
         this.idReserva = idReserva;
         this.fechaReserva = fechaReserva;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
+        this.fechaHoraInicio = fechaHoraInicio;
+        this.fechaHoraFin = fechaHoraFin;
         this.estadoReserva = estadoReserva;
         this.tarjeta = tarjeta;
         this.mesa = mesa;
@@ -79,10 +80,10 @@ public class Reserva {
         this.multa = multa;
     }
 
-    public Reserva(LocalDate fechaReserva, LocalTime horaInicio, LocalTime horaFin, EstadoReserva estadoReserva, TarjetaCredito tarjeta, Mesa mesa, Cliente cliente, ArrayList<Recepcionista> recepcionistas, ArrayList<String> intolerancias, ArrayList<Administrador> administradores, int multa) {
+    public Reserva(LocalDate fechaReserva, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, EstadoReserva estadoReserva, TarjetaCredito tarjeta, Mesa mesa, Cliente cliente, ArrayList<Recepcionista> recepcionistas, ArrayList<String> intolerancias, ArrayList<Administrador> administradores, int multa) {
         this.fechaReserva = fechaReserva;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
+        this.fechaHoraInicio = fechaHoraInicio;
+        this.fechaHoraFin = fechaHoraFin;
         this.estadoReserva = estadoReserva;
         this.tarjeta = tarjeta;
         this.mesa = mesa;
@@ -111,20 +112,20 @@ public class Reserva {
         this.fechaReserva = fechaReserva;
     }
 
-    public LocalTime getHoraInicio() {
-        return horaInicio;
+    public LocalDateTime getFechaHoraInicio() {
+        return fechaHoraInicio;
     }
 
-    public void setHoraInicio(LocalTime horaInicio) {
-        this.horaInicio = horaInicio;
+    public void setFechaHoraInicio(LocalDateTime fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
     }
 
-    public LocalTime getHoraFin() {
-        return horaFin;
+    public LocalDateTime getFechaHoraFin() {
+        return fechaHoraFin;
     }
 
-    public void setHoraFin(LocalTime horaFin) {
-        this.horaFin = horaFin;
+    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
     }
 
     public EstadoReserva getEstadoReserva() {
@@ -183,6 +184,6 @@ public class Reserva {
 
     @Override
     public String toString() {
-        return "Reserva{" + "idReserva=" + idReserva + ", fechaReserva=" + fechaReserva + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", estadoReserva=" + estadoReserva + ", tarjeta=" + tarjeta + ", mesa=" + mesa + ", cliente=" + cliente + ", recepcionistas=" + recepcionistas + ", intolerancias=" + intolerancias + ", administradores=" + /**administradores**/  ", multa=" + multa + '}';
+        return "Reserva{" + "idReserva=" + idReserva + ", fechaReserva=" + fechaReserva + ", horaInicio=" + fechaHoraInicio + ", horaFin=" + fechaHoraFin + ", estadoReserva=" + estadoReserva + ", tarjeta=" + tarjeta + ", mesa=" + mesa + ", cliente=" + cliente + ", recepcionistas=" + recepcionistas + ", intolerancias=" + intolerancias + ", administradores=" + /**administradores**/  ", multa=" + multa + '}';
     }
 }

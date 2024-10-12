@@ -13,7 +13,7 @@ import grupo5.taller.restaurantdeliciasgourmet.logica.Mesa;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
 import grupo5.taller.restaurantdeliciasgourmet.logica.TarjetaCredito;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,8 +39,8 @@ public class ReservaService {
 
 
 
-    public void hacerReserva(int mesaId, int clienteId, TarjetaCredito tarjeta, LocalDate fechaReserva, LocalTime horaInicio) throws Exception {
-        LocalTime horaFin = getHoraFin(horaInicio);
+    public void hacerReserva(int mesaId, int clienteId, TarjetaCredito tarjeta, LocalDate fechaReserva, LocalDateTime fechaHoraInicio) throws Exception {
+        LocalDateTime fechaHoraFin = getFechaHoraFin(fechaHoraInicio);
 
         List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles();
         Mesa mesa = mesaRepository.findById(mesaId).orElseThrow(() -> new Exception("Mesa no encontrada"));
@@ -58,8 +58,8 @@ public class ReservaService {
         reserva.setMesa(mesa);
         reserva.setCliente(cliente);
         reserva.setFechaReserva(fechaReserva);
-        reserva.setHoraInicio(horaInicio);
-        reserva.setHoraFin(horaFin);
+        reserva.setFechaHoraInicio(fechaHoraInicio);
+        reserva.setFechaHoraFin(fechaHoraFin);
         reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
         reserva.setTarjeta(tarjeta);
 
@@ -67,27 +67,30 @@ public class ReservaService {
     }
 
     public void hacerReserva(Reserva reserva) throws Exception {
-            LocalTime horaInicio = reserva.getHoraInicio();
-            LocalTime horaFin = getHoraFin(horaInicio);
-            LocalDate fechaReserva = reserva.getFechaReserva();
-            Mesa mesa = reserva.getMesa();
-            Cliente cliente = reserva.getCliente();
-        try {
-            List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(fechaReserva, horaInicio);
-            if (!mesasDisponibles.contains(mesa)) {
-                System.out.println("MESAS DISPONIBLES: " + mesasDisponibles.toString());
-                System.out.println("MESAAA: " +mesa);
-                System.out.println("DEBUGGING FECHA:"+fechaReserva + "HORAAA : " + horaInicio);
-                throw new Exception("La mesa seleccionada no está disponible en el horario elegido.");
-            }
-            reserva.setHoraFin(horaFin);
-            reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
-            reservaRepository.save(reserva);
-        } catch (Exception e) {
-            System.out.println("Error al hacer la reserva: " + e.getMessage());
+    LocalDateTime fechaHoraInicio = reserva.getFechaHoraInicio();
+    LocalDateTime horaFin = getFechaHoraFin(fechaHoraInicio);
+    Mesa mesa = reserva.getMesa();
+
+    try {
+        List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(fechaHoraInicio, horaFin);
+        
+        System.out.println("MESAS DISPONIBLES: " + mesasDisponibles.toString());
+        System.out.println("MESAAA: " + mesa);
+        System.out.println("DEBUGGING FECHA: " + reserva.getFechaReserva() + " HORA: " + fechaHoraInicio);
+
+        if (!mesasDisponibles.contains(mesa)) {
+            throw new Exception("La mesa seleccionada no está disponible en el horario elegido.");
         }
+
+        reserva.setFechaHoraFin(horaFin);
+        reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
+        reservaRepository.save(reserva);
+    } catch (Exception e) {
+        System.out.println("Error al hacer la reserva: " + e.getMessage());
+        throw e;
     }
-    private LocalTime getHoraFin(LocalTime horaInicio){
-        return horaInicio.plusHours(2);                                 //La reserva dura 2 horas
+}
+    private LocalDateTime getFechaHoraFin(LocalDateTime fechaHoraInicio){
+        return fechaHoraInicio.plusHours(2);                             //La reserva dura 2 horas
     }
 }

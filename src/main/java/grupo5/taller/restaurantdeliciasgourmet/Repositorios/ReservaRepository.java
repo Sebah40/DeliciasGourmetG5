@@ -6,8 +6,7 @@ package grupo5.taller.restaurantdeliciasgourmet.Repositorios;
 
 import grupo5.taller.restaurantdeliciasgourmet.logica.Mesa;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,11 +19,10 @@ import org.springframework.data.repository.query.Param;
 public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     
     @Query("SELECT m FROM Mesa m WHERE m.id NOT IN (" +
-       "SELECT r.mesa.id FROM Reserva r WHERE r.fechaReserva = :fechaReserva " +
-       "AND ((r.horaInicio <= :horaFin AND r.horaFin >= :horaInicio)))")
-List<Mesa> findMesasDisponibles(
-    @Param("fechaReserva") LocalDate fechaReserva,
-    @Param("horaInicio") LocalTime horaInicio,
-    @Param("horaFin") LocalTime horaFin
-);
+           "SELECT r.mesa.id FROM Reserva r WHERE " +
+           "(r.fechaHoraInicio < :fechaHoraFin AND r.fechaHoraFin > :fechaHoraInicio))")
+    List<Mesa> findMesasDisponibles(
+        @Param("fechaHoraInicio") LocalDateTime fechaHoraInicio,
+        @Param("fechaHoraFin") LocalDateTime fechaHoraFin
+    );
 }
