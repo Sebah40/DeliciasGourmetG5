@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ReservaService;
@@ -22,10 +19,7 @@ import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- *
- * @author sebas
- */
+
 @Component
 public class IngresarTarjeta extends javax.swing.JFrame {
 
@@ -243,11 +237,27 @@ public class IngresarTarjeta extends javax.swing.JFrame {
         String cvv = jTextCVV.getText();
         Date selectedDate = jDateExpiracion.getDate();
         LocalDate fechaExpiracion = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        TarjetaCredito tarjetaCredito = tarjetaCreditoController.createAndSaveTarjetaCredito(nombreTitular, numeroTarjeta, fechaExpiracion, cvv);
-        
+
+        // Buscar si la tarjeta ya existe en la base de datos
+        TarjetaCredito tarjetaCredito = tarjetaCreditoController.findTarjetaByNumero(numeroTarjeta);
+
+        if (tarjetaCredito == null) {
+            // Si no existe, crear una nueva tarjeta
+            tarjetaCredito = tarjetaCreditoController.createAndSaveTarjetaCredito(nombreTitular, numeroTarjeta, fechaExpiracion, cvv);
+        } else {
+            // Validar que la información ingresada coincide con la tarjeta existente
+            if (!tarjetaCredito.getNombreTitular().equals(nombreTitular) || 
+                !tarjetaCredito.getFechaExpiracion().equals(fechaExpiracion) || 
+                !tarjetaCredito.getCodigoVerificacion().equals(cvv)) {
+                throw new IllegalArgumentException("Los datos ingresados no coinciden con la tarjeta registrada.");
+            }
+        }
+
+        // Asociar la tarjeta a la reserva y hacer la reserva
         selectedReserva.setCliente(selectedCliente);
         selectedReserva.setTarjeta(tarjetaCredito);
         reservaController.hacerReserva(selectedReserva);
+        
         JOptionPane.showMessageDialog(this, "Reserva realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     } catch (Exception ex) {
         System.out.println(selectedReserva.getFechaReserva());
@@ -261,12 +271,9 @@ public class IngresarTarjeta extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextCVVActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        // TODO add your handling code here:
-
-        this.dispose();
-
         VerMesasDisponibles mesasWindow = new VerMesasDisponibles();
         mesasWindow.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     /**

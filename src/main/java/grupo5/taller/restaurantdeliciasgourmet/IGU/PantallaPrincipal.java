@@ -75,9 +75,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHacerReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHacerReservaActionPerformed
-        // TODO add your handling code here:
-        VerMesasDisponibles realizarReserva = RestaurantDeliciasGourmet.getContext().getBean(VerMesasDisponibles.class);
+       VerMesasDisponibles realizarReserva = RestaurantDeliciasGourmet.getContext().getBean(VerMesasDisponibles.class);
         realizarReserva.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnHacerReservaActionPerformed
 
     /**

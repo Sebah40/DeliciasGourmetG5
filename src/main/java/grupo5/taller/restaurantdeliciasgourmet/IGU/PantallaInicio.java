@@ -13,13 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class PantallaInicio extends javax.swing.JFrame {
 
+    private final ClienteService clienteService;
+    private final EmpleadoService empleadoService;
+    private final RolService rolService;
+    
     @Autowired
-    ClienteService clienteService;
-    @Autowired
-    EmpleadoService empleadoService;
-    @Autowired
-    RolService rolService;
-
     public PantallaInicio(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
         this.clienteService = clienteService;
         this.empleadoService=empleadoService;
@@ -170,7 +168,7 @@ public class PantallaInicio extends javax.swing.JFrame {
 
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
-        LoginCliente loginClienteWindow = new LoginCliente(clienteService);
+        LoginCliente loginClienteWindow = new LoginCliente(clienteService,empleadoService, rolService);
         loginClienteWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnClientesActionPerformed

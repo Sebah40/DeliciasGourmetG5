@@ -7,7 +7,9 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 import com.toedter.calendar.JDateChooser;
 import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.TarjetaCreditoService;
 import grupo5.taller.restaurantdeliciasgourmet.controladores.ReservaController;
@@ -22,6 +24,8 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,10 +37,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class VerMesasDisponibles extends javax.swing.JFrame {
     @Autowired
-    ClienteService clienteService;
+    private ClienteService clienteService;
 
     @Autowired
-    MesaService mesaService;
+    private EmpleadoService empleadoService;
+
+    @Autowired
+    private RolService rolService;
+
+
+    @Autowired
+    private MesaService mesaService;
     
 
     public VerMesasDisponibles() {
@@ -111,7 +122,7 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
         jLabel7.setText("Hora");
 
         btnVerMisReservas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnVerMisReservas.setText("Ver mis reservas");
+        btnVerMisReservas.setText("Volver");
         btnVerMisReservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVerMisReservasActionPerformed(evt);
@@ -171,7 +182,7 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(jLabel2)
                     .addComponent(timeSpinner))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,7 +209,7 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/*
     private void actualizarMesas(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
         DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -224,7 +235,43 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al obtener mesas: " + ex.getMessage());
         }
     }
+*/
+    
+    private void actualizarMesas(java.awt.event.ActionEvent evt) {                                             
+    DefaultListModel<String> listModel = new DefaultListModel<>();
+    jList1.setModel(listModel);
 
+    if (jDateChooser.getDate() == null) {
+        JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.");
+        return;
+    }
+
+    LocalDate selectedDate = getSelectedDate();
+    LocalTime selectedTime = getSelectedTime();
+
+    try {
+        List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(selectedDate, selectedTime);
+
+        // Verificar si hay mesas disponibles
+        if (mesasDisponibles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay mesas disponibles para la fecha y hora seleccionadas.");
+            return;
+        }
+
+        // Añadir mesas disponibles a la lista
+        for (Mesa mesa : mesasDisponibles) {
+            String mesaInfo = String.format("Mesa %d - Capacidad: %d - Ubicación: %s",
+                                             mesa.getNumeroMesa(),
+                                             mesa.getCapacidad(),
+                                             mesa.getUbicacion().name().toLowerCase());
+            listModel.addElement(mesaInfo);
+        }
+    } catch (Exception ex) {
+        Logger.getLogger(VerMesasDisponibles.class.getName()).log(Level.SEVERE, null, ex);
+        JOptionPane.showMessageDialog(this, "Error al obtener mesas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    
     private void btnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearReservaActionPerformed
         // TODO add your handling code here:
         LocalDate selectedDate = getSelectedDate();
@@ -244,12 +291,12 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
         IngresarTarjeta ingresarTarjetaWindow = RestaurantDeliciasGourmet.getContext().getBean(IngresarTarjeta.class);
         ingresarTarjetaWindow.setReservationDetails(selectedMesa, selectedDate, selectedTime, selectedReserva);
         ingresarTarjetaWindow.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCrearReservaActionPerformed
 
     private void btnVerMisReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMisReservasActionPerformed
-        // TODO add your handling code here:
-        new RegistrarCliente(clienteService).setVisible(true);
-        this.dispose();
+       new LoginCliente(clienteService,empleadoService, rolService).setVisible(true);
+        this.setVisible(false); 
     }//GEN-LAST:event_btnVerMisReservasActionPerformed
     private LocalDate getSelectedDate() {
         try {

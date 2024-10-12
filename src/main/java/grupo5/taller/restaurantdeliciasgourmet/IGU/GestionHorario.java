@@ -25,15 +25,16 @@ public class GestionHorario extends javax.swing.JFrame {
     private final EmpleadoService empleadoService;
     private final RolService rolService;
     private final ClienteService clienteService;
- 
+
     @Autowired
-    public GestionHorario(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
+    public GestionHorario(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService) {
         this.clienteService = clienteService;
-        this.empleadoService=empleadoService;
-        this.rolService=rolService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
         initComponents();
 
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -162,20 +163,20 @@ public class GestionHorario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
+
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-       this.dispose();
+        this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        PantallaAdministrador administrador = new PantallaAdministrador(clienteService,empleadoService, rolService);
+        PantallaAdministrador administrador = new PantallaAdministrador(clienteService, empleadoService, rolService);
         administrador.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void jButtonEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpleadosActionPerformed
-        
+
     }//GEN-LAST:event_jButtonEmpleadosActionPerformed
 
     /**
@@ -193,6 +194,5 @@ public class GestionHorario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
-
 
 }
