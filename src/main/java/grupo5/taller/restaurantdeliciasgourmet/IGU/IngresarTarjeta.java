@@ -1,6 +1,7 @@
 
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
+import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ReservaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.controladores.ReservaController;
@@ -271,7 +272,7 @@ public class IngresarTarjeta extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextCVVActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        VerMesasDisponibles mesasWindow = new VerMesasDisponibles();
+        VerMesasDisponibles mesasWindow = RestaurantDeliciasGourmet.getContext().getBean(VerMesasDisponibles.class);
         mesasWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
