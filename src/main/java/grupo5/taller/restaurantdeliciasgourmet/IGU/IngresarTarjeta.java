@@ -1,18 +1,15 @@
-
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ReservaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
-import grupo5.taller.restaurantdeliciasgourmet.controladores.ReservaController;
-import grupo5.taller.restaurantdeliciasgourmet.controladores.TarjetaCreditoController;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.TarjetaCreditoService;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Mesa;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
 import grupo5.taller.restaurantdeliciasgourmet.logica.TarjetaCredito;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.logging.Level;
@@ -21,15 +18,14 @@ import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class IngresarTarjeta extends javax.swing.JFrame {
 
     @Autowired
-    private ReservaController reservaController;
-    
+    private ReservaService reservaService;
+
     @Autowired
-    private TarjetaCreditoController tarjetaCreditoController;
+    private TarjetaCreditoService tarjetaCreditoService;
 
     private Mesa selectedMesa;
     private LocalDate selectedDate;
@@ -234,38 +230,52 @@ public class IngresarTarjeta extends javax.swing.JFrame {
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
         // TODO add your handling code here:
         try {
-        String nombreTitular = jTextNombreTitular.getText();
-        String numeroTarjeta = jTextNumeroTarjeta.getText();
-        String cvv = jTextCVV.getText();
-        Date selectedDate = jDateExpiracion.getDate();
-        LocalDate fechaExpiracion = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            String nombreTitular = jTextNombreTitular.getText();
+            String numeroTarjeta = jTextNumeroTarjeta.getText();
+            String cvv = jTextCVV.getText();
+            Date selectedDate = jDateExpiracion.getDate();
+            LocalDate fechaExpiracion = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        // Buscar si la tarjeta ya existe en la base de datos
-        TarjetaCredito tarjetaCredito = tarjetaCreditoController.findTarjetaByNumero(numeroTarjeta);
+            // Buscar si la tarjeta ya existe en la base de datos
+            TarjetaCredito tarjetaCredito = tarjetaCreditoService.findByNumeroTarjeta(numeroTarjeta);
 
-        if (tarjetaCredito == null) {
-            // Si no existe, crear una nueva tarjeta
-            tarjetaCredito = tarjetaCreditoController.createAndSaveTarjetaCredito(nombreTitular, numeroTarjeta, fechaExpiracion, cvv);
-        } else {
-            // Validar que la información ingresada coincide con la tarjeta existente
-            if (!tarjetaCredito.getNombreTitular().equals(nombreTitular) || 
-                !tarjetaCredito.getFechaExpiracion().equals(fechaExpiracion) || 
-                !tarjetaCredito.getCodigoVerificacion().equals(cvv)) {
-                throw new IllegalArgumentException("Los datos ingresados no coinciden con la tarjeta registrada.");
+            if (tarjetaCredito == null) {
+                // Si no existe, crear una nueva tarjeta
+                if (nombreTitular.isEmpty() || numeroTarjeta.isEmpty() || fechaExpiracion == null || cvv.isEmpty()) {
+                    throw new IllegalArgumentException("Todos los campos de la tarjeta deben ser llenados.");
+                }
+                if (cvv.length() < 3 || cvv.length() > 4) {
+                    throw new IllegalArgumentException("El CVV debe tener entre 3 y 4 dígitos.");
+                }
+
+                tarjetaCredito = new TarjetaCredito();
+                tarjetaCredito.setNombreTitular(nombreTitular);
+                tarjetaCredito.setNumeroTarjeta(numeroTarjeta);
+                tarjetaCredito.setFechaExpiracion(fechaExpiracion);
+                tarjetaCredito.setCodigoVerificacion(cvv);
+                tarjetaCredito.setEmisor("Visa");
+
+                tarjetaCredito = tarjetaCreditoService.saveTarjetaCredito(tarjetaCredito);
+            } else {
+                // Validar que la información ingresada coincide con la tarjeta existente
+                if (!tarjetaCredito.getNombreTitular().equals(nombreTitular)
+                        || !tarjetaCredito.getFechaExpiracion().equals(fechaExpiracion)
+                        || !tarjetaCredito.getCodigoVerificacion().equals(cvv)) {
+                    throw new IllegalArgumentException("Los datos ingresados no coinciden con la tarjeta registrada.");
+                }
             }
-        }
 
-        // Asociar la tarjeta a la reserva y hacer la reserva
-        selectedReserva.setCliente(selectedCliente);
-        selectedReserva.setTarjeta(tarjetaCredito);
-        reservaController.hacerReserva(selectedReserva);
-        
-        JOptionPane.showMessageDialog(this, "Reserva realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-    } catch (Exception ex) {
-        System.out.println(selectedReserva.getFechaReserva());
-        Logger.getLogger(IngresarTarjeta.class.getName()).log(Level.SEVERE, null, ex);
-        JOptionPane.showMessageDialog(this, "Error al hacer la reserva: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
+            // Asociar la tarjeta a la reserva y hacer la reserva
+            selectedReserva.setCliente(selectedCliente);
+            selectedReserva.setTarjeta(tarjetaCredito);
+            reservaService.hacerReserva(selectedReserva);
+
+            JOptionPane.showMessageDialog(this, "Reserva realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            System.out.println(selectedReserva.getFechaReserva());
+            Logger.getLogger(IngresarTarjeta.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error al hacer la reserva: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnReservarActionPerformed
 
     private void jTextCVVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextCVVActionPerformed
