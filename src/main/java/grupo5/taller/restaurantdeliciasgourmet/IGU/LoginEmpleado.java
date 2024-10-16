@@ -219,13 +219,14 @@ public class LoginEmpleado extends javax.swing.JFrame {
                     // Abre la ventana del administrador
                     PantallaAdministrador adminWindow = new PantallaAdministrador(clienteService,empleadoService, rolService);
                     adminWindow.setVisible(true);
-                } else {
-                    /*
+                } else if ("Recepcionista".equalsIgnoreCase(nombreRol)) {
+                    // Guarda el empleado en la sesión
                     SessionManager.getInstance().setCurrentEmpleado(empleado);
-                    JOptionPane.showMessageDialog(this, "Bienvenido, Empleado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    PantallaEmpleado pantallaEmpleadoWindow = new PantallaEmpleado();
-                    pantallaEmpleadoWindow.setVisible(true);
-                     */
+                    JOptionPane.showMessageDialog(this, "Bienvenido, Recepcionista.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Abre la ventana del administrador
+                    Recepcionista recepWindow = new Recepcionista(clienteService,empleadoService, rolService);
+                    recepWindow.setVisible(true);
                 }
                 this.dispose();
             } else {
