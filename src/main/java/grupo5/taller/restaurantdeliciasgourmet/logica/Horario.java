@@ -13,9 +13,6 @@ public class Horario {
     private LocalDate fecha;
     private LocalDate horarioApertura;
     private LocalDate horarioCierre;
-
-
-
     private String evento;
 
     private ArrayList<Administrador> administradores;
@@ -95,23 +92,47 @@ public class Horario {
         return "Horario{" + "fecha=" + fecha + ", horarioApertura=" + horarioApertura + ", horarioCierre=" + horarioCierre + ", administradores=" + administradores + '}';
     }
     
-    //si un administrador desea gestionar o estar asignado a un horario
+/**
+ * Asigna un administrador a la gestión del horario si aún no está asignado.
+ *
+ * @param administrador El administrador que se desea agregar.
+ */
     public void agregarAdministrador(Administrador administrador) {
         if (!administradores.contains(administrador)) {
             administradores.add(administrador);
         }
     }
-    //verifica si un horario tiene un evento
+    
+/**
+ * Verifica si hay un evento asociado al horario actual.
+ *
+ * @return true si hay un evento definido (es decir, si el campo evento no es null ni está vacío);
+ *         false en caso contrario.
+ */
     public boolean tieneEvento() {
         return evento != null && !evento.isEmpty();
     }
-    //ajustar horario por algun evento en particular
+    
+/**
+ * Ajusta el horario de apertura y cierre para un evento especial.
+ *
+ * @param evento El nombre del evento especial.
+ * @param aperturaEspecial La nueva fecha de apertura para el evento.
+ * @param cierreEspecial La nueva fecha de cierre para el evento.
+ */
     public void ajustarHorarioParaEvento(String evento, LocalDate aperturaEspecial, LocalDate cierreEspecial) {
         this.evento = evento;
         this.horarioApertura = aperturaEspecial;
         this.horarioCierre = cierreEspecial;
     }
-    //si ese horario en ese dia esta disponible
+    
+/**
+ * Verifica si la mesa está disponible para una fecha específica.
+ *
+ * @param fecha La fecha en la que se desea comprobar la disponibilidad.
+ * @return true si la mesa está disponible para la fecha dada; 
+ *         false en caso contrario.
+ */
     public boolean estaDisponible(LocalDate fecha) {
         return this.fecha.equals(fecha);
     }

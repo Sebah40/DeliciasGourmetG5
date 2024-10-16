@@ -1,2 +1,6 @@
+<<<<<<< OURS
+/target/
+=======
 # Maven target directory
 /target/
+>>>>>>> THEIRS

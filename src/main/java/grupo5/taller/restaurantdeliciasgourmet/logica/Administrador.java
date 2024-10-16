@@ -136,37 +136,42 @@ public class Administrador extends Empleado {
 
     }
 
-    public void definirHorarioAperturaCierre(LocalDate horaApertura, LocalDate horaCierre) {
-
-    }
-
     public void bloquearfranjaHoraria() {
 
     }
 
     public void ajustarHorarioMesa(int numeroMesa, LocalDate horaInicio, LocalDate horaFin, boolean disponible) {
-
+        
     }
-
-    public void quitarReservaLista(Reserva reserva) {
-    Iterator<Reserva> iterator = reservas.iterator();
-    boolean encontrada = false;
     
-    while (iterator.hasNext()) {
-        Reserva r = iterator.next();
-        if (reserva.equals(r)) {
-            iterator.remove(); 
-            encontrada = true;
-            break; 
+/**
+ * Elimina una reserva de la lista de reservas, si está presente.
+ *
+ * @param reserva La reserva que se desea eliminar de la lista.
+ * 
+ * Este método busca en la lista de reservas la primera coincidencia con la reserva
+ * especificada y, si la encuentra, la elimina. Utiliza un iterador para garantizar
+ * una eliminación segura mientras se recorre la lista. Una vez eliminada la reserva,
+ * el bucle se detiene.
+ */
+    public void quitarReservaLista(Reserva reserva) {
+        Iterator<Reserva> iterator = reservas.iterator();
+
+        while (iterator.hasNext()) {
+            Reserva r = iterator.next();
+            if (reserva.equals(r)) {
+                iterator.remove(); 
+                break; 
+            }
         }
     }
-    
-    if (!encontrada) {
-        System.out.println("La reserva no se encontró en la lista.");
-    }
-    
-    }
 
+    
+/**
+ * Agrega una reserva a la lista de reservas si no está ya presente.
+ *
+ * @param reserva La reserva que se desea agregar a la lista.
+ */
     public void agregarReservaLista(Reserva reserva) {
         if (reserva != null && !reservas.contains(reserva)) {
             reservas.add(reserva);
