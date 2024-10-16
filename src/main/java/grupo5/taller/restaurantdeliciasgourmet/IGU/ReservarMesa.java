@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
  * @author sebas
  */
 @Component
-public class VerMesasDisponibles extends javax.swing.JFrame {
+public class ReservarMesa extends javax.swing.JFrame {
     @Autowired
     private ClienteService clienteService;
 
@@ -45,7 +45,7 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
     private MesaService mesaService;
     
 
-    public VerMesasDisponibles() {
+    public ReservarMesa() {
         initComponents();
         jDateChooser.setDate(java.sql.Date.valueOf(LocalDate.now()));
         jDateChooser.getDateEditor().addPropertyChangeListener("date", e -> {
@@ -92,7 +92,7 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
         jTitulo.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jTitulo.setForeground(new java.awt.Color(0, 0, 0));
         jTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jTitulo.setText("Ver mesas disponibles");
+        jTitulo.setText("RESERVARCION MESA");
 
         btnCrearReserva.setBackground(new java.awt.Color(51, 204, 0));
         btnCrearReserva.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -235,7 +235,7 @@ public class VerMesasDisponibles extends javax.swing.JFrame {
             listModel.addElement(mesaInfo);
         }
     } catch (Exception ex) {
-        Logger.getLogger(VerMesasDisponibles.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(ReservarMesa.class.getName()).log(Level.SEVERE, null, ex);
         JOptionPane.showMessageDialog(this, "Error al obtener mesas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }

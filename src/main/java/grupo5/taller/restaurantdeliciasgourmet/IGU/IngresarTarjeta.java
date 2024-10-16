@@ -283,7 +283,7 @@ public class IngresarTarjeta extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextCVVActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        VerMesasDisponibles mesasWindow = RestaurantDeliciasGourmet.getContext().getBean(VerMesasDisponibles.class);
+        ReservarMesa mesasWindow = RestaurantDeliciasGourmet.getContext().getBean(ReservarMesa.class);
         mesasWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
