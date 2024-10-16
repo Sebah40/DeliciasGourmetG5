@@ -1,10 +1,16 @@
 package grupo5.taller.restaurantdeliciasgourmet;
 
 import grupo5.taller.restaurantdeliciasgourmet.IGU.PantallaInicio;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
+import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
+import grupo5.taller.restaurantdeliciasgourmet.logica.Empleado;
 
 import grupo5.taller.restaurantdeliciasgourmet.logica.Mesa;
+import grupo5.taller.restaurantdeliciasgourmet.logica.Rol;
 
 import grupo5.taller.restaurantdeliciasgourmet.logica.Ubicacion;
 
@@ -30,7 +36,18 @@ public class RestaurantDeliciasGourmet {
             mesaService.crearMesa(new Mesa(2, Ubicacion.PATIO));
             mesaService.crearMesa(new Mesa(1, Ubicacion.PATIO));
         }
-
+        
+        RolService rolService = context.getBean(RolService.class);
+        if (rolService.getAllRol().isEmpty()) {
+            rolService.saveRol(new Rol("Mesero"));
+            rolService.saveRol(new Rol("Cocinero"));
+            rolService.saveRol(new Rol("Maitre"));
+        }
+        
+        EmpleadoService empleadoService = context.getBean(EmpleadoService.class); // TEMPORAL HASTA QUE ADMINISTRADOR EXISTA
+        if (empleadoService.getAllEmpleado().isEmpty()) {
+            empleadoService.saveEmpleado(new Empleado(rolService.findByName("Mesero"),"empleado@correo.com","contraseña"));
+        }
     }
 
     public static ApplicationContext getContext() {
