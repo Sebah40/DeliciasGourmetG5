@@ -35,6 +35,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         btnHacerReserva = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        btnVerReservas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,6 +50,15 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Editar perfil");
+
+        btnVerReservas.setText("Ver reservas");
+        btnVerReservas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerReservasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -56,19 +67,26 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(284, 284, 284)
-                .addComponent(btnHacerReserva)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnHacerReserva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnVerReservas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(299, 299, 299))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(161, 161, 161)
+                .addGap(160, 160, 160)
                 .addComponent(btnHacerReserva)
-                .addContainerGap(261, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(btnVerReservas)
+                .addContainerGap(180, Short.MAX_VALUE))
         );
 
         pack();
@@ -80,6 +98,13 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnHacerReservaActionPerformed
 
+    private void btnVerReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerReservasActionPerformed
+        // TODO add your handling code here:
+        VerReservasCliente verReservasCliente = RestaurantDeliciasGourmet.getContext().getBean(VerReservasCliente.class);
+        verReservasCliente.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVerReservasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -87,6 +112,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHacerReserva;
+    private javax.swing.JButton btnVerReservas;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

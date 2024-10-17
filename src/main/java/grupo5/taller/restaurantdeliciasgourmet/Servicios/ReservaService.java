@@ -93,4 +93,15 @@ public class ReservaService {
     private LocalDateTime getFechaHoraFin(LocalDateTime fechaHoraInicio){
         return fechaHoraInicio.plusHours(2);                             //La reserva dura 2 horas
     }
+    
+    public List<Reserva> getReservasFromCliente(int clienteId) {
+        return reservaRepository.findByCliente_ClienteId(clienteId);
+    }
+    
+    public void cancelarReserva(int reservaId) throws Exception {
+    Reserva reserva = reservaRepository.findById(reservaId)
+            .orElseThrow(() -> new Exception("Reserva no encontrada"));
+    reserva.setEstadoReserva(EstadoReserva.CANCELADA);
+    reservaRepository.save(reserva);
+}
 }

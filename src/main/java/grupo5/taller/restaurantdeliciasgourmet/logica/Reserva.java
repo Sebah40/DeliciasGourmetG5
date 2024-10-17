@@ -182,8 +182,9 @@ public class Reserva {
        // this.administradores = administradores;
     }
 
+    
     @Override
-    public String toString() {
-        return "Reserva{" + "idReserva=" + idReserva + ", fechaReserva=" + fechaReserva + ", horaInicio=" + fechaHoraInicio + ", horaFin=" + fechaHoraFin + ", estadoReserva=" + estadoReserva + ", tarjeta=" + tarjeta + ", mesa=" + mesa + ", cliente=" + cliente + ", recepcionistas=" + recepcionistas + ", intolerancias=" + intolerancias + ", administradores=" + /**administradores**/  ", multa=" + multa + '}';
-    }
+public String toString() {
+    return "Reserva: " + this.fechaHoraInicio + " en mesa " + this.mesa.getNumeroMesa();
+}
 }

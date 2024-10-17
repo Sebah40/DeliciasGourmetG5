@@ -18,11 +18,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     
-    @Query("SELECT m FROM Mesa m WHERE m.id NOT IN (" +
-           "SELECT r.mesa.id FROM Reserva r WHERE " +
-           "(r.fechaHoraInicio < :fechaHoraFin AND r.fechaHoraFin > :fechaHoraInicio))")
-    List<Mesa> findMesasDisponibles(
-        @Param("fechaHoraInicio") LocalDateTime fechaHoraInicio,
-        @Param("fechaHoraFin") LocalDateTime fechaHoraFin
-    );
+    
+    
+        List<Reserva> findByCliente_ClienteId(Integer clienteId);
 }
