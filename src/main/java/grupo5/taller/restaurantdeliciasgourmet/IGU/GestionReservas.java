@@ -53,7 +53,6 @@ public class GestionReservas extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 600));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Gestion de Reservas");
 
@@ -186,7 +185,9 @@ public class GestionReservas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearReservaActionPerformed
-        
+        ReservarMesa mWindow = new ReservarMesa();
+        mWindow.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCrearReservaActionPerformed
 
     /**

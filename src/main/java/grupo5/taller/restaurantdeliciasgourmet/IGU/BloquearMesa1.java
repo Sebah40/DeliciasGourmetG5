@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
  * @author sebas
  */
 @Component
-public class ReservarMesa extends javax.swing.JFrame {
+public class BloquearMesa1 extends javax.swing.JFrame {
     @Autowired
     private ClienteService clienteService;
 
@@ -45,7 +45,7 @@ public class ReservarMesa extends javax.swing.JFrame {
     private MesaService mesaService;
     
 
-    public ReservarMesa() {
+    public BloquearMesa1() {
         initComponents();
         jDateChooser.setDate(java.sql.Date.valueOf(LocalDate.now()));
         jDateChooser.getDateEditor().addPropertyChangeListener("date", e -> {
@@ -69,7 +69,7 @@ public class ReservarMesa extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jTitulo = new javax.swing.JLabel();
-        btnCrearReserva = new javax.swing.JButton();
+        btnBloquear = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         btnVerMisReservas = new javax.swing.JButton();
@@ -91,17 +91,17 @@ public class ReservarMesa extends javax.swing.JFrame {
 
         jTitulo.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jTitulo.setText("RESERVARCION MESA");
+        jTitulo.setText("MESAS");
 
-        btnCrearReserva.setBackground(new java.awt.Color(51, 204, 0));
-        btnCrearReserva.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnCrearReserva.setText("Crear reserva");
-        btnCrearReserva.setMaximumSize(new java.awt.Dimension(145, 39));
-        btnCrearReserva.setMinimumSize(new java.awt.Dimension(145, 39));
-        btnCrearReserva.setPreferredSize(new java.awt.Dimension(145, 39));
-        btnCrearReserva.addActionListener(new java.awt.event.ActionListener() {
+        btnBloquear.setBackground(new java.awt.Color(51, 204, 0));
+        btnBloquear.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnBloquear.setText("Bloquear");
+        btnBloquear.setMaximumSize(new java.awt.Dimension(145, 39));
+        btnBloquear.setMinimumSize(new java.awt.Dimension(145, 39));
+        btnBloquear.setPreferredSize(new java.awt.Dimension(145, 39));
+        btnBloquear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCrearReservaActionPerformed(evt);
+                btnBloquearActionPerformed(evt);
             }
         });
 
@@ -143,7 +143,7 @@ public class ReservarMesa extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnVerMisReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCrearReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnBloquear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
@@ -178,7 +178,7 @@ public class ReservarMesa extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCrearReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBloquear, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnVerMisReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -216,7 +216,7 @@ public class ReservarMesa extends javax.swing.JFrame {
     
     LocalDateTime endDateTime = startDateTime.plusHours(2);
 
-    try {
+    //try {
         List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(startDateTime, endDateTime);
 
         if (mesasDisponibles.isEmpty()) {
@@ -230,47 +230,23 @@ public class ReservarMesa extends javax.swing.JFrame {
                                              mesa.getCapacidad(),
                                              mesa.getUbicacion().name().toLowerCase());
             listModel.addElement(mesaInfo);
+            System.out.println(mesaInfo);
         }
-    } catch (Exception ex) {
-        Logger.getLogger(ReservarMesa.class.getName()).log(Level.SEVERE, null, ex);
+    /*} catch (Exception ex) {
+        Logger.getLogger(BloquearMesa1.class.getName()).log(Level.SEVERE, null, ex);
         JOptionPane.showMessageDialog(this, "Error al obtener mesas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
+    }*/
 }
     
-    private void btnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearReservaActionPerformed
-        // TODO add your handling code here:
-        LocalDate selectedDate = getSelectedDate();
-    LocalDateTime selectedTime = getSelectedTime();
-
-    int selectedIndex = jList1.getSelectedIndex();
-    if (selectedIndex == -1) {
-        JOptionPane.showMessageDialog(this, "Por favor, seleccione una mesa.");
-        return;
-    }
-
-    List<Mesa> availableMesas = mesaService.getMesasDisponibles(selectedTime, selectedTime.plusHours(2));
-    if (availableMesas.isEmpty() || selectedIndex >= availableMesas.size()) {
-        JOptionPane.showMessageDialog(this, "La mesa seleccionada no está disponible.");
-        return;
-    }
-
-    Mesa selectedMesa = availableMesas.get(selectedIndex);
-
-    Reserva selectedReserva = new Reserva();
-    selectedReserva.setFechaReserva(selectedDate);
-    selectedReserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
-    selectedReserva.setFechaHoraInicio(selectedTime);
-    selectedReserva.setMesa(selectedMesa);
-
-    IngresarTarjeta ingresarTarjetaWindow = RestaurantDeliciasGourmet.getContext().getBean(IngresarTarjeta.class);
-    ingresarTarjetaWindow.setReservationDetails(selectedMesa, selectedDate, selectedTime, selectedReserva);
-    ingresarTarjetaWindow.setVisible(true);
-    this.dispose();
-    }//GEN-LAST:event_btnCrearReservaActionPerformed
+    private void btnBloquearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBloquearActionPerformed
+        mesaService.bloquearMesa(HEIGHT);
+     
+    }//GEN-LAST:event_btnBloquearActionPerformed
 
     private void btnVerMisReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMisReservasActionPerformed
-       new LoginCliente(clienteService,empleadoService, rolService).setVisible(true);
-        this.setVisible(false); 
+        GestionDeMesas mesa1 = new GestionDeMesas(clienteService, empleadoService, rolService);
+        mesa1.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnVerMisReservasActionPerformed
     private LocalDate getSelectedDate() {
         try {
@@ -301,7 +277,7 @@ public class ReservarMesa extends javax.swing.JFrame {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCrearReserva;
+    private javax.swing.JButton btnBloquear;
     private javax.swing.JButton btnVerMisReservas;
     private com.toedter.calendar.JDateChooser jDateChooser;
     private javax.swing.JLabel jLabel2;

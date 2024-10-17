@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
  * @author sebas
  */
 @Component
-public class ReservarMesa extends javax.swing.JFrame {
+public class DesbloquearMesa1 extends javax.swing.JFrame {
     @Autowired
     private ClienteService clienteService;
 
@@ -45,7 +45,7 @@ public class ReservarMesa extends javax.swing.JFrame {
     private MesaService mesaService;
     
 
-    public ReservarMesa() {
+    public DesbloquearMesa1() {
         initComponents();
         jDateChooser.setDate(java.sql.Date.valueOf(LocalDate.now()));
         jDateChooser.getDateEditor().addPropertyChangeListener("date", e -> {
@@ -91,11 +91,11 @@ public class ReservarMesa extends javax.swing.JFrame {
 
         jTitulo.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jTitulo.setText("RESERVARCION MESA");
+        jTitulo.setText("MESAS");
 
         btnCrearReserva.setBackground(new java.awt.Color(51, 204, 0));
         btnCrearReserva.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnCrearReserva.setText("Crear reserva");
+        btnCrearReserva.setText("Desbloquear");
         btnCrearReserva.setMaximumSize(new java.awt.Dimension(145, 39));
         btnCrearReserva.setMinimumSize(new java.awt.Dimension(145, 39));
         btnCrearReserva.setPreferredSize(new java.awt.Dimension(145, 39));
@@ -232,7 +232,7 @@ public class ReservarMesa extends javax.swing.JFrame {
             listModel.addElement(mesaInfo);
         }
     } catch (Exception ex) {
-        Logger.getLogger(ReservarMesa.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(DesbloquearMesa1.class.getName()).log(Level.SEVERE, null, ex);
         JOptionPane.showMessageDialog(this, "Error al obtener mesas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
@@ -269,8 +269,9 @@ public class ReservarMesa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCrearReservaActionPerformed
 
     private void btnVerMisReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMisReservasActionPerformed
-       new LoginCliente(clienteService,empleadoService, rolService).setVisible(true);
-        this.setVisible(false); 
+        GestionDeMesas mesa1 = new GestionDeMesas(clienteService, empleadoService, rolService);
+        mesa1.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnVerMisReservasActionPerformed
     private LocalDate getSelectedDate() {
         try {

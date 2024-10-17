@@ -50,7 +50,6 @@ public class PantallaInicio extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 600));
 
         jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("BIENVENIDO A");
 
@@ -86,12 +85,10 @@ public class PantallaInicio extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 36)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("DELICIAS GOURMET");
 
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel4.setText("Ingresar con usuario con rol Administrador");
+        jLabel4.setText("Ingresar con usuario o rol Administrador");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
