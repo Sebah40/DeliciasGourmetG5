@@ -94,6 +94,12 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.codenameone</groupId>
+            <artifactId>codenameone-core</artifactId>
+            <version>7.0.162</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>

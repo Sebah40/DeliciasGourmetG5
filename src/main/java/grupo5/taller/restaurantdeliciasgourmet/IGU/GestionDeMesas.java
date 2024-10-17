@@ -149,8 +149,8 @@ private final ClienteService clienteService;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBloquearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBloquearActionPerformed
-        ConfirmarCliente confirmar1 = new ConfirmarCliente(clienteService, empleadoService, rolService,mesaService);
-        confirmar1.setVisible(true);
+        BloquearMesa1 mesa1 = new BloquearMesa1(clienteService, empleadoService, rolService,mesaService);
+        mesa1.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnBloquearActionPerformed
 

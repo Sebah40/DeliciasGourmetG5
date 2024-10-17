@@ -45,7 +45,6 @@ public class BloquearMesa1 extends javax.swing.JFrame {
     @Autowired
     private MesaService mesaService;
     
-    private Cliente cliente;
 
     @Autowired
     public BloquearMesa1(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
@@ -57,22 +56,13 @@ public class BloquearMesa1 extends javax.swing.JFrame {
     }
 
     public BloquearMesa1() {
-    }
-    
-    public BloquearMesa1(Cliente cliente) {
         initComponents();
         jDateChooser.setDate(java.sql.Date.valueOf(LocalDate.now()));
         jDateChooser.getDateEditor().addPropertyChangeListener("date", e -> {
                 actualizarMesas(null);
             });
-            timeSpinner.addChangeListener(e -> {
-                actualizarMesas(null);
-            });
-        this.cliente=cliente;    
-            
+        timeSpinner.addChangeListener(e -> {actualizarMesas(null);});
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -231,10 +221,9 @@ public class BloquearMesa1 extends javax.swing.JFrame {
     LocalDateTime startDateTime = getSelectedTime();
     
     LocalDateTime endDateTime = startDateTime.plusHours(2);
-
+   
     try {
-        List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(startDateTime, endDateTime);
-
+         List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(startDateTime, endDateTime);
         if (mesasDisponibles.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No hay mesas disponibles para la fecha y hora seleccionadas.");
             return;
@@ -246,7 +235,7 @@ public class BloquearMesa1 extends javax.swing.JFrame {
                                              mesa.getCapacidad(),
                                              mesa.getUbicacion().name().toLowerCase());
             listModel.addElement(mesaInfo);
-            System.out.println(mesaInfo);
+
         }
     } catch (Exception ex) {
         Logger.getLogger(BloquearMesa1.class.getName()).log(Level.SEVERE, null, ex);

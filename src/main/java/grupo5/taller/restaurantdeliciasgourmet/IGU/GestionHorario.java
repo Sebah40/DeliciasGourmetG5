@@ -62,7 +62,6 @@ public class GestionHorario extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 600));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Gestion de Horarios");
 
@@ -99,8 +98,18 @@ public class GestionHorario extends javax.swing.JFrame {
         });
 
         jButtonReservas.setText("Bloq. Franja Horaria");
+        jButtonReservas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReservasActionPerformed(evt);
+            }
+        });
 
         jButtonHorarios.setText("Definir Horario de una Mesa");
+        jButtonHorarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonHorariosActionPerformed(evt);
+            }
+        });
 
         jButtonReportes.setText("Config. Horario Especial");
 
@@ -178,8 +187,20 @@ public class GestionHorario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void jButtonEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpleadosActionPerformed
-
+        HorarioApCie horar = new HorarioApCie();
+        horar.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonEmpleadosActionPerformed
+
+    private void jButtonReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReservasActionPerformed
+        bloquearFranja horas = new bloquearFranja();
+        horas.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButtonReservasActionPerformed
+
+    private void jButtonHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHorariosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonHorariosActionPerformed
 
     /**
      * @param args the command line arguments
