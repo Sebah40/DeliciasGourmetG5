@@ -4,6 +4,7 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,15 @@ public class PantallaInicio extends javax.swing.JFrame {
     private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final RolService rolService;
-    
-    @Autowired
-    public PantallaInicio(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
-        this.clienteService = clienteService;
-        this.empleadoService=empleadoService;
-        this.rolService=rolService;
-        initComponents();
+    private final MesaService mesaService;
 
+    @Autowired
+    public PantallaInicio(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
+        this.clienteService = clienteService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
+        this.mesaService = mesaService;
+        initComponents();
     }
  
     @SuppressWarnings("unchecked")
@@ -165,13 +167,13 @@ public class PantallaInicio extends javax.swing.JFrame {
 
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
-        LoginCliente loginClienteWindow = new LoginCliente(clienteService,empleadoService, rolService);
+        LoginCliente loginClienteWindow = new LoginCliente(clienteService,empleadoService, rolService,mesaService);
         loginClienteWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpleadosActionPerformed
-        LoginEmpleado loginEmpleadoWindow = new LoginEmpleado(clienteService,empleadoService, rolService);
+        LoginEmpleado loginEmpleadoWindow = new LoginEmpleado(clienteService,empleadoService, rolService,mesaService);
         loginEmpleadoWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnEmpleadosActionPerformed

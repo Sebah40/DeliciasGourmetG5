@@ -6,6 +6,7 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import javax.swing.*;
@@ -19,17 +20,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class RegistrarCliente extends javax.swing.JFrame {
 
-    private final ClienteService clienteService;
+  private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final RolService rolService;
-    
-    @Autowired
-    public RegistrarCliente(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
-        this.clienteService = clienteService;
-        this.empleadoService=empleadoService;
-        this.rolService=rolService;
-        initComponents();
+    private final MesaService mesaService;
 
+    @Autowired
+    public RegistrarCliente(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
+        this.clienteService = clienteService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
+        this.mesaService = mesaService;
+        initComponents();
     }
 
     @SuppressWarnings("unchecked")
@@ -247,7 +249,7 @@ public class RegistrarCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextTelefonoActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        LoginCliente loginWindow = new LoginCliente(clienteService,empleadoService, rolService);
+        LoginCliente loginWindow = new LoginCliente(clienteService,empleadoService, rolService,mesaService);
         loginWindow.setVisible(true);
         this.dispose();   
     }//GEN-LAST:event_btnVolverActionPerformed

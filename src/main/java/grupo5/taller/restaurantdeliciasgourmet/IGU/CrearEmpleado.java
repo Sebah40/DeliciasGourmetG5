@@ -6,6 +6,7 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 
 import grupo5.taller.restaurantdeliciasgourmet.logica.Empleado;
@@ -22,17 +23,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class CrearEmpleado extends javax.swing.JFrame {
 
+      private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final RolService rolService;
-    private final ClienteService clienteService;
+    private final MesaService mesaService;
 
     @Autowired
-    public CrearEmpleado(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService) {
+    public CrearEmpleado(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
         this.clienteService = clienteService;
         this.empleadoService = empleadoService;
         this.rolService = rolService;
+        this.mesaService = mesaService;
         initComponents();
-
     }
 
     /**
@@ -254,7 +256,6 @@ public class CrearEmpleado extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al guardar el empleado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        this.dispose();
     }//GEN-LAST:event_btnCrearEmpleadoActionPerformed
 
     private boolean isValidEmail(String email) {
@@ -263,7 +264,7 @@ public class CrearEmpleado extends javax.swing.JFrame {
     }
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        GestionEmpleado gestionEmpleadoWindow = new GestionEmpleado(clienteService, empleadoService, rolService);
+        GestionEmpleado gestionEmpleadoWindow = new GestionEmpleado(clienteService, empleadoService, rolService,mesaService);
         gestionEmpleadoWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed

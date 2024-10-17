@@ -6,19 +6,24 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class GestionDeMesas extends javax.swing.JFrame {
     
-    private final ClienteService clienteService;
+private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final RolService rolService;
-    
-    public GestionDeMesas (ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
+    private final MesaService mesaService;
+
+    @Autowired
+    public GestionDeMesas(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
         this.clienteService = clienteService;
-        this.empleadoService=empleadoService;
-        this.rolService=rolService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
+        this.mesaService = mesaService;
         initComponents();
     }
 
@@ -30,11 +35,11 @@ public class GestionDeMesas extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jToggleButton2 = new javax.swing.JToggleButton();
+        btnBloquear = new javax.swing.JToggleButton();
+        btnConfigura = new javax.swing.JToggleButton();
         btnSalir = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnDesbloquear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,14 +52,14 @@ public class GestionDeMesas extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Gestion de Mesas");
 
-        jToggleButton1.setText("Bloquear  mesa");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBloquear.setText("Bloquear  mesa");
+        btnBloquear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                btnBloquearActionPerformed(evt);
             }
         });
 
-        jToggleButton2.setText("Configurar Mesa");
+        btnConfigura.setText("Configurar Mesa");
 
         btnSalir.setBackground(new java.awt.Color(51, 204, 0));
         btnSalir.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -76,10 +81,10 @@ public class GestionDeMesas extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Desbloquear mesa");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnDesbloquear.setText("Desbloquear mesa");
+        btnDesbloquear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnDesbloquearActionPerformed(evt);
             }
         });
 
@@ -98,9 +103,9 @@ public class GestionDeMesas extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(250, 250, 250)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jToggleButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(btnConfigura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnBloquear, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                            .addComponent(btnDesbloquear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(132, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
@@ -117,11 +122,11 @@ public class GestionDeMesas extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(47, 47, 47)
-                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnBloquear, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDesbloquear, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnConfigura, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -143,38 +148,38 @@ public class GestionDeMesas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        BloquearMesa1 mesa1 = new BloquearMesa1();
-        mesa1.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+    private void btnBloquearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBloquearActionPerformed
+        ConfirmarCliente confirmar1 = new ConfirmarCliente(clienteService, empleadoService, rolService,mesaService);
+        confirmar1.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnBloquearActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        PantallaAdministrador administrador = new PantallaAdministrador(clienteService, empleadoService, rolService);
+        PantallaAdministrador administrador = new PantallaAdministrador(clienteService, empleadoService, rolService,mesaService);
         administrador.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        DesbloquearMesa1 mesa1 = new DesbloquearMesa1();
+    private void btnDesbloquearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesbloquearActionPerformed
+        DesbloquearMesa1 mesa1 = new DesbloquearMesa1(clienteService, empleadoService, rolService,mesaService);
         mesa1.setVisible(true);
-        this.dispose(); 
-    }//GEN-LAST:event_jButton1ActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_btnDesbloquearActionPerformed
 
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton btnBloquear;
+    private javax.swing.JToggleButton btnConfigura;
+    private javax.swing.JButton btnDesbloquear;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnVolver;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
     // End of variables declaration//GEN-END:variables
 }

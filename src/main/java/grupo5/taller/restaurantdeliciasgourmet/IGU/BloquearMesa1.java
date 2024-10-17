@@ -10,6 +10,7 @@ import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
+import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import grupo5.taller.restaurantdeliciasgourmet.logica.EstadoReserva;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Mesa;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BloquearMesa1 extends javax.swing.JFrame {
-    @Autowired
+      @Autowired
     private ClienteService clienteService;
 
     @Autowired
@@ -44,8 +45,21 @@ public class BloquearMesa1 extends javax.swing.JFrame {
     @Autowired
     private MesaService mesaService;
     
+    private Cliente cliente;
+
+    @Autowired
+    public BloquearMesa1(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
+        this.clienteService = clienteService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
+        this.mesaService = mesaService;
+        initComponents();
+    }
 
     public BloquearMesa1() {
+    }
+    
+    public BloquearMesa1(Cliente cliente) {
         initComponents();
         jDateChooser.setDate(java.sql.Date.valueOf(LocalDate.now()));
         jDateChooser.getDateEditor().addPropertyChangeListener("date", e -> {
@@ -54,6 +68,8 @@ public class BloquearMesa1 extends javax.swing.JFrame {
             timeSpinner.addChangeListener(e -> {
                 actualizarMesas(null);
             });
+        this.cliente=cliente;    
+            
     }
     
     
@@ -216,7 +232,7 @@ public class BloquearMesa1 extends javax.swing.JFrame {
     
     LocalDateTime endDateTime = startDateTime.plusHours(2);
 
-    //try {
+    try {
         List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(startDateTime, endDateTime);
 
         if (mesasDisponibles.isEmpty()) {
@@ -232,10 +248,10 @@ public class BloquearMesa1 extends javax.swing.JFrame {
             listModel.addElement(mesaInfo);
             System.out.println(mesaInfo);
         }
-    /*} catch (Exception ex) {
+    } catch (Exception ex) {
         Logger.getLogger(BloquearMesa1.class.getName()).log(Level.SEVERE, null, ex);
         JOptionPane.showMessageDialog(this, "Error al obtener mesas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }*/
+    }
 }
     
     private void btnBloquearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBloquearActionPerformed
@@ -244,7 +260,7 @@ public class BloquearMesa1 extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBloquearActionPerformed
 
     private void btnVerMisReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMisReservasActionPerformed
-        GestionDeMesas mesa1 = new GestionDeMesas(clienteService, empleadoService, rolService);
+        GestionDeMesas mesa1 = new GestionDeMesas(clienteService, empleadoService, rolService,mesaService);
         mesa1.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVerMisReservasActionPerformed
@@ -290,8 +306,5 @@ public class BloquearMesa1 extends javax.swing.JFrame {
     private javax.swing.JSpinner timeSpinner;
     // End of variables declaration//GEN-END:variables
 
-    public void setClienteService(ClienteService clienteService) {
-        this.clienteService = clienteService;
-    }
 
 }

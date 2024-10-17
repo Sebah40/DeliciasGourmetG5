@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
  * @author sebas
  */
 @Component
-public class CambiarRolEmpleado extends javax.swing.JFrame {
+public class ConfirmarCliente extends javax.swing.JFrame {
 
     private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
@@ -33,7 +33,7 @@ public class CambiarRolEmpleado extends javax.swing.JFrame {
     private final MesaService mesaService;
 
     @Autowired
-    public CambiarRolEmpleado(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
+    public ConfirmarCliente(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
         this.clienteService = clienteService;
         this.empleadoService = empleadoService;
         this.rolService = rolService;
@@ -47,7 +47,7 @@ public class CambiarRolEmpleado extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        btnCambiarRol = new javax.swing.JButton();
+        btnConfirmarCliente = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jTextCorreo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -68,17 +68,17 @@ public class CambiarRolEmpleado extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Eliminar Empleado");
+        jLabel1.setText("Confirmar Cliente");
 
-        btnCambiarRol.setBackground(new java.awt.Color(51, 204, 0));
-        btnCambiarRol.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnCambiarRol.setText("Buscar");
-        btnCambiarRol.setMaximumSize(new java.awt.Dimension(145, 39));
-        btnCambiarRol.setMinimumSize(new java.awt.Dimension(145, 39));
-        btnCambiarRol.setPreferredSize(new java.awt.Dimension(145, 39));
-        btnCambiarRol.addActionListener(new java.awt.event.ActionListener() {
+        btnConfirmarCliente.setBackground(new java.awt.Color(51, 204, 0));
+        btnConfirmarCliente.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnConfirmarCliente.setText("Buscar");
+        btnConfirmarCliente.setMaximumSize(new java.awt.Dimension(145, 39));
+        btnConfirmarCliente.setMinimumSize(new java.awt.Dimension(145, 39));
+        btnConfirmarCliente.setPreferredSize(new java.awt.Dimension(145, 39));
+        btnConfirmarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCambiarRolActionPerformed(evt);
+                btnConfirmarClienteActionPerformed(evt);
             }
         });
 
@@ -127,7 +127,7 @@ public class CambiarRolEmpleado extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnRegistrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCambiarRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnConfirmarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -160,7 +160,7 @@ public class CambiarRolEmpleado extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCambiarRol, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConfirmarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRegistrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(54, 54, 54))
         );
@@ -187,50 +187,34 @@ public class CambiarRolEmpleado extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextCorreoActionPerformed
 
 
-    private void btnCambiarRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarRolActionPerformed
+    private void btnConfirmarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarClienteActionPerformed
 
-        List<Empleado> empleados = empleadoService.getAllEmpleado();
-        List<Rol> roles = rolService.getAllRol();
+      List<Cliente> clientes = clienteService.getAllClientes();
+    Cliente cliente = null;
+    int id = 0;
+    String emailIngresado = jTextCorreo.getText(); // Obtener el texto del campo de entrada
 
-        boolean empleadoEncontrado = false;
-
-        for (Empleado e : empleados) {
-            if (e.getCorreoElectronico().equals(jTextCorreo.getText())) {
-                empleadoEncontrado = true;
-
-                String mensaje = "Rol actual: " + e.getRol().getNombreRol() + "\nIngrese el nuevo rol:";
-                String nuevoRol = JOptionPane.showInputDialog(this, mensaje, "Modificar rol de empleado", JOptionPane.PLAIN_MESSAGE);
-
-                if (nuevoRol != null && !nuevoRol.trim().isEmpty()) {
-                    boolean rolExistente = false;
-
-                    for (Rol r : roles) {
-                        if (nuevoRol.equals(r.getNombreRol())) {
-                            e.setRol(r);
-                            empleadoService.editarEmpleado(e);
-                            rolExistente = true;
-                            JOptionPane.showMessageDialog(this, "Rol modificado con éxito.");
-                            break; 
-                        }
-                    }
-
-                    if (!rolExistente) {
-                        Rol rol = new Rol(nuevoRol);
-                        rolService.saveRol(rol);
-                        e.setRol(rol);
-                        empleadoService.editarEmpleado(e);
-                        JOptionPane.showMessageDialog(this, "Rol creado y asignado con éxito.");
-                    }
-                }
-                break;
-            }
+    for (Cliente c : clientes) {
+        // Comparar el correo ingresado con el correo del cliente
+        if (emailIngresado.equals(c.getEmail())) {
+            id = c.getClienteId();
+            cliente = clienteService.getClienteById(id);
+            
+            // Crear y mostrar la ventana BloquearMesa1 con el cliente encontrado
+            BloquearMesa1 bloquearWindow = new BloquearMesa1(cliente);
+            bloquearWindow.setVisible(true);
+            this.setVisible(false);
+            break; // Salir del bucle una vez que encontramos el cliente
         }
+    }
+    
+    // Opcional: Manejar el caso donde no se encuentra el cliente
+    if (cliente == null) {
+        JOptionPane.showMessageDialog(this, "Cliente no encontrado. Por favor, verifica el correo electrónico.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
 
-        if (!empleadoEncontrado) {
-            JOptionPane.showMessageDialog(this, "No se encontró un empleado con ese correo electrónico.");
-        }
-
-    }//GEN-LAST:event_btnCambiarRolActionPerformed
+        
+    }//GEN-LAST:event_btnConfirmarClienteActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
         GestionEmpleado gestionWindow = new GestionEmpleado(clienteService, empleadoService, rolService,mesaService);
@@ -240,7 +224,7 @@ public class CambiarRolEmpleado extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCambiarRol;
+    private javax.swing.JButton btnConfirmarCliente;
     private javax.swing.JButton btnRegistrarse;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

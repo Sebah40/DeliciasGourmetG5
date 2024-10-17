@@ -45,6 +45,7 @@ public class ReservarMesa extends javax.swing.JFrame {
     private MesaService mesaService;
     
 
+    
     public ReservarMesa() {
         initComponents();
         jDateChooser.setDate(java.sql.Date.valueOf(LocalDate.now()));
@@ -269,7 +270,7 @@ public class ReservarMesa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCrearReservaActionPerformed
 
     private void btnVerMisReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMisReservasActionPerformed
-       new LoginCliente(clienteService,empleadoService, rolService).setVisible(true);
+       new LoginCliente(clienteService,empleadoService, rolService,mesaService).setVisible(true);
         this.setVisible(false); 
     }//GEN-LAST:event_btnVerMisReservasActionPerformed
     private LocalDate getSelectedDate() {

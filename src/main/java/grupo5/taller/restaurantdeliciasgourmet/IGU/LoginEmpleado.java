@@ -8,6 +8,7 @@ import grupo5.taller.restaurantdeliciasgourmet.Repositorios.RolRepository;
 import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
@@ -25,17 +26,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginEmpleado extends javax.swing.JFrame {
 
+    private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final RolService rolService;
-    private final ClienteService clienteService;
- 
-    @Autowired
-    public LoginEmpleado(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
-        this.clienteService = clienteService;
-        this.empleadoService=empleadoService;
-        this.rolService=rolService;
-        initComponents();
+    private final MesaService mesaService;
 
+    @Autowired
+    public LoginEmpleado(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
+        this.clienteService = clienteService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
+        this.mesaService = mesaService;
+        initComponents();
     }
 
     /**
@@ -217,7 +219,7 @@ public class LoginEmpleado extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Bienvenido, Administrador.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
                     // Abre la ventana del administrador
-                    PantallaAdministrador adminWindow = new PantallaAdministrador(clienteService,empleadoService, rolService);
+                    PantallaAdministrador adminWindow = new PantallaAdministrador(clienteService,empleadoService, rolService,mesaService);
                     adminWindow.setVisible(true);
                 } else if ("Recepcionista".equalsIgnoreCase(nombreRol)) {
                     // Guarda el empleado en la sesión
@@ -241,7 +243,7 @@ public class LoginEmpleado extends javax.swing.JFrame {
     }
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        PantallaInicio inicioWindow = new PantallaInicio(clienteService,empleadoService,rolService);
+        PantallaInicio inicioWindow = new PantallaInicio(clienteService,empleadoService,rolService,mesaService);
         inicioWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegistrarseActionPerformed

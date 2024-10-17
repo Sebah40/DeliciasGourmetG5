@@ -31,7 +31,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DesbloquearMesa1 extends javax.swing.JFrame {
-    @Autowired
+    
+        @Autowired
     private ClienteService clienteService;
 
     @Autowired
@@ -44,7 +45,14 @@ public class DesbloquearMesa1 extends javax.swing.JFrame {
     @Autowired
     private MesaService mesaService;
     
-
+     public DesbloquearMesa1(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
+        this.clienteService = clienteService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
+        this.mesaService = mesaService;
+        initComponents();
+    }
+    
     public DesbloquearMesa1() {
         initComponents();
         jDateChooser.setDate(java.sql.Date.valueOf(LocalDate.now()));
@@ -269,7 +277,7 @@ public class DesbloquearMesa1 extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCrearReservaActionPerformed
 
     private void btnVerMisReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMisReservasActionPerformed
-        GestionDeMesas mesa1 = new GestionDeMesas(clienteService, empleadoService, rolService);
+        GestionDeMesas mesa1 = new GestionDeMesas(clienteService, empleadoService, rolService,mesaService);
         mesa1.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVerMisReservasActionPerformed
@@ -315,8 +323,5 @@ public class DesbloquearMesa1 extends javax.swing.JFrame {
     private javax.swing.JSpinner timeSpinner;
     // End of variables declaration//GEN-END:variables
 
-    public void setClienteService(ClienteService clienteService) {
-        this.clienteService = clienteService;
-    }
 
 }

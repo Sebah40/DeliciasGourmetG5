@@ -7,6 +7,7 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
@@ -22,17 +23,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class GestionHorario extends javax.swing.JFrame {
 
+  private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final RolService rolService;
-    private final ClienteService clienteService;
+    private final MesaService mesaService;
 
     @Autowired
-    public GestionHorario(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService) {
+    public GestionHorario(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
         this.clienteService = clienteService;
         this.empleadoService = empleadoService;
         this.rolService = rolService;
+        this.mesaService = mesaService;
         initComponents();
-
     }
 
     @SuppressWarnings("unchecked")
@@ -170,7 +172,7 @@ public class GestionHorario extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        PantallaAdministrador administrador = new PantallaAdministrador(clienteService, empleadoService, rolService);
+        PantallaAdministrador administrador = new PantallaAdministrador(clienteService, empleadoService, rolService,mesaService);
         administrador.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed

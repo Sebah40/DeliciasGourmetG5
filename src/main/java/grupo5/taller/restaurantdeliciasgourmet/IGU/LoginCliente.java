@@ -7,6 +7,7 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
@@ -25,14 +26,15 @@ public class LoginCliente extends javax.swing.JFrame {
     private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final RolService rolService;
-    
-    @Autowired
-    public LoginCliente(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
-        this.clienteService = clienteService;
-        this.empleadoService=empleadoService;
-        this.rolService=rolService;
-        initComponents();
+    private final MesaService mesaService;
 
+    @Autowired
+    public LoginCliente(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
+        this.clienteService = clienteService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
+        this.mesaService = mesaService;
+        initComponents();
     }
 
  
@@ -235,7 +237,7 @@ public class LoginCliente extends javax.swing.JFrame {
     }
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        PantallaInicio inicioWindow = new PantallaInicio(clienteService,empleadoService,rolService);
+        PantallaInicio inicioWindow = new PantallaInicio(clienteService,empleadoService,rolService,mesaService);
         inicioWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
@@ -245,7 +247,7 @@ public class LoginCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextContraseniaActionPerformed
 
     private void btnRegistrarse1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarse1ActionPerformed
-        new RegistrarCliente(clienteService,empleadoService,rolService).setVisible(true);
+        new RegistrarCliente(clienteService,empleadoService,rolService,mesaService).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnRegistrarse1ActionPerformed
 

@@ -56,9 +56,9 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="250" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jToggleButton2" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jToggleButton1" alignment="0" pref="210" max="32767" attributes="0"/>
-                              <Component id="jButton1" max="32767" attributes="0"/>
+                              <Component id="btnConfigura" alignment="0" max="32767" attributes="0"/>
+                              <Component id="btnBloquear" alignment="0" pref="210" max="32767" attributes="0"/>
+                              <Component id="btnDesbloquear" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -81,11 +81,11 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" pref="42" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                  <Component id="jToggleButton1" min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="btnBloquear" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton1" min="-2" pref="44" max="-2" attributes="0"/>
+                  <Component id="btnDesbloquear" min="-2" pref="44" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jToggleButton2" min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="btnConfigura" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace pref="81" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnSalir" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
@@ -114,15 +114,15 @@
             <Property name="text" type="java.lang.String" value="Gestion de Mesas"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JToggleButton" name="jToggleButton1">
+        <Component class="javax.swing.JToggleButton" name="btnBloquear">
           <Properties>
             <Property name="text" type="java.lang.String" value="Bloquear  mesa"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBloquearActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JToggleButton" name="jToggleButton2">
+        <Component class="javax.swing.JToggleButton" name="btnConfigura">
           <Properties>
             <Property name="text" type="java.lang.String" value="Configurar Mesa"/>
           </Properties>
@@ -161,12 +161,12 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVolverActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="btnDesbloquear">
           <Properties>
             <Property name="text" type="java.lang.String" value="Desbloquear mesa"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDesbloquearActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

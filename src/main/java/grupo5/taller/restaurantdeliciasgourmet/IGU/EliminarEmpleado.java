@@ -8,6 +8,7 @@ import grupo5.taller.restaurantdeliciasgourmet.Repositorios.RolRepository;
 import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
@@ -26,15 +27,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class EliminarEmpleado extends javax.swing.JFrame {
 
+      private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final RolService rolService;
-    private final ClienteService clienteService;
- 
+    private final MesaService mesaService;
+
     @Autowired
-    public EliminarEmpleado(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
+    public EliminarEmpleado(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
         this.clienteService = clienteService;
-        this.empleadoService=empleadoService;
-        this.rolService=rolService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
+        this.mesaService = mesaService;
         initComponents();
     }
 
@@ -187,7 +190,7 @@ public class EliminarEmpleado extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        GestionEmpleado gestionWindow = new GestionEmpleado(clienteService,empleadoService,rolService);
+        GestionEmpleado gestionWindow = new GestionEmpleado(clienteService,empleadoService,rolService,mesaService);
         gestionWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegistrarseActionPerformed

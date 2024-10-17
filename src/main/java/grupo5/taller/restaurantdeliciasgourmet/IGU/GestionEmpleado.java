@@ -2,6 +2,7 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class GestionEmpleado extends javax.swing.JFrame {
 
+    private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final RolService rolService;
-    private final ClienteService clienteService;
+    private final MesaService mesaService;
 
     @Autowired
-    public GestionEmpleado(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService) {
+    public GestionEmpleado(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
         this.clienteService = clienteService;
         this.empleadoService = empleadoService;
         this.rolService = rolService;
+        this.mesaService = mesaService;
         initComponents();
     }
 
@@ -168,25 +171,25 @@ public class GestionEmpleado extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        PantallaAdministrador administrador = new PantallaAdministrador(clienteService, empleadoService, rolService);
+        PantallaAdministrador administrador = new PantallaAdministrador(clienteService, empleadoService, rolService,mesaService);
         administrador.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void jButtonEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpleadosActionPerformed
-        CrearEmpleado empleadoWindow = new CrearEmpleado(clienteService, empleadoService, rolService);
+        CrearEmpleado empleadoWindow = new CrearEmpleado(clienteService, empleadoService, rolService,mesaService);
         empleadoWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonEmpleadosActionPerformed
 
     private void jButtonReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReservasActionPerformed
-        CambiarRolEmpleado rolWindow = new CambiarRolEmpleado(clienteService, empleadoService, rolService);
+        CambiarRolEmpleado rolWindow = new CambiarRolEmpleado(clienteService, empleadoService, rolService,mesaService);
         rolWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonReservasActionPerformed
 
     private void jButtonHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHorariosActionPerformed
-        EliminarEmpleado eliminarWindow = new EliminarEmpleado(clienteService, empleadoService, rolService);
+        EliminarEmpleado eliminarWindow = new EliminarEmpleado(clienteService, empleadoService, rolService,mesaService);
         eliminarWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonHorariosActionPerformed

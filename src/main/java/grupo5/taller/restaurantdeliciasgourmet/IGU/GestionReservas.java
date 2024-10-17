@@ -3,6 +3,7 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class GestionReservas extends javax.swing.JFrame {
 
+   private final ClienteService clienteService;
     private final EmpleadoService empleadoService;
     private final RolService rolService;
-    private final ClienteService clienteService;
- 
-    @Autowired
-    public GestionReservas(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
-        this.clienteService = clienteService;
-        this.empleadoService=empleadoService;
-        this.rolService=rolService;
-        initComponents();
+    private final MesaService mesaService;
 
+    @Autowired
+    public GestionReservas(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
+        this.clienteService = clienteService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
+        this.mesaService = mesaService;
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -179,7 +180,7 @@ public class GestionReservas extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        PantallaAdministrador administrador = new PantallaAdministrador(clienteService,empleadoService, rolService);
+        PantallaAdministrador administrador = new PantallaAdministrador(clienteService,empleadoService, rolService,mesaService);
         administrador.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed

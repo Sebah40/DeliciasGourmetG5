@@ -4,6 +4,7 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +14,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class PantallaAdministrador extends javax.swing.JFrame {
     
- private final EmpleadoService empleadoService;
+  private final ClienteService clienteService;
+    private final EmpleadoService empleadoService;
     private final RolService rolService;
-    private final ClienteService clienteService;
- 
-    @Autowired
-    public PantallaAdministrador(ClienteService clienteService,EmpleadoService empleadoService,RolService rolService) {
-        this.clienteService = clienteService;
-        this.empleadoService=empleadoService;
-        this.rolService=rolService;
-        initComponents();
+    private final MesaService mesaService;
 
+    @Autowired
+    public PantallaAdministrador(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
+        this.clienteService = clienteService;
+        this.empleadoService = empleadoService;
+        this.rolService = rolService;
+        this.mesaService = mesaService;
+        initComponents();
     }
  
     @SuppressWarnings("unchecked")
@@ -196,25 +198,25 @@ public class PantallaAdministrador extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        LoginEmpleado login = new LoginEmpleado(clienteService,empleadoService, rolService);
+        LoginEmpleado login = new LoginEmpleado(clienteService,empleadoService, rolService,mesaService);
         login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void jButtonEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpleadosActionPerformed
-        GestionEmpleado empleadosWindow = new GestionEmpleado(clienteService,empleadoService, rolService);
+        GestionEmpleado empleadosWindow = new GestionEmpleado(clienteService,empleadoService, rolService,mesaService);
         empleadosWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonEmpleadosActionPerformed
 
     private void jButtonReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReservasActionPerformed
-        GestionReservas reservasWindow = new GestionReservas(clienteService,empleadoService, rolService);
+        GestionReservas reservasWindow = new GestionReservas(clienteService,empleadoService, rolService,mesaService);
         reservasWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonReservasActionPerformed
 
     private void jButtonHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHorariosActionPerformed
-        GestionHorario horarioWindow = new GestionHorario(clienteService,empleadoService, rolService);
+        GestionHorario horarioWindow = new GestionHorario(clienteService,empleadoService, rolService,mesaService);
         horarioWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonHorariosActionPerformed
@@ -226,7 +228,7 @@ public class PantallaAdministrador extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonReportesActionPerformed
 
     private void btnGestionMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionMesasActionPerformed
-       GestionDeMesas gestionMesas = new GestionDeMesas(clienteService,empleadoService, rolService); 
+       GestionDeMesas gestionMesas = new GestionDeMesas(clienteService,empleadoService, rolService,mesaService); 
         gestionMesas.setVisible(true);// TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnGestionMesasActionPerformed
