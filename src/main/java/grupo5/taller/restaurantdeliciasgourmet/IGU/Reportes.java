@@ -16,6 +16,7 @@ import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import static java.text.NumberFormat.Field.INTEGER;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -38,7 +39,7 @@ public class Reportes extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnVolver = new javax.swing.JButton();
         btn_ReservasTotalesCliente = new javax.swing.JButton();
-        jButtonReservas = new javax.swing.JButton();
+        btn_clienteMayorCantReservas = new javax.swing.JButton();
         jButtonHorarios = new javax.swing.JButton();
         jButtonReportes = new javax.swing.JButton();
         jButtonReportes3 = new javax.swing.JButton();
@@ -89,7 +90,12 @@ public class Reportes extends javax.swing.JFrame {
             }
         });
 
-        jButtonReservas.setText("Cliente con mayor cant. de reservas");
+        btn_clienteMayorCantReservas.setText("Cliente con mayor cant. de reservas");
+        btn_clienteMayorCantReservas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_clienteMayorCantReservasActionPerformed(evt);
+            }
+        });
 
         jButtonHorarios.setText("Clientes que no asistieron");
 
@@ -127,7 +133,7 @@ public class Reportes extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButtonReportes3, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                             .addComponent(jButtonHorarios, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                            .addComponent(jButtonReservas, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                            .addComponent(btn_clienteMayorCantReservas, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                             .addComponent(btn_ReservasTotalesCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                             .addComponent(jButtonReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -145,7 +151,7 @@ public class Reportes extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_ReservasTotalesCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addComponent(jButtonReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_clienteMayorCantReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(jButtonHorarios, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -217,16 +223,15 @@ public class Reportes extends javax.swing.JFrame {
                 document.add(new Paragraph("Cliente: " + cli.getNombre()));
                 document.add(new Paragraph("Correo: " + cli.getEmail()));
 
-
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                
+
                 for (Reserva r : reservas) {
                     // Agregar datos de cada reserva al PDF
                     document.add(new Paragraph("ID: " + r.getIdReserva()));
                     document.add(new Paragraph("Estado: " + r.getEstadoReserva()));
                     document.add(new Paragraph("Fecha: " + r.getFechaReserva().format(formatter)));
-                    document.add(new Paragraph("Hora de Inicio: " + r.getFechaHoraInicio().format(formatter)));
-                    document.add(new Paragraph("Hora de Fin: " + r.getFechaHoraFin().format(formatter)));
+                    document.add(new Paragraph("Hora de Inicio: " + r.getFechaHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm"))));
+                    document.add(new Paragraph("Hora de Fin: " + r.getFechaHoraFin().format(DateTimeFormatter.ofPattern("HH:mm"))));
                     document.add(new Paragraph("Mesa: " + r.getMesa().getNumeroMesa()));
                     document.add(new Paragraph(" "));  // Línea en blanco
                 }
@@ -261,6 +266,72 @@ public class Reportes extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonReportes3ActionPerformed
 
+    private void btn_clienteMayorCantReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clienteMayorCantReservasActionPerformed
+        ClienteRepository clieRepo = RestaurantDeliciasGourmet.getContext().getBean(ClienteRepository.class);
+        ReservaRepository reservaRepo = RestaurantDeliciasGourmet.getContext().getBean(ReservaRepository.class);
+        List<Cliente> clientes = clieRepo.findAll();
+
+        int maxReservas = Integer.MIN_VALUE;
+        Cliente clienteConMaxReservas = null;
+
+// Encuentra al cliente con más reservas
+        for (Cliente c : clientes) {
+            if (c.getReservas().size() > maxReservas) {
+                maxReservas = c.getReservas().size();
+                clienteConMaxReservas = c;
+            }
+        }
+
+// Verificar que se encontró un cliente
+        if (clienteConMaxReservas != null) {
+            List<Reserva> reservas = clienteConMaxReservas.getReservas(); // Obtener las reservas del cliente con más reservas
+
+            boolean pdfGenerado = false;
+            // Generar el PDF
+            try {
+                // Definir la ruta y nombre del archivo PDF
+                String filePath = "reporte_ClienteMayorReserva.pdf";
+                Document document = new Document();
+
+                // Inicializar PdfWriter
+                PdfWriter.getInstance(document, new FileOutputStream(filePath));
+
+                // Abrir el documento y agregar contenido
+                document.open();
+                document.add(new Paragraph("Reporte de cliente con mas reservas"));
+                document.add(new Paragraph("Nombre del Cliente: " + clienteConMaxReservas.getNombre())); // Agregar nombre del cliente
+                document.add(new Paragraph("Cantidad de Reservas: " + maxReservas)); // Agregar cantidad de reservas
+                document.add(new Paragraph("----------------------------- "));  // Línea en blanco
+
+                // Agregar detalles de cada reserva al PDF
+                for (Reserva r : reservas) {
+                    document.add(new Paragraph("ID Reserva: " + r.getIdReserva()));
+                    document.add(new Paragraph("Estado: " + r.getEstadoReserva()));
+                    document.add(new Paragraph("Fecha: " + r.getFechaReserva().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+                    document.add(new Paragraph("Hora de Inicio: " + r.getFechaHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm"))));
+                    document.add(new Paragraph("Hora de Fin: " + r.getFechaHoraFin().format(DateTimeFormatter.ofPattern("HH:mm"))));
+                    document.add(new Paragraph("Mesa: " + r.getMesa().getNumeroMesa()));
+                    document.add(new Paragraph("-------------------------- "));  // Línea en blanco
+                }
+
+                // Cerrar el documento
+                document.close();
+                pdfGenerado = true;
+
+                if (pdfGenerado) {
+                    JOptionPane.showMessageDialog(null, "PDF generado exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al generar el PDF.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (FileNotFoundException | DocumentException e) {
+                e.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró ningún cliente con reservas.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btn_clienteMayorCantReservasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -269,10 +340,10 @@ public class Reportes extends javax.swing.JFrame {
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnVolver;
     private javax.swing.JButton btn_ReservasTotalesCliente;
+    private javax.swing.JButton btn_clienteMayorCantReservas;
     private javax.swing.JButton jButtonHorarios;
     private javax.swing.JButton jButtonReportes;
     private javax.swing.JButton jButtonReportes3;
-    private javax.swing.JButton jButtonReservas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

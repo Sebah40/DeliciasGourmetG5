@@ -25,7 +25,7 @@ public class Cliente {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Reserva> reservas = new ArrayList<>();
 
     @ManyToMany(mappedBy = "clientes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

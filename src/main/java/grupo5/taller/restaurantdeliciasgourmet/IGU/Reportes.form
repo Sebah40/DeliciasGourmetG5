@@ -76,7 +76,7 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jButtonReportes3" pref="265" max="32767" attributes="0"/>
                               <Component id="jButtonHorarios" pref="265" max="32767" attributes="0"/>
-                              <Component id="jButtonReservas" pref="265" max="32767" attributes="0"/>
+                              <Component id="btn_clienteMayorCantReservas" pref="265" max="32767" attributes="0"/>
                               <Component id="btn_ReservasTotalesCliente" pref="265" max="32767" attributes="0"/>
                               <Component id="jButtonReportes" alignment="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -100,7 +100,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btn_ReservasTotalesCliente" min="-2" pref="38" max="-2" attributes="0"/>
                   <EmptySpace pref="22" max="32767" attributes="0"/>
-                  <Component id="jButtonReservas" min="-2" pref="38" max="-2" attributes="0"/>
+                  <Component id="btn_clienteMayorCantReservas" min="-2" pref="38" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                   <Component id="jButtonHorarios" min="-2" pref="38" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -183,10 +183,13 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_ReservasTotalesClienteActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButtonReservas">
+        <Component class="javax.swing.JButton" name="btn_clienteMayorCantReservas">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cliente con mayor cant. de reservas"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_clienteMayorCantReservasActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonHorarios">
           <Properties>
