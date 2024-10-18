@@ -2,13 +2,21 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 
 
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class PantallaPrincipal extends javax.swing.JFrame {
-
+    private  ClienteService clienteService;
+    private  EmpleadoService empleadoService;
+    private  RolService rolService;
+    private  MesaService mesaService;
+    
     @Autowired
     public PantallaPrincipal() {
     
@@ -42,7 +50,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Bienvenidos");
+        jLabel1.setText("Bienvenido/a ");
 
         btnSalir.setBackground(new java.awt.Color(51, 204, 0));
         btnSalir.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -158,7 +166,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-
+        LoginCliente inicioWindow = new LoginCliente(clienteService,empleadoService, rolService,mesaService);
+        inicioWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
