@@ -12,13 +12,17 @@ import com.itextpdf.text.pdf.PdfWriter;
 import grupo5.taller.restaurantdeliciasgourmet.Repositorios.ClienteRepository;
 import grupo5.taller.restaurantdeliciasgourmet.Repositorios.ReservaRepository;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
+import grupo5.taller.restaurantdeliciasgourmet.logica.EstadoReserva;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import static java.text.NumberFormat.Field.INTEGER;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.JOptionPane;
 import org.springframework.stereotype.Component;
 
@@ -40,9 +44,9 @@ public class Reportes extends javax.swing.JFrame {
         btnVolver = new javax.swing.JButton();
         btn_ReservasTotalesCliente = new javax.swing.JButton();
         btn_clienteMayorCantReservas = new javax.swing.JButton();
-        jButtonHorarios = new javax.swing.JButton();
-        jButtonReportes = new javax.swing.JButton();
-        jButtonReportes3 = new javax.swing.JButton();
+        btn_ClientesNoAsistieron = new javax.swing.JButton();
+        btnReservasEnRangoDeTiempo = new javax.swing.JButton();
+        btn_MayorConcurrencia = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFocusTraversalPolicyProvider(true);
@@ -97,19 +101,24 @@ public class Reportes extends javax.swing.JFrame {
             }
         });
 
-        jButtonHorarios.setText("Clientes que no asistieron");
-
-        jButtonReportes.setText("Reservas en un rango de tiempo determinado");
-        jButtonReportes.addActionListener(new java.awt.event.ActionListener() {
+        btn_ClientesNoAsistieron.setText("Clientes que no asistieron");
+        btn_ClientesNoAsistieron.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonReportesActionPerformed(evt);
+                btn_ClientesNoAsistieronActionPerformed(evt);
             }
         });
 
-        jButtonReportes3.setText("Periodos de mayor concurrencia");
-        jButtonReportes3.addActionListener(new java.awt.event.ActionListener() {
+        btnReservasEnRangoDeTiempo.setText("Reservas en un rango de tiempo determinado");
+        btnReservasEnRangoDeTiempo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonReportes3ActionPerformed(evt);
+                btnReservasEnRangoDeTiempoActionPerformed(evt);
+            }
+        });
+
+        btn_MayorConcurrencia.setText("Periodos de mayor concurrencia");
+        btn_MayorConcurrencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_MayorConcurrenciaActionPerformed(evt);
             }
         });
 
@@ -120,26 +129,29 @@ public class Reportes extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButtonReportes3, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                            .addComponent(jButtonHorarios, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                            .addComponent(btn_clienteMayorCantReservas, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                            .addComponent(btn_ReservasTotalesCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                            .addComponent(jButtonReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 10, Short.MAX_VALUE))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 10, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_ClientesNoAsistieron, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_clienteMayorCantReservas)
+                            .addComponent(btn_ReservasTotalesCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_MayorConcurrencia, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(145, 145, 145))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnReservasEnRangoDeTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(94, 94, 94))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,17 +160,17 @@ public class Reportes extends javax.swing.JFrame {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addComponent(btn_ReservasTotalesCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btn_clienteMayorCantReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_ClientesNoAsistieron, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_MayorConcurrencia, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(jButtonHorarios, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonReportes3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addComponent(btnReservasEnRangoDeTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -258,13 +270,13 @@ public class Reportes extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btn_ReservasTotalesClienteActionPerformed
 
-    private void jButtonReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReportesActionPerformed
+    private void btnReservasEnRangoDeTiempoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservasEnRangoDeTiempoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonReportesActionPerformed
+    }//GEN-LAST:event_btnReservasEnRangoDeTiempoActionPerformed
 
-    private void jButtonReportes3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReportes3ActionPerformed
+    private void btn_MayorConcurrenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_MayorConcurrenciaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonReportes3ActionPerformed
+    }//GEN-LAST:event_btn_MayorConcurrenciaActionPerformed
 
     private void btn_clienteMayorCantReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clienteMayorCantReservasActionPerformed
         ClienteRepository clieRepo = RestaurantDeliciasGourmet.getContext().getBean(ClienteRepository.class);
@@ -332,18 +344,74 @@ public class Reportes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_clienteMayorCantReservasActionPerformed
 
+    private void btn_ClientesNoAsistieronActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ClientesNoAsistieronActionPerformed
+        ClienteRepository clieRepo = RestaurantDeliciasGourmet.getContext().getBean(ClienteRepository.class);
+        ReservaRepository reservaRepo = RestaurantDeliciasGourmet.getContext().getBean(ReservaRepository.class);
+        List<Reserva> reservas = reservaRepo.findAll();
+
+        Set<Cliente> noAsistieron = new HashSet<>();
+
+        for (Reserva r : reservas) {
+            if (r.getEstadoReserva() == EstadoReserva.NO_ASISTIO) {
+                noAsistieron.add(r.getCliente());
+            }
+        }
+
+        if (!noAsistieron.isEmpty()) {
+            boolean pdfGenerado = false;
+            // Generar el PDF
+            try {
+                // Definir la ruta y nombre del archivo PDF
+                String filePath = "reporte_ClientesQueNoAsistieron.pdf";
+                Document document = new Document();
+
+                // Inicializar PdfWriter
+                PdfWriter.getInstance(document, new FileOutputStream(filePath));
+
+                // Abrir el documento y agregar contenido
+                document.open();
+                document.add(new Paragraph("Reporte de clientes que no asisitieron"));
+                document.add(new Paragraph("----------------------------- "));  // Línea en blanco
+
+                // Agregar detalles de cada reserva al PDF
+                for (Cliente c : noAsistieron) {
+                    document.add(new Paragraph("ID Cliente: " + c.getClienteId()));
+                    document.add(new Paragraph("Email: " + c.getEmail()));
+                    document.add(new Paragraph("Nombre: " + c.getNombre()));
+                    document.add(new Paragraph("Telefono: " + c.getTelefono()));
+                    document.add(new Paragraph("-------------------------- "));
+                }
+
+                // Cerrar el documento
+                document.close();
+                pdfGenerado = true;
+
+                if (pdfGenerado) {
+                    JOptionPane.showMessageDialog(null, "PDF generado exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al generar el PDF.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (FileNotFoundException | DocumentException e) {
+                e.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró ningún cliente que no asistiera.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btn_ClientesNoAsistieronActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnReservasEnRangoDeTiempo;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnVolver;
+    private javax.swing.JButton btn_ClientesNoAsistieron;
+    private javax.swing.JButton btn_MayorConcurrencia;
     private javax.swing.JButton btn_ReservasTotalesCliente;
     private javax.swing.JButton btn_clienteMayorCantReservas;
-    private javax.swing.JButton jButtonHorarios;
-    private javax.swing.JButton jButtonReportes;
-    private javax.swing.JButton jButtonReportes3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
