@@ -8,6 +8,7 @@ import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ReservaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
+import grupo5.taller.restaurantdeliciasgourmet.logica.EstadoReserva;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
 import jakarta.annotation.PostConstruct;
 import java.awt.event.WindowAdapter;
@@ -151,10 +152,10 @@ public class VerReservasCliente extends javax.swing.JFrame {
         Reserva selectedReserva = reservas.get(selectedIndex);
 
         try {
-            reservaService.cancelarReserva(selectedReserva.getIdReserva());
-
-            JOptionPane.showMessageDialog(this, "Reserva cancelada exitosamente.");
-
+            if (selectedReserva.getEstadoReserva().equals(EstadoReserva.CONFIRMADA)) {
+                reservaService.cancelarReserva(selectedReserva.getIdReserva());
+                JOptionPane.showMessageDialog(this, "Reserva cancelada exitosamente.");
+            }
             refreshReservas();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cancelar la reserva: " + e.getMessage());

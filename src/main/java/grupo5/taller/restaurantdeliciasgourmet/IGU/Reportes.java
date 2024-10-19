@@ -18,8 +18,10 @@ import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import static java.text.NumberFormat.Field.INTEGER;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -206,7 +208,9 @@ public class Reportes extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-
+        PantallaAdministrador pantAdmin = RestaurantDeliciasGourmet.getContext().getBean(PantallaAdministrador.class);
+        pantAdmin.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btn_ReservasTotalesClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ReservasTotalesClienteActionPerformed
@@ -276,29 +280,104 @@ public class Reportes extends javax.swing.JFrame {
 
     private void btnReservasEnRangoDeTiempoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservasEnRangoDeTiempoActionPerformed
         // TODO add your handling code here:
+        String startDateInput = JOptionPane.showInputDialog(null, "Ingrese la fecha de inicio (dd/MM/yyyy):", "Fecha de Inicio", JOptionPane.PLAIN_MESSAGE);
+        String endDateInput = JOptionPane.showInputDialog(null, "Ingrese la fecha de fin (dd/MM/yyyy):", "Fecha de Fin", JOptionPane.PLAIN_MESSAGE);
+
+        LocalDate startDate;
+        LocalDate endDate;
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            startDate = LocalDate.parse(startDateInput, formatter);
+            endDate = LocalDate.parse(endDateInput, formatter);
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(null, "Las fechas deben estar en el formato dd/MM/yyyy.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        ReservaRepository reservaRepo = RestaurantDeliciasGourmet.getContext().getBean(ReservaRepository.class);
+        List<Reserva> reservas = reservaRepo.findByFechaReservaBetween(startDate, endDate);
+
+        if (reservas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No se encontraron reservas en el rango de fechas especificado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        boolean pdfGenerado = false;
+        try {
+            String filePath = "reporte_ReservasEnRangoDeTiempo.pdf";
+            Document document = new Document();
+
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+
+            document.open();
+            document.add(new Paragraph("Reporte de Reservas en Rango de Tiempo"));
+            document.add(new Paragraph("Rango de fechas: " + startDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " - " + endDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+            document.add(new Paragraph("------------------------------"));
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            for (Reserva r : reservas) {
+                document.add(new Paragraph("ID Reserva: " + r.getIdReserva()));
+                document.add(new Paragraph("Estado: " + r.getEstadoReserva()));
+                document.add(new Paragraph("Fecha: " + r.getFechaReserva().format(formatter)));
+                document.add(new Paragraph("Hora de Inicio: " + r.getFechaHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm"))));
+                document.add(new Paragraph("Hora de Fin: " + r.getFechaHoraFin().format(DateTimeFormatter.ofPattern("HH:mm"))));
+                document.add(new Paragraph("Mesa: " + r.getMesa().getNumeroMesa()));
+                document.add(new Paragraph("------------------------------"));
+            }
+
+            document.close();
+            pdfGenerado = true;
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Error al crear el archivo PDF: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (DocumentException e) {
+            JOptionPane.showMessageDialog(null, "Error al crear el documento PDF: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (pdfGenerado) {
+            JOptionPane.showMessageDialog(null, "PDF generado exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnReservasEnRangoDeTiempoActionPerformed
 
     private void btn_MayorConcurrenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_MayorConcurrenciaActionPerformed
         ReservaRepository reservaRepo = RestaurantDeliciasGourmet.getContext().getBean(ReservaRepository.class);
         List<Reserva> reservas = reservaRepo.findAll();
-        
-         // Crear un mapa para contar las reservas por fecha
+
+        // Crear un mapa para contar las reservas por fecha
         Map<LocalDate, Integer> conteoPorFecha = new HashMap<>();
+        // Crear un mapa para contar las reservas por día de la semana
+        Map<DayOfWeek, Integer> conteoPorDiaSemana = new HashMap<>();
+        // Crear un mapa para contar las reservas por día del mes
+        Map<Integer, Integer> conteoPorDiaDelMes = new HashMap<>();
 
         // Contar las reservas
         for (Reserva reserva : reservas) {
             LocalDate fecha = reserva.getFechaReserva();
+
+            // Contar por fecha
             conteoPorFecha.put(fecha, conteoPorFecha.getOrDefault(fecha, 0) + 1);
+
+            // Contar por día de la semana
+            DayOfWeek diaSemana = fecha.getDayOfWeek();
+            conteoPorDiaSemana.put(diaSemana, conteoPorDiaSemana.getOrDefault(diaSemana, 0) + 1);
+
+            // Contar por día del mes
+            int diaDelMes = fecha.getDayOfMonth();
+            conteoPorDiaDelMes.put(diaDelMes, conteoPorDiaDelMes.getOrDefault(diaDelMes, 0) + 1);
         }
-        
-         List<Map.Entry<LocalDate, Integer>> fechasConcurridas = conteoPorFecha.entrySet()
+
+        // Encontrar las 3 fechas más concurridas
+        List<Map.Entry<LocalDate, Integer>> fechasConcurridas = conteoPorFecha.entrySet()
                 .stream()
                 .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())) // Ordenar por cantidad de reservas
                 .limit(3) // Limitar a las 3 más concurridas
                 .collect(Collectors.toList());
-         
-         if(!fechasConcurridas.isEmpty()){
-             boolean pdfGenerado = false;
+
+        if (!fechasConcurridas.isEmpty()) {
+            boolean pdfGenerado = false;
             // Generar el PDF
             try {
                 // Definir la ruta y nombre del archivo PDF
@@ -310,16 +389,40 @@ public class Reportes extends javax.swing.JFrame {
 
                 // Abrir el documento y agregar contenido
                 document.open();
-                document.add(new Paragraph("Reporte de periodos mas concurridos"));
+                document.add(new Paragraph("Reporte de periodos más concurridos"));
                 document.add(new Paragraph("----------------------------- "));  // Línea en blanco
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                
-                // Agregar detalles de cada reserva al PDF
+
+                // Agregar detalles de las fechas más concurridas al PDF
+                document.add(new Paragraph("Fechas más concurridas:"));
                 for (Map.Entry<LocalDate, Integer> r : fechasConcurridas) {
-                    document.add(new Paragraph("Fecha: " +r.getKey().format(formatter)));
+                    document.add(new Paragraph("Fecha: " + r.getKey().format(formatter)));
                     document.add(new Paragraph("Cantidad de Reservas: " + r.getValue()));
                     document.add(new Paragraph("-------------------------- "));  // Línea en blanco
+                }
+
+                // Agregar detalles sobre días de la semana más concurridos
+                document.add(new Paragraph("Días de la semana más concurridos:"));
+                List<Map.Entry<DayOfWeek, Integer>> diasSemanaConcurridos = conteoPorDiaSemana.entrySet()
+                        .stream()
+                        .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())) // Ordenar por cantidad
+                        .limit(3) // Limitar a los 3 más concurridos
+                        .collect(Collectors.toList());
+                for (Map.Entry<DayOfWeek, Integer> entry : diasSemanaConcurridos) {
+                    document.add(new Paragraph("Día: " + entry.getKey() + ", Cantidad de Reservas: " + entry.getValue()));
+                }
+
+                // Agregar detalles sobre días del mes más concurridos
+                document.add(new Paragraph("------------------------------"));
+                document.add(new Paragraph("Días del mes más concurridos:"));
+                List<Map.Entry<Integer, Integer>> diasMesConcurridos = conteoPorDiaDelMes.entrySet()
+                        .stream()
+                        .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())) // Ordenar por cantidad
+                        .limit(3) // Limitar a los 3 más concurridos
+                        .collect(Collectors.toList());
+                for (Map.Entry<Integer, Integer> entry : diasMesConcurridos) {
+                    document.add(new Paragraph("Día: " + entry.getKey() + ", Cantidad de Reservas: " + entry.getValue()));
                 }
 
                 // Cerrar el documento
@@ -335,7 +438,7 @@ public class Reportes extends javax.swing.JFrame {
             } catch (FileNotFoundException | DocumentException e) {
                 e.printStackTrace();
             }
-         }else {
+        } else {
             JOptionPane.showMessageDialog(null, "No se encontraron reservas.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btn_MayorConcurrenciaActionPerformed

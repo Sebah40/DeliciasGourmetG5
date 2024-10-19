@@ -239,7 +239,7 @@ public class LoginCliente extends javax.swing.JFrame {
     }
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        PantallaInicio inicioWindow = new PantallaInicio(clienteService,empleadoService,rolService,mesaService);
+        PantallaInicio inicioWindow = RestaurantDeliciasGourmet.getContext().getBean(PantallaInicio.class);
         inicioWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed

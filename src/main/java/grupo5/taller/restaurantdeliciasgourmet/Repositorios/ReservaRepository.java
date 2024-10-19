@@ -6,6 +6,7 @@ package grupo5.taller.restaurantdeliciasgourmet.Repositorios;
 
 import grupo5.taller.restaurantdeliciasgourmet.logica.Mesa;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     
     
         List<Reserva> findByCliente_ClienteId(Integer clienteId);
+        
+        List<Reserva> findByFechaReservaBetween(LocalDate startDate, LocalDate endDate);
 }

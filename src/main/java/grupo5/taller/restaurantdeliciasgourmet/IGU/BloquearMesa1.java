@@ -9,7 +9,10 @@ import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.ReservaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.TarjetaCreditoService;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import grupo5.taller.restaurantdeliciasgourmet.logica.EstadoReserva;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Mesa;
@@ -32,8 +35,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BloquearMesa1 extends javax.swing.JFrame {
-      @Autowired
+
+    @Autowired
     private ClienteService clienteService;
+    
+    @Autowired
+    private ReservaService reservaService;
 
     @Autowired
     private EmpleadoService empleadoService;
@@ -41,10 +48,11 @@ public class BloquearMesa1 extends javax.swing.JFrame {
     @Autowired
     private RolService rolService;
 
-
     @Autowired
     private MesaService mesaService;
     
+    @Autowired
+    private TarjetaCreditoService tarjetaService;
 
     @Autowired
     public BloquearMesa1(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
@@ -59,9 +67,11 @@ public class BloquearMesa1 extends javax.swing.JFrame {
         initComponents();
         jDateChooser.setDate(java.sql.Date.valueOf(LocalDate.now()));
         jDateChooser.getDateEditor().addPropertyChangeListener("date", e -> {
-                actualizarMesas(null);
-            });
-        timeSpinner.addChangeListener(e -> {actualizarMesas(null);});
+            actualizarMesas(null);
+        });
+        timeSpinner.addChangeListener(e -> {
+            actualizarMesas(null);
+        });
     }
 
     /**
@@ -82,8 +92,10 @@ public class BloquearMesa1 extends javax.swing.JFrame {
         jDateChooser = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jListMesas = new javax.swing.JList<>();
         timeSpinner = new javax.swing.JSpinner();
+        spinnerHorasBloqueo = new javax.swing.JSpinner();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFocusTraversalPolicyProvider(true);
@@ -117,7 +129,7 @@ public class BloquearMesa1 extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel7.setText("Hora");
+        jLabel7.setText("Horas de bloqueo");
 
         btnVerMisReservas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnVerMisReservas.setText("Volver");
@@ -130,12 +142,16 @@ public class BloquearMesa1 extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(60, 63, 65));
         jLabel2.setText("HH:mm");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        jListMesas.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = {  };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(jListMesas);
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel8.setText("Hora");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -151,13 +167,21 @@ public class BloquearMesa1 extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnBloquear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                            .addComponent(timeSpinner))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(spinnerHorasBloqueo))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                                    .addComponent(timeSpinner))))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addGap(45, 45, 45)))
@@ -177,10 +201,14 @@ public class BloquearMesa1 extends javax.swing.JFrame {
                         .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
                     .addComponent(jLabel2)
-                    .addComponent(timeSpinner))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                    .addComponent(timeSpinner)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(spinnerHorasBloqueo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,47 +237,68 @@ public class BloquearMesa1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void actualizarMesas(java.awt.event.ActionEvent evt) {
-    DefaultListModel<String> listModel = new DefaultListModel<>();
-    jList1.setModel(listModel);
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        jListMesas.setModel(listModel);
 
-    if (jDateChooser.getDate() == null) {
-        JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.");
-        return;
-    }
-
-    LocalDate selectedDate = getSelectedDate();
-    LocalDateTime startDateTime = getSelectedTime();
-    
-    LocalDateTime endDateTime = startDateTime.plusHours(2);
-   
-    try {
-         List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(startDateTime, endDateTime);
-        if (mesasDisponibles.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No hay mesas disponibles para la fecha y hora seleccionadas.");
+        if (jDateChooser.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.");
             return;
         }
 
-        for (Mesa mesa : mesasDisponibles) {
-            String mesaInfo = String.format("Mesa %d - Capacidad: %d - Ubicación: %s",
-                                             mesa.getNumeroMesa(),
-                                             mesa.getCapacidad(),
-                                             mesa.getUbicacion().name().toLowerCase());
-            listModel.addElement(mesaInfo);
+        LocalDate selectedDate = getSelectedDate();
+        LocalDateTime startDateTime = getSelectedTime();
 
+        LocalDateTime endDateTime = startDateTime.plusHours(2);
+
+        try {
+            List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(startDateTime, endDateTime);
+            if (mesasDisponibles.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No hay mesas disponibles para la fecha y hora seleccionadas.");
+                return;
+            }
+
+            for (Mesa mesa : mesasDisponibles) {
+                String mesaInfo = String.format("Mesa %d - Capacidad: %d - Ubicación: %s",
+                        mesa.getNumeroMesa(),
+                        mesa.getCapacidad(),
+                        mesa.getUbicacion().name().toLowerCase());
+                listModel.addElement(mesaInfo);
+
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BloquearMesa1.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error al obtener mesas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (Exception ex) {
-        Logger.getLogger(BloquearMesa1.class.getName()).log(Level.SEVERE, null, ex);
-        JOptionPane.showMessageDialog(this, "Error al obtener mesas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-}
-    
+
     private void btnBloquearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBloquearActionPerformed
-        mesaService.bloquearMesa(HEIGHT);
-     
+        LocalDate selectedDate = getSelectedDate();
+        LocalDateTime selectedTime = getSelectedTime();
+
+        if (selectedDate == null || selectedTime == null) {
+            return;
+        }
+        int horasBloquear;
+        try {
+            horasBloquear = (int) spinnerHorasBloqueo.getValue();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un valor válido para las horas de bloqueo.");
+            return;
+        }
+        LocalDateTime fechaHoraFin = selectedTime.plusHours(horasBloquear);
+        int clienteId = SessionManager.getInstance().getCurrentCliente().getClienteId();
+        int mesaId = 1; //FALTA IMPLEMENTAR!
+        try {
+        reservaService.hacerReserva(mesaId, clienteId, tarjetaService.findByNumeroTarjeta("8888888888888"), selectedDate, selectedTime);
+
+        JOptionPane.showMessageDialog(this, "Reserva creada con éxito.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al crear la reserva: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnBloquearActionPerformed
 
     private void btnVerMisReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMisReservasActionPerformed
-        GestionDeMesas mesa1 = new GestionDeMesas(clienteService, empleadoService, rolService,mesaService);
+        GestionDeMesas mesa1 = new GestionDeMesas(clienteService, empleadoService, rolService, mesaService);
         mesa1.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVerMisReservasActionPerformed
@@ -269,13 +318,12 @@ public class BloquearMesa1 extends javax.swing.JFrame {
         return null;
     }
 
-        private LocalDateTime getSelectedTime() {
-    Date selectedTime = (Date) timeSpinner.getValue();
-    LocalTime localTime = selectedTime.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-    LocalDate selectedDate = getSelectedDate();
-    return LocalDateTime.of(selectedDate, localTime);
-}
-
+    private LocalDateTime getSelectedTime() {
+        Date selectedTime = (Date) timeSpinner.getValue();
+        LocalTime localTime = selectedTime.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        LocalDate selectedDate = getSelectedDate();
+        return LocalDateTime.of(selectedDate, localTime);
+    }
 
     /**
      * @param args the command line arguments
@@ -288,12 +336,13 @@ public class BloquearMesa1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JList<String> jListMesas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jTitulo;
+    private javax.swing.JSpinner spinnerHorasBloqueo;
     private javax.swing.JSpinner timeSpinner;
     // End of variables declaration//GEN-END:variables
-
 
 }

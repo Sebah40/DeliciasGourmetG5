@@ -2,6 +2,7 @@ package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 
 
+import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
@@ -166,19 +167,19 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        LoginCliente inicioWindow = new LoginCliente(clienteService,empleadoService, rolService,mesaService);
+        LoginCliente inicioWindow = RestaurantDeliciasGourmet.getContext().getBean(LoginCliente.class);
         inicioWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearReservaActionPerformed
-        ReservarMesa pantallaReserva = new ReservarMesa();
+        ReservarMesa pantallaReserva = RestaurantDeliciasGourmet.getContext().getBean(ReservarMesa.class);
         pantallaReserva.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCrearReservaActionPerformed
 
     private void btnVerReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerReservasActionPerformed
-        VerReservasCliente reservas= new VerReservasCliente();
+        VerReservasCliente reservas= RestaurantDeliciasGourmet.getContext().getBean(VerReservasCliente.class);
         reservas.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVerReservasActionPerformed
