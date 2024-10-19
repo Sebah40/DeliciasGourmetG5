@@ -15,6 +15,7 @@ import grupo5.taller.restaurantdeliciasgourmet.logica.Rol;
 import grupo5.taller.restaurantdeliciasgourmet.logica.TarjetaCredito;
 
 import grupo5.taller.restaurantdeliciasgourmet.logica.Ubicacion;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.springframework.boot.SpringApplication;
@@ -53,7 +54,7 @@ public class RestaurantDeliciasGourmet {
         }
         TarjetaCreditoService tarjetaService = context.getBean(TarjetaCreditoService.class);
         if(tarjetaService.findByNumeroTarjeta("8888888888888") == null){
-            tarjetaService.saveTarjetaCredito(new TarjetaCredito("admin","admin","8888888888888","888",new ArrayList<>()));
+            tarjetaService.saveTarjetaCredito(new TarjetaCredito("admin","admin","8888888888888","888",LocalDate.now()));
         }
     }
     
