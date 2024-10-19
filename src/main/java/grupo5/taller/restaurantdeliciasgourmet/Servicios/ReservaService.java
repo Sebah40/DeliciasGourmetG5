@@ -7,6 +7,7 @@ package grupo5.taller.restaurantdeliciasgourmet.Servicios;
 import grupo5.taller.restaurantdeliciasgourmet.Repositorios.ClienteRepository;
 import grupo5.taller.restaurantdeliciasgourmet.Repositorios.MesaRepository;
 import grupo5.taller.restaurantdeliciasgourmet.Repositorios.ReservaRepository;
+import grupo5.taller.restaurantdeliciasgourmet.Repositorios.TarjetaCreditoRepository;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Cliente;
 import grupo5.taller.restaurantdeliciasgourmet.logica.EstadoReserva;
 import grupo5.taller.restaurantdeliciasgourmet.logica.Mesa;
@@ -36,6 +37,9 @@ public class ReservaService {
     
     @Autowired
     private MesaService mesaService;
+    
+    @Autowired
+    private TarjetaCreditoRepository tarjetaRepository;
 
 
 
@@ -63,6 +67,30 @@ public class ReservaService {
         reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
         reserva.setTarjeta(tarjeta);
 
+        reservaRepository.save(reserva);
+    }
+    
+    public void bloquearMesa(int mesaId, LocalDate fechaReserva, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) throws Exception {
+        List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles();
+        Mesa mesa = mesaRepository.findById(mesaId).orElseThrow(() -> new Exception("Mesa no encontrada"));
+        System.out.println("MESA PEDIDA: " + mesa);
+        System.out.println("MESAS ENCONTRADASS" + mesasDisponibles);
+        System.out.println(mesasDisponibles.contains(mesa));
+        if (!mesasDisponibles.contains(mesa)) {
+            throw new Exception("La mesa seleccionada no está disponible en el horario elegido.");
+        }
+
+        Cliente cliente = clienteRepository.findById(1)
+                .orElseThrow(() -> new Exception("Cliente no encontrado"));
+
+        Reserva reserva = new Reserva();
+        reserva.setMesa(mesa);
+        reserva.setCliente(cliente);
+        reserva.setFechaReserva(fechaReserva);
+        reserva.setFechaHoraInicio(fechaHoraInicio);
+        reserva.setFechaHoraFin(fechaHoraFin);
+        reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
+        reserva.setTarjeta(tarjetaRepository.findByNumeroTarjeta("8888888888888"));
         reservaRepository.save(reserva);
     }
 
