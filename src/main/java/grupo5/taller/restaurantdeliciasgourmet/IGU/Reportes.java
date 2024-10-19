@@ -18,11 +18,15 @@ import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import static java.text.NumberFormat.Field.INTEGER;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import org.springframework.stereotype.Component;
 
@@ -275,7 +279,65 @@ public class Reportes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReservasEnRangoDeTiempoActionPerformed
 
     private void btn_MayorConcurrenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_MayorConcurrenciaActionPerformed
-        // TODO add your handling code here:
+        ReservaRepository reservaRepo = RestaurantDeliciasGourmet.getContext().getBean(ReservaRepository.class);
+        List<Reserva> reservas = reservaRepo.findAll();
+        
+         // Crear un mapa para contar las reservas por fecha
+        Map<LocalDate, Integer> conteoPorFecha = new HashMap<>();
+
+        // Contar las reservas
+        for (Reserva reserva : reservas) {
+            LocalDate fecha = reserva.getFechaReserva();
+            conteoPorFecha.put(fecha, conteoPorFecha.getOrDefault(fecha, 0) + 1);
+        }
+        
+         List<Map.Entry<LocalDate, Integer>> fechasConcurridas = conteoPorFecha.entrySet()
+                .stream()
+                .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())) // Ordenar por cantidad de reservas
+                .limit(3) // Limitar a las 3 más concurridas
+                .collect(Collectors.toList());
+         
+         if(!fechasConcurridas.isEmpty()){
+             boolean pdfGenerado = false;
+            // Generar el PDF
+            try {
+                // Definir la ruta y nombre del archivo PDF
+                String filePath = "reporte_PeriodosMasConcurridos.pdf";
+                Document document = new Document();
+
+                // Inicializar PdfWriter
+                PdfWriter.getInstance(document, new FileOutputStream(filePath));
+
+                // Abrir el documento y agregar contenido
+                document.open();
+                document.add(new Paragraph("Reporte de periodos mas concurridos"));
+                document.add(new Paragraph("----------------------------- "));  // Línea en blanco
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                
+                // Agregar detalles de cada reserva al PDF
+                for (Map.Entry<LocalDate, Integer> r : fechasConcurridas) {
+                    document.add(new Paragraph("Fecha: " +r.getKey().format(formatter)));
+                    document.add(new Paragraph("Cantidad de Reservas: " + r.getValue()));
+                    document.add(new Paragraph("-------------------------- "));  // Línea en blanco
+                }
+
+                // Cerrar el documento
+                document.close();
+                pdfGenerado = true;
+
+                if (pdfGenerado) {
+                    JOptionPane.showMessageDialog(null, "PDF generado exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al generar el PDF.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (FileNotFoundException | DocumentException e) {
+                e.printStackTrace();
+            }
+         }else {
+            JOptionPane.showMessageDialog(null, "No se encontraron reservas.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btn_MayorConcurrenciaActionPerformed
 
     private void btn_clienteMayorCantReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clienteMayorCantReservasActionPerformed
