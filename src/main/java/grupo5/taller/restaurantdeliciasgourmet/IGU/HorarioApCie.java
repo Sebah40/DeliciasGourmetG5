@@ -45,7 +45,7 @@ public class HorarioApCie extends javax.swing.JFrame {
     private void formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentHidden
         // TODO add your handling code here:
     }//GEN-LAST:event_formComponentHidden
-private JSpinner spinnerHoraApertura;
+    private JSpinner spinnerHoraApertura;
     private JSpinner spinnerHoraCierre;
     private JButton btnGuardar;
 

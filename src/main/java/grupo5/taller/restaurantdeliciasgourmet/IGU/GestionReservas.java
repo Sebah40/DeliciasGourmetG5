@@ -1,10 +1,18 @@
 
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
+import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.ReservaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
+import grupo5.taller.restaurantdeliciasgourmet.logica.Reserva;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.List;
+import javax.swing.DefaultListModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,19 +23,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GestionReservas extends javax.swing.JFrame {
-
-   private final ClienteService clienteService;
-    private final EmpleadoService empleadoService;
-    private final RolService rolService;
-    private final MesaService mesaService;
-
     @Autowired
-    public GestionReservas(ClienteService clienteService, EmpleadoService empleadoService, RolService rolService, MesaService mesaService) {
-        this.clienteService = clienteService;
-        this.empleadoService = empleadoService;
-        this.rolService = rolService;
-        this.mesaService = mesaService;
-    }
+    private ClienteService clienteService;
+    @Autowired
+    private EmpleadoService empleadoService;
+    @Autowired
+    private RolService rolService;
+    @Autowired
+    private MesaService mesaService;
+    
+    @Autowired
+    private ReservaService reservaService;
+    
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -40,8 +48,8 @@ public class GestionReservas extends javax.swing.JFrame {
         btnCrearReserva = new javax.swing.JButton();
         btnModificarReserva = new javax.swing.JButton();
         btnEliminarReserva = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_listaReservas = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbl_listaReservas = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFocusTraversalPolicyProvider(true);
@@ -93,19 +101,7 @@ public class GestionReservas extends javax.swing.JFrame {
 
         btnEliminarReserva.setText("Eliminar Reserva");
 
-        tbl_listaReservas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        tbl_listaReservas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {},
-                {},
-                {},
-                {}
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane1.setViewportView(tbl_listaReservas);
+        jScrollPane2.setViewportView(tbl_listaReservas);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -124,9 +120,9 @@ public class GestionReservas extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(10, 10, 10)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnEliminarReserva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnCrearReserva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -140,17 +136,16 @@ public class GestionReservas extends javax.swing.JFrame {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
                         .addComponent(btnCrearReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(46, 46, 46)
                         .addComponent(btnModificarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(54, 54, 54)
                         .addComponent(btnEliminarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -172,6 +167,16 @@ public class GestionReservas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
+    public GestionReservas() {
+        initComponents();
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                refreshReservas();
+            }
+        });
+    }
+    
     
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
        this.dispose();
@@ -180,20 +185,33 @@ public class GestionReservas extends javax.swing.JFrame {
 
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        PantallaAdministrador administrador = new PantallaAdministrador(clienteService,empleadoService, rolService,mesaService);
-        administrador.setVisible(true);
+       PantallaAdministrador adminWindow = RestaurantDeliciasGourmet.getContext().getBean(PantallaAdministrador.class);
+        adminWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearReservaActionPerformed
-        ReservarMesa mWindow = new ReservarMesa();
+        ReservarMesa mWindow = RestaurantDeliciasGourmet.getContext().getBean(ReservarMesa.class);
         mWindow.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCrearReservaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    public void refreshReservas() {
+        int clienteId = SessionManager.getInstance().getCurrentCliente().getClienteId();
+        List<Reserva> reservas = reservaService.getReservasFromCliente(clienteId);
+
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for (Reserva reserva : reservas) {
+            String reservaString = String.format("Fecha de reserva: %s      en mesa %d      para %s     estado: %s",
+                    reserva.getFechaHoraInicio(),
+                    reserva.getMesa().getNumeroMesa(),
+                    reserva.getCliente().getNombre(),
+                    reserva.getEstadoReserva().name());
+            model.addElement(reservaString);
+        }
+        tbl_listaReservas.setModel(model);
+    }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearReserva;
@@ -204,8 +222,8 @@ public class GestionReservas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tbl_listaReservas;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList<String> tbl_listaReservas;
     // End of variables declaration//GEN-END:variables
 
 

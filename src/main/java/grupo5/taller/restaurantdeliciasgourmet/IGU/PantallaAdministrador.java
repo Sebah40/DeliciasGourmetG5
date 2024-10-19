@@ -2,6 +2,7 @@
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 
+import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
@@ -210,8 +211,8 @@ public class PantallaAdministrador extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonEmpleadosActionPerformed
 
     private void jButtonReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReservasActionPerformed
-        GestionReservas reservasWindow = new GestionReservas(clienteService,empleadoService, rolService,mesaService);
-        reservasWindow.setVisible(true);
+       GestionReservas gestionres = RestaurantDeliciasGourmet.getContext().getBean(GestionReservas.class);
+        gestionres.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonReservasActionPerformed
 

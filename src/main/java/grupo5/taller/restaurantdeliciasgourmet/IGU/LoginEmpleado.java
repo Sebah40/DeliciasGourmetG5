@@ -219,8 +219,8 @@ public class LoginEmpleado extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Bienvenido, Administrador.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
                     // Abre la ventana del administrador
-                    PantallaAdministrador adminWindow = new PantallaAdministrador(clienteService,empleadoService, rolService,mesaService);
-                    adminWindow.setVisible(true);
+                PantallaAdministrador mWindow = RestaurantDeliciasGourmet.getContext().getBean(PantallaAdministrador.class);
+                    mWindow.setVisible(true);
                 } else if ("Recepcionista".equalsIgnoreCase(nombreRol)) {
                     // Guarda el empleado en la sesión
                     SessionManager.getInstance().setCurrentEmpleado(empleado);
