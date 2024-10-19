@@ -38,7 +38,7 @@ public class BloquearMesa1 extends javax.swing.JFrame {
 
     @Autowired
     private ClienteService clienteService;
-    
+
     @Autowired
     private ReservaService reservaService;
 
@@ -50,7 +50,7 @@ public class BloquearMesa1 extends javax.swing.JFrame {
 
     @Autowired
     private MesaService mesaService;
-    
+
     @Autowired
     private TarjetaCreditoService tarjetaService;
 
@@ -60,10 +60,6 @@ public class BloquearMesa1 extends javax.swing.JFrame {
         this.empleadoService = empleadoService;
         this.rolService = rolService;
         this.mesaService = mesaService;
-        initComponents();
-    }
-
-    public BloquearMesa1() {
         initComponents();
         jDateChooser.setDate(java.sql.Date.valueOf(LocalDate.now()));
         jDateChooser.getDateEditor().addPropertyChangeListener("date", e -> {
@@ -237,6 +233,7 @@ public class BloquearMesa1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void actualizarMesas(java.awt.event.ActionEvent evt) {
+        System.out.println("ACTUALIZANDO MESAS!!!!");
         DefaultListModel<String> listModel = new DefaultListModel<>();
         jListMesas.setModel(listModel);
 
@@ -247,11 +244,15 @@ public class BloquearMesa1 extends javax.swing.JFrame {
 
         LocalDate selectedDate = getSelectedDate();
         LocalDateTime startDateTime = getSelectedTime();
-
         LocalDateTime endDateTime = startDateTime.plusHours(2);
+
+        // DEBUGGING ----
+        System.out.println("Start Time: " + startDateTime);
+        System.out.println("End Time: " + endDateTime);
 
         try {
             List<Mesa> mesasDisponibles = mesaService.getMesasDisponibles(startDateTime, endDateTime);
+            System.out.println("MESAS DISPONIBLES: " + mesasDisponibles.toString());
             if (mesasDisponibles.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "No hay mesas disponibles para la fecha y hora seleccionadas.");
                 return;
@@ -263,7 +264,6 @@ public class BloquearMesa1 extends javax.swing.JFrame {
                         mesa.getCapacidad(),
                         mesa.getUbicacion().name().toLowerCase());
                 listModel.addElement(mesaInfo);
-
             }
         } catch (Exception ex) {
             Logger.getLogger(BloquearMesa1.class.getName()).log(Level.SEVERE, null, ex);
@@ -278,6 +278,7 @@ public class BloquearMesa1 extends javax.swing.JFrame {
         if (selectedDate == null || selectedTime == null) {
             return;
         }
+
         int horasBloquear;
         try {
             horasBloquear = (int) spinnerHorasBloqueo.getValue();
@@ -285,22 +286,36 @@ public class BloquearMesa1 extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese un valor válido para las horas de bloqueo.");
             return;
         }
-        LocalDateTime fechaHoraFin = selectedTime.plusHours(horasBloquear);
-        int clienteId = SessionManager.getInstance().getCurrentCliente().getClienteId();
-        int mesaId = 1; //FALTA IMPLEMENTAR!
-        try {
-        reservaService.hacerReserva(mesaId, clienteId, tarjetaService.findByNumeroTarjeta("8888888888888"), selectedDate, selectedTime);
 
-        JOptionPane.showMessageDialog(this, "Reserva creada con éxito.");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al crear la reserva: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
+        LocalDateTime fechaHoraFin = selectedTime.plusHours(horasBloquear);
+
+        int selectedIndex = jListMesas.getSelectedIndex();
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una mesa.");
+            return;
+        }
+
+        List<Mesa> availableMesas = mesaService.getMesasDisponibles(selectedTime, fechaHoraFin);
+        if (availableMesas.isEmpty() || selectedIndex >= availableMesas.size()) {
+            JOptionPane.showMessageDialog(this, "La mesa seleccionada no está disponible.");
+            return;
+        }
+
+        Mesa selectedMesa = availableMesas.get(selectedIndex);
+
+        try {
+            reservaService.bloquearMesa(selectedMesa.getNumeroMesa(), selectedDate, selectedTime, fechaHoraFin);
+            JOptionPane.showMessageDialog(this, "Reserva creada con éxito.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al crear la reserva: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnBloquearActionPerformed
 
     private void btnVerMisReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMisReservasActionPerformed
         GestionDeMesas mesa1 = new GestionDeMesas(clienteService, empleadoService, rolService, mesaService);
         mesa1.setVisible(true);
         this.dispose();
+
     }//GEN-LAST:event_btnVerMisReservasActionPerformed
     private LocalDate getSelectedDate() {
         try {

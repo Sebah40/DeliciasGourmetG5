@@ -4,6 +4,7 @@
  */
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
+import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ClienteService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
@@ -149,9 +150,9 @@ private final ClienteService clienteService;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBloquearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBloquearActionPerformed
-        BloquearMesa1 mesa1 = new BloquearMesa1(clienteService, empleadoService, rolService,mesaService);
+        BloquearMesa1 mesa1 = RestaurantDeliciasGourmet.getContext().getBean(BloquearMesa1.class);
         mesa1.setVisible(true);
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_btnBloquearActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
