@@ -1,6 +1,7 @@
 package grupo5.taller.restaurantdeliciasgourmet.IGU;
 
 import grupo5.taller.restaurantdeliciasgourmet.RestaurantDeliciasGourmet;
+import grupo5.taller.restaurantdeliciasgourmet.Servicios.ReservaManager;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.ReservaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.SessionManager;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.TarjetaCreditoService;
@@ -232,40 +233,12 @@ public class IngresarTarjeta extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextNombreTitularActionPerformed
 
-    private void enviarCorreo(String destinatario, String asunto, String contenido) {
-        final String username = "deliciasgourmetrestaurant@gmail.com";
-        final String password = "tallerpoogrupo5";
-
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        });
-
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
-            message.setSubject(asunto);
-            message.setText(contenido);
-
-            Transport.send(message);
-            System.out.println("Correo enviado exitosamente.");
-
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
         // TODO add your handling code here:
+        ReservaManager manager = new ReservaManager();
+        
         try {
             String nombreTitular = jTextNombreTitular.getText();
             String numeroTarjeta = jTextNumeroTarjeta.getText();
@@ -308,6 +281,7 @@ public class IngresarTarjeta extends javax.swing.JFrame {
             reservaService.hacerReserva(selectedReserva);
 
             // Enviar correo de confirmación
+            
             String destinatario = selectedCliente.getEmail(); // Asegúrate de tener el email del cliente
             String asunto = "Confirmación de Reserva";
             String contenido = "Su reserva se ha realizado con éxito.\nDetalles:\n"
@@ -315,8 +289,9 @@ public class IngresarTarjeta extends javax.swing.JFrame {
                     + "Número de Tarjeta: " + numeroTarjeta + "\n"
                     + "Fecha de Expiración: " + fechaExpiracion.toString();
 
-            enviarCorreo(destinatario, asunto, contenido);
+            manager.enviarCorreo(destinatario, asunto, contenido);
 
+            
             JOptionPane.showMessageDialog(this, "Reserva realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             System.out.println(selectedReserva.getFechaReserva());

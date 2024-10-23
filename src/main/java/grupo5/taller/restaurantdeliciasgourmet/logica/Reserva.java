@@ -1,11 +1,25 @@
 package grupo5.taller.restaurantdeliciasgourmet.logica;
 
+import grupo5.taller.restaurantdeliciasgourmet.IGU.IngresarTarjeta;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -181,7 +195,8 @@ public class Reserva {
     public void setAdministradores(ArrayList<Administrador> administradores) {
        // this.administradores = administradores;
     }
-
+    
+    
     
     @Override
 public String toString() {
