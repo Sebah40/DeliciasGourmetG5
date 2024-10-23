@@ -81,7 +81,6 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="214" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="btnEditarPerfil" pref="149" max="32767" attributes="0"/>
                       <Component id="btnCrearReserva" pref="149" max="32767" attributes="0"/>
                       <Component id="btnVerReservas" alignment="1" max="32767" attributes="0"/>
                   </Group>
@@ -96,13 +95,11 @@
                   <Component id="jLabel3" min="-2" pref="177" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                   <Component id="btnCrearReserva" min="-2" pref="38" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
                   <Component id="btnVerReservas" min="-2" pref="38" max="-2" attributes="0"/>
-                  <EmptySpace pref="74" max="32767" attributes="0"/>
-                  <Component id="btnEditarPerfil" min="-2" pref="38" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+                  <EmptySpace pref="123" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="btnSalir" min="-2" pref="34" max="-2" attributes="0"/>
                       <Component id="btnVolver" min="-2" pref="34" max="-2" attributes="0"/>
@@ -187,14 +184,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVerReservasActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnEditarPerfil">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Editar Perfil"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarPerfilActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
