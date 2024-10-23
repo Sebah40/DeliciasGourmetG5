@@ -1,13 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package grupo5.taller.restaurantdeliciasgourmet.logica;
 
 /**
- *
- * @author sebas
+ * La enumeración Ubicacion representa las posibles ubicaciones disponibles en el restaurante.
+ * @author Grupo5
  */
 public enum Ubicacion {
-    PATIO,INTERIOR
+    /** Ubicación en el patio del restaurante. */
+    PATIO,
+
+    /** Ubicación en el interior del restaurante. */
+    INTERIOR
 }
