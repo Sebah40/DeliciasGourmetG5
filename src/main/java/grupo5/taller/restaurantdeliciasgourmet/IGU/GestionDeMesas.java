@@ -61,7 +61,7 @@ private final ClienteService clienteService;
             }
         });
 
-        btnConfigura.setText("Configurar Mesa");
+        btnConfigura.setText("Crear Mesa");
         btnConfigura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfiguraActionPerformed(evt);
@@ -172,9 +172,9 @@ private final ClienteService clienteService;
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnDesbloquearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesbloquearActionPerformed
-        DesbloquearMesa1 mesa1 = new DesbloquearMesa1(clienteService, empleadoService, rolService,mesaService);
+        DesbloquearMesa1 mesa1 = RestaurantDeliciasGourmet.getContext().getBean(DesbloquearMesa1.class);;
         mesa1.setVisible(true);
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_btnDesbloquearActionPerformed
 
     private void btnConfiguraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguraActionPerformed

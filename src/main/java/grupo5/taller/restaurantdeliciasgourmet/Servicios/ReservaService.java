@@ -140,6 +140,8 @@ public class ReservaService {
         reserva.setEstadoReserva(EstadoReserva.CANCELADA);
         reservaRepository.save(reserva);
     }
+    
+    
 
     private void generarCorreo(String destinatario, String asunto, String contenido) {
         final String username = "deliciasgourmetrestaurant@gmail.com";
