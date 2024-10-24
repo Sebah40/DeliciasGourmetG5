@@ -10,8 +10,9 @@ import grupo5.taller.restaurantdeliciasgourmet.Servicios.EmpleadoService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.MesaService;
 import grupo5.taller.restaurantdeliciasgourmet.Servicios.RolService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class GestionDeMesas extends javax.swing.JFrame {
     
 private final ClienteService clienteService;
@@ -61,6 +62,11 @@ private final ClienteService clienteService;
         });
 
         btnConfigura.setText("Configurar Mesa");
+        btnConfigura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfiguraActionPerformed(evt);
+            }
+        });
 
         btnSalir.setBackground(new java.awt.Color(51, 204, 0));
         btnSalir.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -170,6 +176,12 @@ private final ClienteService clienteService;
         mesa1.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnDesbloquearActionPerformed
+
+    private void btnConfiguraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguraActionPerformed
+        CrearMesa mesa = RestaurantDeliciasGourmet.getContext().getBean(CrearMesa.class);
+        mesa.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnConfiguraActionPerformed
 
    
 
